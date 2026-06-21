@@ -97,24 +97,14 @@ export default function App() {
 
   // Load theme preference on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('nec_theme_dark');
-    if (savedTheme !== null) {
-      setDarkMode(savedTheme === 'true');
-    }
   }, []);
 
-  // Save theme to localStorage and body class
+  // Force Light (White) Theme globally
   useEffect(() => {
-    localStorage.setItem('nec_theme_dark', darkMode.toString());
     const body = document.body;
-    if (darkMode) {
-      body.classList.add('dark');
-      body.style.backgroundColor = '#020617';
-    } else {
-      body.classList.remove('dark');
-      body.style.backgroundColor = '#f8fafc';
-    }
-  }, [darkMode]);
+    body.classList.remove('dark');
+    body.style.backgroundColor = '#f8fafc';
+  }, []);
 
   // Fetch profiles, announcements, pipelines, raw logs, notifications on mount
   const fetchAllData = () => {
@@ -680,19 +670,7 @@ export default function App() {
 
   if (!token) {
     return (
-      <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white ${
-        darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50/50 text-slate-800'
-      }`}>
-        {/* Toggle dark/light theme on login screen */}
-        <div className="absolute top-4 right-4">
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all backdrop-blur-md shadow-sm cursor-pointer"
-            title="Toggle Theme"
-          >
-            {darkMode ? <Sun size={15} /> : <Moon size={15} />}
-          </button>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white bg-slate-50/50 text-slate-800">
 
         <div className="w-full max-w-md">
           {/* Logo / Branding */}
@@ -703,10 +681,10 @@ export default function App() {
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
               CampusAssist AI
             </h1>
-            <p className="text-xs text-slate-400 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
+            <p className="text-xs text-slate-600 dark:text-slate-450 font-bold uppercase tracking-widest mt-1">
               National Engineering College
             </p>
-            <p className="text-[10px] text-slate-400 dark:text-slate-555 font-bold uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
               Secure Role-Based Portal
             </p>
           </div>
@@ -725,8 +703,8 @@ export default function App() {
                   }}
                   className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
                     loginTab === tab
-                      ? 'border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 font-black'
-                      : 'border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
+                      ? 'border-indigo-600 dark:border-indigo-505 text-indigo-600 dark:text-indigo-400 font-black'
+                      : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-300'
                   }`}
                 >
                   {tab}
@@ -745,11 +723,11 @@ export default function App() {
             {/* Form */}
             <form onSubmit={handleLogin} className="space-y-4 text-left">
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1.5">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-1.5">
                   Username
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                     <User size={15} />
                   </div>
                   <input
@@ -757,18 +735,18 @@ export default function App() {
                     required
                     value={loginUsername}
                     onChange={(e) => setLoginUsername(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
                     placeholder={`Enter your ${loginTab} username`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-450 dark:text-slate-500 mb-1.5">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-605 dark:text-slate-500 mb-1.5">
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                     <Lock size={15} />
                   </div>
                   <input
@@ -784,11 +762,11 @@ export default function App() {
 
               {loginTab === 'admin' && (
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-450 dark:text-slate-500 mb-1.5">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-1.5">
                     Admin Security Key
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                       <Key size={15} />
                     </div>
                     <input
@@ -825,10 +803,10 @@ export default function App() {
 
           {/* Credentials Helper Card */}
           <div className="mt-6 bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-left">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-2">
               Demo Credentials (Testing)
             </h4>
-            <div className="space-y-1 text-[11px] font-bold text-slate-600 dark:text-slate-400">
+            <div className="space-y-1 text-[11px] font-bold text-slate-700 dark:text-slate-400">
               <div className="flex justify-between border-b border-slate-200/50 dark:border-slate-800/30 pb-1">
                 <span>Student: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-indigo-600 dark:text-indigo-400 font-mono">arun</code></span>
                 <span>Pass: <code className="font-mono text-[10px]">studentpassword</code></span>
@@ -842,7 +820,7 @@ export default function App() {
                 <span>Pass: <code className="font-mono text-[10px]">adminpassword</code></span>
               </div>
               {loginTab === 'admin' && (
-                <div className="mt-2 pt-2 border-t border-indigo-200/30 dark:border-indigo-900/20 text-[10px] text-slate-400 dark:text-indigo-400/80">
+                <div className="mt-2 pt-2 border-t border-indigo-200/30 dark:border-indigo-900/20 text-[10px] text-slate-600 dark:text-indigo-400/80">
                   Admin Key: <code className="bg-indigo-50 dark:bg-indigo-950/40 px-1 py-0.5 rounded font-mono text-[9px]">nec_admin_secret_2026</code>
                 </div>
               )}
@@ -854,9 +832,7 @@ export default function App() {
   }
 
   return (
-    <div id="main-container" className={`min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 ${
-      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50/50 text-slate-800'
-    }`}>
+    <div id="main-container" className="min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 bg-slate-50/50 text-slate-800">
       
       {/* College App Header Branding */}
       <header className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-40 backdrop-blur-md transition-colors duration-300">
@@ -874,14 +850,14 @@ export default function App() {
                   NEC PORTAL
                 </span>
               </h1>
-              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">National Engineering College • Intelligent Assist Platform</p>
+              <p className="text-[10px] text-slate-550 dark:text-slate-500 font-bold uppercase tracking-wider">National Engineering College • Intelligent Assist Platform</p>
             </div>
           </div>
 
           {/* User Profile & Logout */}
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Authenticated user:</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500">Authenticated user:</span>
               <p className="text-xs font-black text-slate-800 dark:text-white uppercase leading-none mt-0.5">{username} ({role})</p>
             </div>
             <button
@@ -892,17 +868,8 @@ export default function App() {
             </button>
           </div>
 
-          {/* Quick Actions (Theme & Notification alerts bell) */}
+          {/* Quick Actions (Notification alerts bell) */}
           <div className="flex items-center gap-3">
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer"
-              title="Toggle Theme"
-            >
-              {darkMode ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
-
             {/* Notification Bell */}
             <button
               onClick={() => setShowNotifDrawer(true)}

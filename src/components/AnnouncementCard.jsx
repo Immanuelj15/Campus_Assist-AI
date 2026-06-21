@@ -188,9 +188,10 @@ END:VCALENDAR`;
       id={`announcement-${announcement.id}`}
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.4) }}
+      whileHover={{ y: -4, scale: 1.015 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       onClick={handleCardClick}
-      className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 transition-all duration-300 overflow-hidden cursor-pointer shadow-sm hover:shadow-md ${priorityBorderClass} ${
+      className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 transition-all duration-300 overflow-hidden cursor-pointer shadow-sm hover:shadow-lg ${priorityBorderClass} ${
         isCompleted ? 'opacity-60 bg-slate-50/50 dark:bg-slate-950/30' : ''
       }`}
     >
