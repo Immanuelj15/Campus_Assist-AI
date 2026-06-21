@@ -26,6 +26,26 @@ if (apiKey) {
   console.warn("GROQ_API_KEY environment variable is not defined.");
 }
 
+const DB_PATH = path.join(__dirname, 'db.json');
+
+async function readDb() {
+  try {
+    const data = await fs.promises.readFile(DB_PATH, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading db.json:', err);
+    return { profiles: [], announcements: [], placementPipelines: [] };
+  }
+}
+
+async function writeDb(data) {
+  try {
+    await fs.promises.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing to db.json:', err);
+  }
+}
+
 // Helper to calculate Match Score on server side if needed
 function calculateScore(profile, item) {
   let score = 0;
@@ -238,6 +258,86 @@ If critical details aren't specified, write intelligent defaults (e.g. "All stud
   } catch (err) {
     console.error('Extraction error:', err);
     res.status(500).json({ error: err?.message || 'Failed to extract data correctly' });
+  }
+});
+
+// 3. Get announcements list
+app.get('/api/announcements', async (req, res) => {
+  try {
+    const db = await readDb();
+    res.json(db.announcements || []);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read announcements' });
+  }
+});
+
+// 4. Save/Post a new announcement
+app.post('/api/announcements', async (req, res) => {
+  try {
+    const newAnn = req.body;
+    if (!newAnn || !newAnn.id) {
+      return res.status(400).json({ error: 'Invalid announcement payload' });
+    }
+    const db = await readDb();
+    db.announcements = [newAnn, ...(db.announcements || [])];
+    await writeDb(db);
+    res.json({ success: true, announcements: db.announcements });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to write announcement' });
+  }
+});
+
+// 5. Get profiles
+app.get('/api/profiles', async (req, res) => {
+  try {
+    const db = await readDb();
+    res.json(db.profiles || []);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read profiles' });
+  }
+});
+
+// 6. Update student profile
+app.put('/api/profile', async (req, res) => {
+  try {
+    const updatedProfile = req.body;
+    if (!updatedProfile || !updatedProfile.name) {
+      return res.status(400).json({ error: 'Invalid profile data' });
+    }
+    const db = await readDb();
+    const index = db.profiles.findIndex(p => p.name.toLowerCase() === updatedProfile.name.toLowerCase());
+    if (index !== -1) {
+      db.profiles[index] = updatedProfile;
+    } else {
+      db.profiles.push(updatedProfile);
+    }
+    await writeDb(db);
+    res.json({ success: true, profile: updatedProfile });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+// 7. Get placement pipelines
+app.get('/api/pipelines', async (req, res) => {
+  try {
+    const db = await readDb();
+    res.json(db.placementPipelines || []);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read pipelines' });
+  }
+});
+
+// 8. Save placement pipelines
+app.post('/api/pipelines', async (req, res) => {
+  try {
+    const pipelines = req.body;
+    const db = await readDb();
+    db.placementPipelines = pipelines;
+    await writeDb(db);
+    res.json({ success: true, placementPipelines: db.placementPipelines });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save pipelines' });
   }
 });
 

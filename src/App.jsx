@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DEFAULT_STUDENT_PROFILE, INITIAL_ANNOUNCEMENTS, CATEGORIES } from './data';
+import { DEFAULT_STUDENT_PROFILE, CATEGORIES } from './data';
 import StudentProfileCard from './components/StudentProfileCard';
 import RemindersList from './components/RemindersList';
 import AnnouncementCard from './components/AnnouncementCard';
@@ -9,34 +9,23 @@ import AnalyticsPanel from './components/AnalyticsPanel';
 import { 
   Sparkles, 
   Search, 
-  Volume2, 
   Bot, 
   Cpu, 
   TrendingUp, 
   PlusCircle, 
   BookOpen, 
-  Bookmark, 
   Filter, 
-  Clock, 
-  Layers, 
-  CheckCircle,
-  MapPin,
   X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
-  // Persistence state hooks safely utilizing localStorage
-  const [profile, setProfile] = useState(() => {
-    const saved = localStorage.getItem('nec_student_profile');
-    return saved ? JSON.parse(saved) : DEFAULT_STUDENT_PROFILE;
-  });
+  const [profiles, setProfiles] = useState([]);
+  const [profile, setProfile] = useState(DEFAULT_STUDENT_PROFILE);
+  const [announcements, setAnnouncements] = useState([]);
+  const [placementPipelines, setPlacementPipelines] = useState([]);
 
-  const [announcements, setAnnouncements] = useState(() => {
-    const saved = localStorage.getItem('nec_announcements_db');
-    return saved ? JSON.parse(saved) : INITIAL_ANNOUNCEMENTS;
-  });
-
+  // Session-based read/completed UI states can remain in localStorage
   const [viewedIds, setViewedIds] = useState(() => {
     const saved = localStorage.getItem('nec_viewed_announcements');
     return saved ? JSON.parse(saved) : [];
@@ -47,23 +36,33 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [placementPipelines, setPlacementPipelines] = useState(() => {
-    const saved = localStorage.getItem('nec_placement_pipelines');
-    return saved ? JSON.parse(saved) : [
-      { companyName: 'Accenture', status: 'Preparing', dateApplied: '2026-06-12' },
-      { companyName: 'Cognizant', status: 'Applied', dateApplied: '2026-06-14' }
-    ];
-  });
-
-  // Sync state modifications to localStorage
+  // Fetch dynamic data from the server on mount
   useEffect(() => {
-    localStorage.setItem('nec_student_profile', JSON.stringify(profile));
-  }, [profile]);
+    // Fetch profiles
+    fetch('/api/profiles')
+      .then(res => res.json())
+      .then(data => {
+        setProfiles(data);
+        const savedName = localStorage.getItem('nec_selected_profile_name');
+        const active = data.find(p => p.name === savedName) || data[0];
+        if (active) setProfile(active);
+      })
+      .catch(err => console.error('Failed to load profiles:', err));
 
-  useEffect(() => {
-    localStorage.setItem('nec_announcements_db', JSON.stringify(announcements));
-  }, [announcements]);
+    // Fetch announcements
+    fetch('/api/announcements')
+      .then(res => res.json())
+      .then(data => setAnnouncements(data))
+      .catch(err => console.error('Failed to load announcements:', err));
 
+    // Fetch pipelines
+    fetch('/api/pipelines')
+      .then(res => res.json())
+      .then(data => setPlacementPipelines(data))
+      .catch(err => console.error('Failed to load pipelines:', err));
+  }, []);
+
+  // Sync session UI state modifications to localStorage
   useEffect(() => {
     localStorage.setItem('nec_viewed_announcements', JSON.stringify(viewedIds));
   }, [viewedIds]);
@@ -71,25 +70,6 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('nec_completed_actions', JSON.stringify(completedIds));
   }, [completedIds]);
-
-  useEffect(() => {
-    localStorage.setItem('nec_placement_pipelines', JSON.stringify(placementPipelines));
-  }, [placementPipelines]);
-
-  // Auto-seed verification check to override stale localStorage with new user specifications
-  useEffect(() => {
-    const hasSeeded = announcements.some(ann => ann.id === 'ann-seeded-1');
-    if (!hasSeeded) {
-      setProfile(DEFAULT_STUDENT_PROFILE);
-      setAnnouncements(INITIAL_ANNOUNCEMENTS);
-      setViewedIds([]);
-      setCompletedIds([]);
-      setPlacementPipelines([
-        { companyName: 'Zoho', status: 'Preparing', dateApplied: '2026-06-14' },
-        { companyName: 'Accenture', status: 'Applied', dateApplied: '2026-06-12' }
-      ]);
-    }
-  }, []);
 
   // View settings
   const [activeTab, setActiveTab] = useState('opportunities');
@@ -153,20 +133,15 @@ export default function App() {
   // Process sorting & filters on announcements list
   const processedAnnouncements = announcements
     .map(ann => ({ ...ann, score: getScore(profile, ann) }))
-    // Sort highest score first, then fallback to high priority first
     .sort((a, b) => {
       if (b.score !== a.score) return b.score - a.score;
       const priorities = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
       return priorities[b.priority] - priorities[a.priority];
     })
     .filter(ann => {
-      // Category Filter
       if (selectedCategory !== 'All' && ann.category !== selectedCategory) return false;
-      // Priority Filter
       if (selectedPriority !== 'All' && ann.priority !== selectedPriority) return false;
-      // Only High Compat Match (> 50 score)
       if (onlyMatched && ann.score < 50) return false;
-      // Text Search
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         return (
@@ -191,27 +166,62 @@ export default function App() {
       setCompletedIds((prev) => prev.filter((item) => item !== id));
     } else {
       setCompletedIds((prev) => [...prev, id]);
-      // Auto register viewed if completed
       handleMarkViewed(id);
     }
   };
 
   const handleAddExtractedAnnouncement = (ann) => {
-    setAnnouncements((prev) => [ann, ...prev]);
-    // Redirect to opportunities tab to view it
+    fetch('/api/announcements', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ann)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.announcements) {
+        setAnnouncements(data.announcements);
+      }
+    })
+    .catch(err => console.error('Failed to save extracted announcement:', err));
+
     setActiveTab('opportunities');
   };
 
   const handleAddPipeline = (item) => {
-    setPlacementPipelines((prev) => {
-      // Avoid duplicate company entries
-      const filtered = prev.filter(x => x.companyName.toLowerCase() !== item.companyName.toLowerCase());
-      return [item, ...filtered];
-    });
+    const updated = [item, ...placementPipelines.filter(x => x.companyName.toLowerCase() !== item.companyName.toLowerCase())];
+    setPlacementPipelines(updated);
+    fetch('/api/pipelines', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    }).catch(err => console.error('Failed to save pipelines:', err));
   };
 
   const handleRemovePipeline = (company) => {
-    setPlacementPipelines((prev) => prev.filter(x => x.companyName !== company));
+    const updated = placementPipelines.filter(x => x.companyName !== company);
+    setPlacementPipelines(updated);
+    fetch('/api/pipelines', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    }).catch(err => console.error('Failed to save pipelines:', err));
+  };
+
+  const handleUpdateProfile = (updatedProfile) => {
+    setProfile(updatedProfile);
+    localStorage.setItem('nec_selected_profile_name', updatedProfile.name);
+    fetch('/api/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProfile)
+    })
+    .then(res => res.json())
+    .then(() => {
+      fetch('/api/profiles')
+        .then(res => res.json())
+        .then(pData => setProfiles(pData));
+    })
+    .catch(err => console.error('Failed to save profile:', err));
   };
 
   const handleManualNoticeSubmit = (e) => {
@@ -239,10 +249,22 @@ export default function App() {
       actionRequired: newAction.trim() || 'Register/apply on LMS.'
     };
 
-    setAnnouncements((prev) => [newAnn, ...prev]);
+    fetch('/api/announcements', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newAnn)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.announcements) {
+        setAnnouncements(data.announcements);
+      }
+    })
+    .catch(err => console.error('Failed to post announcement:', err));
+
     setShowAddModal(false);
 
-    // Clear state files
+    // Clear form fields
     setNewTitle('');
     setNewDesc('');
     setNewDate('');
@@ -254,18 +276,10 @@ export default function App() {
     setNewMinCgpa('');
   };
 
-  // Re-seed original data
   const handleResetData = () => {
     if (window.confirm('Are you sure you want to reset all dashboard data, student profiles, and pipelines back to default?')) {
-      setProfile(DEFAULT_STUDENT_PROFILE);
-      setAnnouncements(INITIAL_ANNOUNCEMENTS);
-      setViewedIds([]);
-      setCompletedIds([]);
-      setPlacementPipelines([
-        { companyName: 'Zoho', status: 'Preparing', dateApplied: '2026-06-14' },
-        { companyName: 'Accenture', status: 'Applied', dateApplied: '2026-06-12' }
-      ]);
       localStorage.clear();
+      window.location.reload();
     }
   };
 
@@ -354,7 +368,15 @@ export default function App() {
         
         {/* Left Side Info Panel: Profile Summary + Warnings Board (Span 4 columns) */}
         <section className="lg:col-span-4 space-y-6">
-          <StudentProfileCard profile={profile} onChange={setProfile} />
+          <StudentProfileCard 
+            profile={profile} 
+            profiles={profiles} 
+            onChange={handleUpdateProfile} 
+            onSelectProfile={(pName) => {
+              const selected = profiles.find(p => p.name === pName);
+              if (selected) handleUpdateProfile(selected);
+            }} 
+          />
           
           <RemindersList announcements={announcements} completedActions={completedIds} />
         </section>
@@ -627,7 +649,7 @@ export default function App() {
                     value={newDesc}
                     onChange={(e) => setNewDesc(e.target.value)}
                     placeholder="Provide core instructions or description of the visit/event..."
-                    className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
+                    className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-205 rounded-lg focus:outline-none"
                   />
                 </div>
 

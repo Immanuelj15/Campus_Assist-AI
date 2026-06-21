@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { DEPARTMENTS, SEEDED_STUDENT_PROFILES } from '../data';
+import { DEPARTMENTS } from '../data';
 import { Edit2, Check, BookOpen, Award, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function StudentProfileCard({ profile, onChange }) {
+export default function StudentProfileCard({ profile, profiles = [], onChange, onSelectProfile }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState({ ...profile });
   const [newSkill, setNewSkill] = useState('');
@@ -48,11 +48,13 @@ export default function StudentProfileCard({ profile, onChange }) {
     });
   };
 
+  const displayProfiles = profiles.length ? profiles : [profile];
+
   return (
     <div id="student-profile-card" className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300">
       <div className="bg-slate-900 px-6 py-5 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-650 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl uppercase tracking-wider shadow-inner">
+          <div className="w-10 h-10 bg-indigo-605 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl uppercase tracking-wider shadow-inner">
             {profile.name ? profile.name.charAt(0).toUpperCase() : 'N'}
           </div>
           <div className="flex flex-col">
@@ -99,26 +101,22 @@ export default function StudentProfileCard({ profile, onChange }) {
               <div className="bg-slate-50 border border-slate-150 rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-left">
                 <div className="text-left">
                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Persona Swapper</p>
-                  <p className="text-[10px] text-slate-505 text-slate-500 font-bold uppercase tracking-wider">Switch student profile</p>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Switch student profile</p>
                 </div>
                 <select
                   value={profile.name}
                   onChange={(e) => {
-                    const selected = SEEDED_STUDENT_PROFILES.find(p => p.name === e.target.value);
-                    if (selected) {
-                      onChange(selected);
+                    if (onSelectProfile) {
+                      onSelectProfile(e.target.value);
                     }
                   }}
                   className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-indigo-600 cursor-pointer text-slate-800"
                 >
-                  {SEEDED_STUDENT_PROFILES.map((p) => (
+                  {displayProfiles.map((p) => (
                     <option key={p.name} value={p.name}>
                       {p.name} ({p.department} • CGPA {p.cgpa})
                     </option>
                   ))}
-                  {!SEEDED_STUDENT_PROFILES.some(p => p.name === profile.name) && (
-                    <option value={profile.name}>{profile.name} (Custom Persona)</option>
-                  )}
                 </select>
               </div>
 
@@ -137,7 +135,7 @@ export default function StudentProfileCard({ profile, onChange }) {
               <div className="grid grid-cols-3 gap-2">
                 <div className="p-3 rounded-2xl bg-slate-50 text-center border border-slate-100">
                   <p className="text-xl font-black text-slate-900 leading-none">0{profile.year}</p>
-                  <p className="text-[9px] font-black leading-none text-slate-505 text-slate-500 mt-1 uppercase tracking-widest">Year</p>
+                  <p className="text-[9px] font-black leading-none text-slate-500 mt-1 uppercase tracking-widest">Year</p>
                 </div>
                 <div className="p-3 rounded-2xl bg-indigo-50 text-center border border-indigo-150">
                   <p className="text-xl font-black text-indigo-600 leading-none">0{profile.semester}</p>
@@ -262,7 +260,7 @@ export default function StudentProfileCard({ profile, onChange }) {
                   max="10"
                   value={editedProfile.cgpa}
                   onChange={e => setEditedProfile({ ...editedProfile, cgpa: parseFloat(e.target.value) || 0.0 })}
-                  className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 font-bold text-slate-705 text-slate-700"
+                  className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 font-bold text-slate-700"
                 />
               </div>
 
