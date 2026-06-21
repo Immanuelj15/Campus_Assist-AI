@@ -98,10 +98,10 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
               className="space-y-5"
             >
               {/* Persona selection drop down */}
-              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-left">
+              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-left">
                 <div className="text-left">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Persona Swapper</p>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Switch student profile</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Persona Swapper</p>
+                  <p className="text-[10px] text-slate-600 dark:text-slate-450 font-bold uppercase tracking-wider">Switch student profile</p>
                 </div>
                 <select
                   value={profile.name}
@@ -110,7 +110,7 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                       onSelectProfile(e.target.value);
                     }
                   }}
-                  className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-indigo-650 cursor-pointer text-slate-800 dark:text-slate-200"
+                  className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-indigo-600 cursor-pointer text-slate-800 dark:text-slate-200"
                 >
                   {displayProfiles.map((p) => (
                     <option key={p.name} value={p.name}>
@@ -124,26 +124,26 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
               <div className="flex items-start justify-between gap-2 text-left">
                 <div>
                   <h4 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter uppercase whitespace-pre-wrap leading-tight">{profile.name}</h4>
-                  <p className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-1 tracking-wider uppercase">REG: {profile.registerNumber}</p>
+                  <p className="font-mono text-[10px] font-bold text-slate-550 dark:text-slate-500 mt-1 tracking-wider uppercase">REG: {profile.registerNumber}</p>
                 </div>
-                <div className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase rounded-lg tracking-widest border border-indigo-150 dark:border-indigo-850 shrink-0">
+                <div className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-605 dark:text-indigo-400 font-black text-[10px] uppercase rounded-lg tracking-widest border border-indigo-200 dark:border-indigo-800 shrink-0">
                   {profile.department}
                 </div>
               </div>
 
               {/* Grid indices matching bold statistics boxes */}
               <div className="grid grid-cols-3 gap-2">
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center border border-slate-100 dark:border-slate-850">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center border border-slate-200 dark:border-slate-800">
                   <p className="text-xl font-black text-slate-900 dark:text-white leading-none">0{profile.year}</p>
                   <p className="text-[9px] font-black leading-none text-slate-500 mt-1 uppercase tracking-widest">Year</p>
                 </div>
-                <div className="p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/20 text-center border border-indigo-150 dark:border-indigo-850/50">
+                <div className="p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/20 text-center border border-indigo-200 dark:border-indigo-800/50">
                   <p className="text-xl font-black text-indigo-600 dark:text-indigo-400 leading-none">0{profile.semester}</p>
                   <p className="text-[9px] font-black leading-none text-indigo-500 dark:text-indigo-400/80 mt-1 uppercase tracking-widest">Sem</p>
                 </div>
-                <div className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/20 text-center border border-rose-150 dark:border-rose-850/50">
-                  <p className="text-xl font-black text-rose-600 dark:text-rose-455 leading-none">{profile.cgpa.toFixed(2)}</p>
-                  <p className="text-[9px] font-black leading-none text-rose-550 mt-1 uppercase tracking-widest">CGPA</p>
+                <div className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/20 text-center border border-rose-200 dark:border-rose-800/50">
+                  <p className="text-xl font-black text-rose-600 dark:text-rose-400 leading-none">{profile.cgpa.toFixed(2)}</p>
+                  <p className="text-[9px] font-black leading-none text-rose-500 mt-1 uppercase tracking-widest">CGPA</p>
                 </div>
               </div>
 
@@ -156,7 +156,7 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                   </h5>
                   <div className="flex flex-wrap gap-1.5">
                     {profile.skills.map((skill, i) => (
-                      <span key={i} className="px-2.5 py-1 bg-slate-100 dark:bg-slate-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-300 text-[10px] font-black uppercase tracking-wider rounded-lg transition-colors border border-slate-200 dark:border-slate-800">
+                      <span key={i} className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-305 text-[10px] font-black uppercase tracking-wider rounded-lg transition-colors border border-slate-200 dark:border-slate-800">
                         {skill}
                       </span>
                     ))}
@@ -173,7 +173,7 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                   </h5>
                   <div className="flex flex-wrap gap-1.5">
                     {profile.interests.map((interest, i) => (
-                      <span key={i} className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-wider rounded-lg border border-indigo-150 dark:border-indigo-900/60">
+                      <span key={i} className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/20 text-indigo-650 dark:text-indigo-400 text-[10px] font-black uppercase tracking-wider rounded-lg border border-indigo-200 dark:border-indigo-900/60">
                         {interest}
                       </span>
                     ))}
@@ -220,7 +220,7 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                   <select
                     value={editedProfile.department}
                     onChange={e => setEditedProfile({ ...editedProfile, department: e.target.value })}
-                    className="w-full px-2 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-indigo-500 text-slate-850 dark:text-slate-200"
+                    className="w-full px-2 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-slate-200"
                   >
                     {DEPARTMENTS.map((dept) => (
                       <option key={dept} value={dept}>{dept}</option>
@@ -274,21 +274,21 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                     value={newSkill}
                     onChange={e => setNewSkill(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                    className="flex-1 px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:indigo-500 text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:indigo-550 text-slate-900 dark:text-white"
                   />
                   <button
                     type="button"
                     onClick={addSkill}
-                    className="p-1 px-2.5 bg-slate-850 dark:bg-slate-805 text-white hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                    className="p-1 px-2.5 bg-slate-800 dark:bg-slate-705 text-white hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors cursor-pointer"
                   >
                     Add
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {editedProfile.skills.map((skill, index) => (
-                    <span key={index} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-350 text-xs font-medium rounded-full">
+                    <span key={index} className="inline-flex items-center gap-1 pl-2.5 pr-1 py-0.5 bg-slate-100 dark:bg-slate-805 text-slate-700 dark:text-slate-350 text-xs font-medium rounded-full">
                       {skill}
-                      <button type="button" onClick={() => removeSkill(skill)} className="p-0.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-650 transition-colors cursor-pointer">
+                      <button type="button" onClick={() => removeSkill(skill)} className="p-0.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
                         <X size={10} />
                       </button>
                     </span>
@@ -306,12 +306,12 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
                     value={newInterest}
                     onChange={e => setNewInterest(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addInterest())}
-                    className="flex-1 px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:indigo-500 text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:indigo-550 text-slate-900 dark:text-white"
                   />
                   <button
                     type="button"
                     onClick={addInterest}
-                    className="p-1 px-2.5 bg-slate-850 dark:bg-slate-805 text-white hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                    className="p-1 px-2.5 bg-slate-800 dark:bg-slate-705 text-white hover:bg-slate-700 rounded-lg text-xs font-bold transition-colors cursor-pointer"
                   >
                     Add
                   </button>

@@ -32,7 +32,9 @@ import {
   CloudLightning,
   Trash2,
   Lock,
-  ChevronRight
+  ChevronRight,
+  User,
+  Key
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -44,9 +46,19 @@ export default function App() {
   const [notifications, setNotifications] = useState([]);
   const [rawAnnouncements, setRawAnnouncements] = useState([]);
   
-  // Role & Theme states
-  const [role, setRole] = useState('student'); // 'student', 'faculty', 'admin'
+  // Role & Theme & Token states
+  const [token, setToken] = useState(() => localStorage.getItem('nec_auth_token') || '');
+  const [role, setRole] = useState(() => localStorage.getItem('nec_auth_role') || 'student');
+  const [username, setUsername] = useState(() => localStorage.getItem('nec_auth_username') || '');
   const [darkMode, setDarkMode] = useState(false);
+
+  // Login Form States
+  const [loginTab, setLoginTab] = useState('student'); // 'student', 'faculty', 'admin'
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginAdminKey, setLoginAdminKey] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
   
   // Notifications drawer state
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
@@ -98,16 +110,20 @@ export default function App() {
       body.style.backgroundColor = '#020617';
     } else {
       body.classList.remove('dark');
-      body.style.backgroundColor = '#ffffff';
+      body.style.backgroundColor = '#f8fafc';
     }
   }, [darkMode]);
 
   // Fetch profiles, announcements, pipelines, raw logs, notifications on mount
   const fetchAllData = () => {
+    if (!token) return;
+    const headers = { 'Authorization': `Bearer ${token}` };
+
     // Fetch profiles
-    fetch('/api/profiles')
+    fetch('/api/profiles', { headers })
       .then(res => res.json())
       .then(data => {
+        if (data.error) throw new Error(data.error);
         setProfiles(data);
         const savedName = localStorage.getItem('nec_selected_profile_name');
         const active = data.find(p => p.name === savedName) || data[0];
@@ -116,33 +132,47 @@ export default function App() {
       .catch(err => console.error('Failed to load profiles:', err));
 
     // Fetch announcements
-    fetch('/api/announcements')
+    fetch('/api/announcements', { headers })
       .then(res => res.json())
-      .then(data => setAnnouncements(data))
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        setAnnouncements(data);
+      })
       .catch(err => console.error('Failed to load announcements:', err));
 
     // Fetch pipelines
-    fetch('/api/pipelines')
+    fetch('/api/pipelines', { headers })
       .then(res => res.json())
-      .then(data => setPlacementPipelines(data))
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        setPlacementPipelines(data);
+      })
       .catch(err => console.error('Failed to load pipelines:', err));
 
     // Fetch raw announcements (ingestion logs)
-    fetch('/api/raw-announcements')
+    fetch('/api/raw-announcements', { headers })
       .then(res => res.json())
-      .then(data => setRawAnnouncements(data))
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        setRawAnnouncements(data);
+      })
       .catch(err => console.error('Failed to load raw announcements:', err));
 
     // Fetch system notifications
-    fetch('/api/notifications')
+    fetch('/api/notifications', { headers })
       .then(res => res.json())
-      .then(data => setNotifications(data))
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        setNotifications(data);
+      })
       .catch(err => console.error('Failed to load notifications:', err));
   };
 
   useEffect(() => {
-    fetchAllData();
-  }, []);
+    if (token) {
+      fetchAllData();
+    }
+  }, [token]);
 
   // Sync session UI state modifications to localStorage
   useEffect(() => {
@@ -284,8 +314,7 @@ export default function App() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'x-mock-role': 'admin',
-        'x-mock-user': 'System'
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(ann)
     })
@@ -306,7 +335,10 @@ export default function App() {
     setPlacementPipelines(updated);
     fetch('/api/pipelines', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(updated)
     }).catch(err => console.error('Failed to save pipelines:', err));
   };
@@ -316,7 +348,10 @@ export default function App() {
     setPlacementPipelines(updated);
     fetch('/api/pipelines', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(updated)
     }).catch(err => console.error('Failed to save pipelines:', err));
   };
@@ -326,12 +361,17 @@ export default function App() {
     localStorage.setItem('nec_selected_profile_name', updatedProfile.name);
     fetch('/api/profile', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(updatedProfile)
     })
     .then(res => res.json())
     .then(() => {
-      fetch('/api/profiles')
+      fetch('/api/profiles', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
         .then(res => res.json())
         .then(pData => setProfiles(pData));
     })
@@ -367,8 +407,7 @@ export default function App() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'x-mock-role': 'faculty',
-        'x-mock-user': 'Prof. Srinivasan'
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(newAnn)
     })
@@ -412,8 +451,7 @@ export default function App() {
       const res = await fetch('/api/faculty/upload', {
         method: 'POST',
         headers: {
-          'x-mock-role': 'faculty',
-          'x-mock-user': 'Prof. Srinivasan'
+          'Authorization': `Bearer ${token}`
         },
         body: formData
       });
@@ -457,8 +495,7 @@ export default function App() {
       const res = await fetch('/api/faculty/import-csv', {
         method: 'POST',
         headers: {
-          'x-mock-role': 'faculty',
-          'x-mock-user': 'Prof. Srinivasan'
+          'Authorization': `Bearer ${token}`
         },
         body: formData
       });
@@ -541,7 +578,10 @@ export default function App() {
   const handleClearNotifications = async () => {
     if (!window.confirm('Delete all notifications from database log?')) return;
     try {
-      const res = await fetch('/api/notifications', { method: 'DELETE' });
+      const res = await fetch('/api/notifications', { 
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const data = await res.json();
       setNotifications(data || []);
       alert('Notifications log cleared.');
@@ -552,7 +592,10 @@ export default function App() {
 
   const handleResetData = () => {
     if (window.confirm('Reset all databases, clear custom uploads, and reseed mock dataset back to factory defaults?')) {
-      fetch('/api/reset', { method: 'POST' })
+      fetch('/api/reset', { 
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
       .then(res => res.json())
       .then(() => {
         localStorage.clear();
@@ -563,12 +606,239 @@ export default function App() {
     }
   };
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginError('');
+    setLoginLoading(true);
+    try {
+      const payload = {
+        username: loginUsername,
+        password: loginPassword,
+        role: loginTab,
+      };
+      if (loginTab === 'admin') {
+        payload.adminKey = loginAdminKey;
+      }
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Authentication failed');
+      }
+      localStorage.setItem('nec_auth_token', data.token);
+      localStorage.setItem('nec_auth_role', data.role);
+      localStorage.setItem('nec_auth_username', data.username);
+      setToken(data.token);
+      setRole(data.role);
+      setUsername(data.username);
+      setLoginUsername('');
+      setLoginPassword('');
+      setLoginAdminKey('');
+    } catch (err) {
+      setLoginError(err.message);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('nec_auth_token');
+    localStorage.removeItem('nec_auth_role');
+    localStorage.removeItem('nec_auth_username');
+    setToken('');
+    setRole('student');
+    setUsername('');
+    setProfiles([]);
+    setAnnouncements([]);
+    setPlacementPipelines([]);
+    setRawAnnouncements([]);
+    setNotifications([]);
+  };
+
   // Notification badge calculation
   const unreadNotifCount = notifications.filter(n => !n.read).length;
 
+  if (!token) {
+    return (
+      <div className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white ${
+        darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50/50 text-slate-800'
+      }`}>
+        {/* Toggle dark/light theme on login screen */}
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all backdrop-blur-md shadow-sm cursor-pointer"
+            title="Toggle Theme"
+          >
+            {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+        </div>
+
+        <div className="w-full max-w-md">
+          {/* Logo / Branding */}
+          <div className="text-center mb-8">
+            <div className="inline-flex w-14 h-14 rounded-2xl bg-indigo-650 dark:bg-indigo-600 items-center justify-center text-white font-sans font-black text-3xl shadow-xl border border-indigo-400/30 mb-3 neon-glow">
+              N
+            </div>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
+              CampusAssist AI
+            </h1>
+            <p className="text-xs text-slate-400 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
+              National Engineering College
+            </p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-555 font-bold uppercase tracking-wider mt-0.5">
+              Secure Role-Based Portal
+            </p>
+          </div>
+
+          {/* Login Card */}
+          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl transition-all duration-300">
+            {/* Tabs */}
+            <div className="flex border-b border-slate-200 dark:border-slate-800 mb-6">
+              {['student', 'faculty', 'admin'].map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => {
+                    setLoginTab(tab);
+                    setLoginError('');
+                  }}
+                  className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                    loginTab === tab
+                      ? 'border-indigo-600 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 font-black'
+                      : 'border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            {/* Error Message */}
+            {loginError && (
+              <div className="mb-4 p-3.5 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/20 dark:border-rose-900/50 text-xs font-bold text-rose-600 dark:text-rose-400 text-left flex items-start gap-2.5">
+                <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+                <span>{loginError}</span>
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleLogin} className="space-y-4 text-left">
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1.5">
+                  Username
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <User size={15} />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={loginUsername}
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                    placeholder={`Enter your ${loginTab} username`}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-450 dark:text-slate-500 mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <Lock size={15} />
+                  </div>
+                  <input
+                    type="password"
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                    placeholder="Enter password"
+                  />
+                </div>
+              </div>
+
+              {loginTab === 'admin' && (
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-450 dark:text-slate-500 mb-1.5">
+                    Admin Security Key
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                      <Key size={15} />
+                    </div>
+                    <input
+                      type="password"
+                      required
+                      value={loginAdminKey}
+                      onChange={(e) => setLoginAdminKey(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                      placeholder="Enter admin security key"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loginLoading}
+                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/25 hover:shadow-indigo-700/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-6"
+              >
+                {loginLoading ? (
+                  <>
+                    <RefreshCw className="animate-spin" size={14} />
+                    Authenticating...
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                    <ChevronRight size={14} />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+
+          {/* Credentials Helper Card */}
+          <div className="mt-6 bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-left">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
+              Demo Credentials (Testing)
+            </h4>
+            <div className="space-y-1 text-[11px] font-bold text-slate-600 dark:text-slate-400">
+              <div className="flex justify-between border-b border-slate-200/50 dark:border-slate-800/30 pb-1">
+                <span>Student: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-indigo-600 dark:text-indigo-400 font-mono">arun</code></span>
+                <span>Pass: <code className="font-mono text-[10px]">studentpassword</code></span>
+              </div>
+              <div className="flex justify-between border-b border-slate-200/50 dark:border-slate-800/30 py-1">
+                <span>Faculty: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-violet-600 dark:text-violet-400 font-mono">srinivasan</code></span>
+                <span>Pass: <code className="font-mono text-[10px]">facultypassword</code></span>
+              </div>
+              <div className="flex justify-between pt-1">
+                <span>Admin: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300 font-mono">admin</code></span>
+                <span>Pass: <code className="font-mono text-[10px]">adminpassword</code></span>
+              </div>
+              {loginTab === 'admin' && (
+                <div className="mt-2 pt-2 border-t border-indigo-200/30 dark:border-indigo-900/20 text-[10px] text-slate-400 dark:text-indigo-400/80">
+                  Admin Key: <code className="bg-indigo-50 dark:bg-indigo-950/40 px-1 py-0.5 rounded font-mono text-[9px]">nec_admin_secret_2026</code>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div id="main-container" className={`min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 ${
-      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-white text-slate-800'
+      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50/50 text-slate-800'
     }`}>
       
       {/* College App Header Branding */}
@@ -577,13 +847,13 @@ export default function App() {
           
           {/* Logo Title */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-indigo-650 bg-indigo-600 flex items-center justify-center text-white font-sans font-black text-xl shadow-lg border border-indigo-400">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-indigo-600 flex items-center justify-center text-white font-sans font-black text-xl shadow-lg border border-indigo-400">
               N
             </div>
             <div className="text-left">
               <h1 className="font-sans font-black text-xl tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 uppercase">
                 CampusAssist AI
-                <span className="text-[9px] font-black bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-150 dark:border-indigo-800/50 uppercase tracking-widest leading-none">
+                <span className="text-[9px] font-black bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-200 dark:border-indigo-800/50 uppercase tracking-widest leading-none">
                   NEC PORTAL
                 </span>
               </h1>
@@ -591,24 +861,18 @@ export default function App() {
             </div>
           </div>
 
-          {/* Role Simulator Switcher */}
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 hidden sm:inline">Role Simulator:</span>
-            <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-2xl border border-slate-200 dark:border-slate-800/80">
-              {['student', 'faculty', 'admin'].map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRole(r)}
-                  className={`px-3.5 py-1.5 text-[9px] font-black rounded-xl transition-all cursor-pointer uppercase tracking-widest ${
-                    role === r 
-                      ? 'bg-indigo-600 text-white shadow-md' 
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  {r}
-                </button>
-              ))}
+          {/* User Profile & Logout */}
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Authenticated user:</span>
+              <p className="text-xs font-black text-slate-800 dark:text-white uppercase leading-none mt-0.5">{username} ({role})</p>
             </div>
+            <button
+              onClick={handleLogout}
+              className="text-[9px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 px-3.5 py-1.5 border border-rose-250 dark:border-rose-900/80 rounded-xl bg-rose-50 dark:bg-rose-950/20 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+            >
+              Logout
+            </button>
           </div>
 
           {/* Quick Actions (Theme & Notification alerts bell) */}
@@ -669,7 +933,7 @@ export default function App() {
           {role === 'faculty' && (
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-5 text-left transition-all duration-300">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-violet-650 bg-violet-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
+                <div className="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
                   FS
                 </div>
                 <div>
@@ -709,7 +973,7 @@ export default function App() {
                 </nav>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
+              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
                 <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase text-[9px] tracking-wider">Ingestion Feed Statistics</span>
                 <p>✓ Active Board Items: <span className="font-bold text-indigo-500">{announcements.length}</span></p>
                 <p>✓ Unprocessed Mail Snippets: <span className="font-bold text-rose-500">{rawAnnouncements.filter(r => r.processedStatus === 'pending').length}</span></p>
@@ -721,7 +985,7 @@ export default function App() {
           {role === 'admin' && (
             <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-5 text-left transition-all duration-300">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-indigo-650 bg-indigo-650/80 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
+                <div className="w-10 h-10 bg-indigo-600 bg-indigo-600/80 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
                   AD
                 </div>
                 <div>
@@ -760,7 +1024,7 @@ export default function App() {
                 </nav>
               </div>
 
-              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-2">
+              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-2">
                 <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase text-[9px] tracking-wider">Sync Quick Actions</span>
                 <div className="flex flex-wrap gap-2">
                   <button 
@@ -834,7 +1098,7 @@ export default function App() {
                       placeholder="Search opportunities, branches, prerequisites, topics..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case text-slate-850 dark:text-slate-100"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case text-slate-800 dark:text-slate-100"
                     />
                   </div>
 
@@ -852,7 +1116,7 @@ export default function App() {
                           className={`px-2.5 py-1 rounded-md transition-colors border cursor-pointer text-[10px] uppercase tracking-wide ${
                             selectedCategory === cat
                               ? 'bg-slate-900 dark:bg-indigo-600 border-slate-950 dark:border-indigo-700 text-white font-bold'
-                              : 'bg-slate-50 dark:bg-slate-850 text-slate-650 dark:text-slate-350 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
+                              : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                           }`}
                         >
                           {cat}
@@ -869,7 +1133,7 @@ export default function App() {
                         <select
                           value={selectedPriority}
                           onChange={(e) => setSelectedPriority(e.target.value)}
-                          className="px-2 py-1 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded focus:outline-none text-slate-800 dark:text-slate-200"
+                          className="px-2 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded focus:outline-none text-slate-800 dark:text-slate-200"
                         >
                           <option value="All">All Priorities</option>
                           <option value="HIGH">High Priority</option>
@@ -904,7 +1168,7 @@ export default function App() {
                       </label>
                     </div>
 
-                    <p className="text-[11px] font-mono font-bold text-slate-450 dark:text-slate-500">
+                    <p className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-500">
                       Found {processedAnnouncements.length} of {announcements.length} entries
                     </p>
                   </div>
@@ -1180,7 +1444,7 @@ export default function App() {
                 className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-5"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-650 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl">
+                  <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl">
                     <FileText size={18} />
                   </div>
                   <div>
@@ -1189,7 +1453,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-650 dark:text-slate-350 space-y-2">
+                <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/80 text-xs text-slate-600 dark:text-slate-400 space-y-2">
                   <p className="font-black text-slate-800 dark:text-slate-200 uppercase text-[9px] tracking-wider">Required Column Schema Headers:</p>
                   <p className="font-mono text-[10px] bg-white dark:bg-slate-950 p-2.5 rounded border border-slate-200 dark:border-slate-800">
                     Title | Category | Priority | Description | Venue | Deadline | Action
@@ -1198,7 +1462,7 @@ export default function App() {
                 </div>
 
                 <form onSubmit={handleCsvUploadSubmit} className="space-y-4 pt-2">
-                  <div className="border-2 border-dashed border-slate-250 border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 text-center transition-colors cursor-pointer relative bg-slate-50/50 dark:bg-slate-950/20">
+                  <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 text-center transition-colors cursor-pointer relative bg-slate-50/50 dark:bg-slate-950/20">
                     <input 
                       type="file" 
                       accept=".xlsx,.xls,.csv"
@@ -1229,7 +1493,7 @@ export default function App() {
                     <button
                       type="submit"
                       disabled={!csvFile || isCsvUploading}
-                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest disabled:bg-slate-150 disabled:text-slate-400 dark:disabled:bg-slate-800 flex items-center gap-2 cursor-pointer shadow-sm border border-emerald-750"
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-800 flex items-center gap-2 cursor-pointer shadow-sm border border-emerald-800"
                     >
                       {isCsvUploading ? <RefreshCw size={14} className="animate-spin" /> : <Database size={14} />}
                       {isCsvUploading ? 'Processing spreadsheet...' : 'Start Ingestion Batch'}
@@ -1279,13 +1543,13 @@ export default function App() {
                     </thead>
                     <tbody>
                       {rawAnnouncements.map((log) => {
-                        let sourceBadge = 'bg-slate-105 text-slate-700';
-                        if (log.source === 'email') sourceBadge = 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-150 dark:border-indigo-900';
-                        if (log.source === 'lms') sourceBadge = 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-150 dark:border-amber-900';
-                        if (log.source === 'faculty') sourceBadge = 'bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-150 dark:border-violet-900';
+                        let sourceBadge = 'bg-slate-100 text-slate-700';
+                        if (log.source === 'email') sourceBadge = 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900';
+                        if (log.source === 'lms') sourceBadge = 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900';
+                        if (log.source === 'faculty') sourceBadge = 'bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-900';
 
                         return (
-                          <tr key={log.id || log._id} className="border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30">
+                          <tr key={log.id || log._id} className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-900/30">
                             <td className="py-3 px-3 font-mono text-[9px] text-slate-400 whitespace-nowrap">
                               {new Date(log.importedAt || Date.now()).toLocaleDateString()} {new Date(log.importedAt || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                             </td>
@@ -1370,12 +1634,12 @@ export default function App() {
 
                 <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
                   {notifications.map((notif) => {
-                    let typeBadge = 'bg-slate-100 text-slate-650';
+                    let typeBadge = 'bg-slate-100 text-slate-600';
                     if (notif.type === 'push') typeBadge = 'bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900';
                     if (notif.type === 'in-app') typeBadge = 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900';
 
                     return (
-                      <div key={notif.id || notif._id} className="p-3.5 rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 text-xs font-semibold space-y-1">
+                      <div key={notif.id || notif._id} className="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 text-xs font-semibold space-y-1">
                         <div className="flex items-center justify-between">
                           <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${typeBadge}`}>
                             {notif.type}
@@ -1391,7 +1655,7 @@ export default function App() {
                   })}
 
                   {notifications.length === 0 && (
-                    <div className="text-center py-10 text-[10px] font-bold uppercase text-slate-450 dark:text-slate-500">No alerts have been dispatched yet. Trigger the engine below or publish notices.</div>
+                    <div className="text-center py-10 text-[10px] font-bold uppercase text-slate-500 dark:text-slate-500">No alerts have been dispatched yet. Trigger the engine below or publish notices.</div>
                   )}
                 </div>
               </motion.div>
@@ -1417,10 +1681,10 @@ export default function App() {
                 </div>
 
                 {syncStatus && (
-                  <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-150 dark:border-indigo-800 text-xs font-semibold flex items-start gap-2.5 text-indigo-750 dark:text-indigo-400 animate-pulse">
-                    <Sparkles className="shrink-0 text-indigo-650" size={16} />
+                  <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-800 text-xs font-semibold flex items-start gap-2.5 text-indigo-700 dark:text-indigo-400 animate-pulse">
+                    <Sparkles className="shrink-0 text-indigo-600" size={16} />
                     <div>
-                      <span className="uppercase text-[9px] font-black block tracking-wider text-slate-450">Execution Console:</span>
+                      <span className="uppercase text-[9px] font-black block tracking-wider text-slate-500">Execution Console:</span>
                       <p className="mt-0.5">{syncStatus}</p>
                     </div>
                   </div>
@@ -1537,7 +1801,7 @@ export default function App() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0.9 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="relative bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-205 dark:border-slate-800 flex flex-col justify-between text-left"
+              className="relative bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col justify-between text-left"
             >
               {/* Drawer Header */}
               <div className="px-6 py-5 bg-slate-900 text-white border-b border-slate-800 flex items-center justify-between">
@@ -1563,7 +1827,7 @@ export default function App() {
                   return (
                     <div 
                       key={notif.id || notif._id} 
-                      className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 shadow-sm space-y-2 relative"
+                      className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-2 relative"
                     >
                       <div className="flex items-center justify-between">
                         <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${badgeStyle}`}>
@@ -1574,11 +1838,11 @@ export default function App() {
                         </span>
                       </div>
                       
-                      <h4 className="font-sans font-black text-slate-850 dark:text-white text-xs uppercase leading-tight pt-1">{notif.title}</h4>
-                      <p className="text-slate-500 dark:text-slate-450 text-[11px] leading-relaxed font-semibold">{notif.body}</p>
+                      <h4 className="font-sans font-black text-slate-800 dark:text-white text-xs uppercase leading-tight pt-1">{notif.title}</h4>
+                      <p className="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed font-semibold">{notif.body}</p>
                       
                       {notif.deadline && (
-                        <p className="text-[9px] text-indigo-650 dark:text-indigo-400 font-mono font-bold tracking-tight">
+                        <p className="text-[9px] text-indigo-600 dark:text-indigo-400 font-mono font-bold tracking-tight">
                           TARGET DEADLINE: {notif.deadline}
                         </p>
                       )}
@@ -1600,7 +1864,7 @@ export default function App() {
                 <button
                   onClick={handleClearNotifications}
                   disabled={notifications.length === 0}
-                  className="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center shadow transition-all cursor-pointer disabled:bg-slate-100 disabled:text-slate-450 dark:disabled:bg-slate-800"
+                  className="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center shadow transition-all cursor-pointer disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-800"
                 >
                   Clear Alerts
                 </button>

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import bcrypt from 'bcryptjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,12 +20,73 @@ async function connectMongo() {
     });
     isMongoConnected = true;
     console.log('✓ Successfully connected to MongoDB at:', mongoURI);
+    await initializeDefaultUsers();
   } catch (err) {
     console.warn('⚠️ MongoDB connection failed. Falling back to server-side JSON storage.');
     isMongoConnected = false;
+    await initializeDefaultUsers();
   }
 }
 connectMongo();
+
+async function initializeDefaultUsers() {
+  try {
+    let count = 0;
+    if (isMongoConnected) {
+      count = await User.countDocuments({});
+    } else {
+      const db = await readJsonDb();
+      count = (db.users || []).length;
+    }
+    
+    if (count === 0) {
+      console.log('Seeding default users (arun/studentpassword, srinivasan/facultypassword, admin/adminpassword)...');
+      const studentPassword = await bcrypt.hash('studentpassword', 10);
+      const facultyPassword = await bcrypt.hash('facultypassword', 10);
+      const adminPassword = await bcrypt.hash('adminpassword', 10);
+      
+      const defaultUsers = [
+        { username: 'arun', password: studentPassword, role: 'student' },
+        { username: 'srinivasan', password: facultyPassword, role: 'faculty' },
+        { username: 'admin', password: adminPassword, role: 'admin' }
+      ];
+      
+      if (isMongoConnected) {
+        await User.insertMany(defaultUsers);
+      } else {
+        const db = await readJsonDb();
+        db.users = defaultUsers;
+        await writeJsonDb(db);
+      }
+      console.log('✓ Default users initialized.');
+    }
+  } catch (err) {
+    console.error('Failed to initialize default users:', err);
+  }
+}
+
+export async function findUserByUsername(username) {
+  if (isMongoConnected) {
+    return await User.findOne({ username: new RegExp(`^${username}$`, 'i') });
+  } else {
+    const db = await readJsonDb();
+    return (db.users || []).find(u => u.username.toLowerCase() === username.toLowerCase());
+  }
+}
+
+export async function registerUser(userData) {
+  if (isMongoConnected) {
+    const newUser = new User(userData);
+    await newUser.save();
+    return newUser;
+  } else {
+    const db = await readJsonDb();
+    db.users = db.users || [];
+    db.users.push(userData);
+    await writeJsonDb(db);
+    return userData;
+  }
+}
 
 // SCHEMAS
 
@@ -148,7 +210,8 @@ const INITIAL_JSON_STATE = {
   announcements: [],
   placementPipelines: [],
   rawAnnouncements: [],
-  notifications: []
+  notifications: [],
+  users: []
 };
 
 async function readJsonDb() {
@@ -158,7 +221,11 @@ async function readJsonDb() {
       return INITIAL_JSON_STATE;
     }
     const data = await fs.promises.readFile(DB_PATH, 'utf8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    if (!parsed.users) {
+      parsed.users = [];
+    }
+    return parsed;
   } catch (err) {
     return INITIAL_JSON_STATE;
   }
@@ -340,6 +407,10 @@ export async function seedDatabase(data) {
     await Announcement.insertMany(data.announcements);
     // Seed Pipelines
     await Pipeline.insertMany(data.placementPipelines);
+    // Seed Users
+    if (data.users) {
+      await User.insertMany(data.users);
+    }
     
     // Seed extra collections
     if (data.placements) await Placement.insertMany(data.placements);
@@ -353,6 +424,7 @@ export async function seedDatabase(data) {
       profiles: data.profiles,
       announcements: data.announcements,
       placementPipelines: data.placementPipelines,
+      users: data.users || [],
       placements: data.placements || [],
       internships: data.internships || [],
       scholarships: data.scholarships || [],

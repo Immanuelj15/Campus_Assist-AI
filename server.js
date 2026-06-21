@@ -24,7 +24,9 @@ import {
   getNotifications,
   addNotification,
   clearNotifications,
-  seedDatabase
+  seedDatabase,
+  findUserByUsername,
+  registerUser
 } from './server_db.js';
 
 dotenv.config();
@@ -158,34 +160,64 @@ Output your reply strictly as a JSON object matching this schema structure:
 // 1. Authentication APIs
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, adminKey } = req.body;
     if (!username || !password || !role) {
       return res.status(400).json({ error: 'All fields required' });
     }
+
+    // Verify admin key if role is admin
+    if (role === 'admin') {
+      const expectedAdminKey = process.env.ADMIN_SECURITY_KEY || 'nec_admin_secret_2026';
+      if (adminKey !== expectedAdminKey) {
+        return res.status(401).json({ error: 'Invalid Admin Security Key' });
+      }
+    }
+
+    const existing = await findUserByUsername(username);
+    if (existing) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    // In our fallbacks or MongoDB setup, we can save user credentials.
-    // For local ease, we just generate a JWT for registered credentials
-    const token = jwt.sign({ username, role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, role, username });
+    const newUser = await registerUser({ username, password: hashedPassword, role });
+
+    const token = jwt.sign({ username: newUser.username, role: newUser.role }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role: newUser.role, username: newUser.username });
   } catch (err) {
+    console.error('Registration failed:', err);
     res.status(500).json({ error: 'Registration failed' });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    // Simple placeholder credentials logic for Hackathon purposes
-    // Admin login or standard user logins
-    let role = 'student';
-    if (username.toLowerCase().includes('faculty') || username.toLowerCase() === 'teacher') {
-      role = 'faculty';
-    } else if (username.toLowerCase().includes('admin') || username.toLowerCase() === 'principal') {
-      role = 'admin';
+    const { username, password, role, adminKey } = req.body;
+    if (!username || !password || !role) {
+      return res.status(400).json({ error: 'All fields required' });
     }
-    const token = jwt.sign({ username, role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, role, username });
+
+    // Verify admin key if role is admin
+    if (role === 'admin') {
+      const expectedAdminKey = process.env.ADMIN_SECURITY_KEY || 'nec_admin_secret_2026';
+      if (adminKey !== expectedAdminKey) {
+        return res.status(401).json({ error: 'Invalid Admin Security Key' });
+      }
+    }
+
+    const user = await findUserByUsername(username);
+    if (!user || user.role !== role) {
+      return res.status(401).json({ error: 'Invalid username, password or role selection' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid username, password or role selection' });
+    }
+
+    const token = jwt.sign({ username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role: user.role, username: user.username });
   } catch (err) {
+    console.error('Login failed:', err);
     res.status(500).json({ error: 'Login failed' });
   }
 });
@@ -591,6 +623,16 @@ Response Style:
 // 11. Full Database Reseed API (Faculty/Admin utility)
 app.post('/api/reset', async (req, res) => {
   try {
+    const studentPassword = await bcrypt.hash('studentpassword', 10);
+    const facultyPassword = await bcrypt.hash('facultypassword', 10);
+    const adminPassword = await bcrypt.hash('adminpassword', 10);
+
+    const defaultUsers = [
+      { username: 'arun', password: studentPassword, role: 'student' },
+      { username: 'srinivasan', password: facultyPassword, role: 'faculty' },
+      { username: 'admin', password: adminPassword, role: 'admin' }
+    ];
+
     // Complete Seed DB payload mock loader
     const mockSeedData = {
       profiles: [
@@ -620,7 +662,8 @@ app.post('/api/reset', async (req, res) => {
         }
       ],
       announcements: [],
-      placementPipelines: []
+      placementPipelines: [],
+      users: defaultUsers
     };
 
     await seedDatabase(mockSeedData);

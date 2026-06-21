@@ -67,7 +67,7 @@ export default function AnalyticsPanel({
         {/* KPI 2 */}
         <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
           <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Viewed Milestone</span>
-          <p className="text-3xl font-sans font-black text-indigo-650 dark:text-indigo-400 leading-none py-1">{viewedCount} <span className="text-xs text-slate-400 dark:text-slate-550 font-bold">/ {totalCount}</span></p>
+          <p className="text-3xl font-sans font-black text-indigo-600 dark:text-indigo-400 leading-none py-1">{viewedCount} <span className="text-xs text-slate-400 dark:text-slate-500 font-bold">/ {totalCount}</span></p>
           <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1 pointer-events-none">
             <div className="bg-indigo-600 dark:bg-indigo-500 h-full rounded-full" style={{ width: `${engagementRate}%` }}></div>
           </div>
@@ -88,7 +88,7 @@ export default function AnalyticsPanel({
         {/* KPI 4 */}
         <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-1">
           <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Applied Funnel</span>
-          <p className="text-3xl font-sans font-black text-emerald-650 dark:text-emerald-450 leading-none py-1">
+          <p className="text-3xl font-sans font-black text-emerald-600 dark:text-emerald-400 leading-none py-1">
             {placementPipelines.filter(x => x.status === 'Applied' || x.status === 'Selected').length}
           </p>
           <div className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Involved placement drivers</div>
@@ -125,7 +125,7 @@ export default function AnalyticsPanel({
         </div>
 
         {/* Placement Participation pipelines management */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-205 dark:border-slate-800 shadow-sm space-y-3">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
           <div className="flex items-center gap-2">
             <Briefcase size={16} className="text-indigo-600 dark:text-indigo-400" />
             <h4 className="font-sans font-black text-slate-900 dark:text-white text-sm uppercase tracking-widest text-left">Placement Active Roadmap</h4>
@@ -133,7 +133,7 @@ export default function AnalyticsPanel({
           <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider text-left">Register and organize recruitment and placement tracks</p>
 
           {/* Form to submit a driver pipeline entry */}
-          <form onSubmit={handleAddPipelineSubmit} className="bg-slate-50 dark:bg-slate-950/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-850 flex flex-wrap gap-2 items-center text-left">
+          <form onSubmit={handleAddPipelineSubmit} className="bg-slate-50 dark:bg-slate-950/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-wrap gap-2 items-center text-left">
             <input
               type="text"
               placeholder="Company name, e.g. Zoho"
@@ -165,13 +165,13 @@ export default function AnalyticsPanel({
           <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1 text-left">
             {placementPipelines.map((pipe) => {
               let statusStyle = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
-              if (pipe.status === 'Selected') statusStyle = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 font-black border border-emerald-150 dark:border-emerald-900/60';
-              if (pipe.status === 'Applied') statusStyle = 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 font-black border border-indigo-150 dark:border-indigo-900/60';
-              if (pipe.status === 'In Progress') statusStyle = 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-150 dark:border-blue-900/60';
-              if (pipe.status === 'Rejected') statusStyle = 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-150 dark:border-rose-900/60';
+              if (pipe.status === 'Selected') statusStyle = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 font-black border border-emerald-200 dark:border-emerald-900/60';
+              if (pipe.status === 'Applied') statusStyle = 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 font-black border border-indigo-200 dark:border-indigo-900/60';
+              if (pipe.status === 'In Progress') statusStyle = 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/60';
+              if (pipe.status === 'Rejected') statusStyle = 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60';
 
               return (
-                <div key={pipe.companyName} className="flex items-center justify-between p-2.5 rounded-xl border border-slate-105 dark:border-slate-800 text-xs bg-white dark:bg-slate-900 shadow-sm">
+                <div key={pipe.companyName} className="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs bg-white dark:bg-slate-900 shadow-sm">
                   <div className="flex items-center gap-2.5">
                     <span className="font-black text-slate-800 dark:text-white uppercase tracking-tight">{pipe.companyName}</span>
                     <span className="font-mono text-[9px] text-slate-400 dark:text-slate-500 font-bold">({pipe.dateApplied})</span>

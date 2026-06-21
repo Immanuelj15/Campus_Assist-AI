@@ -35,7 +35,7 @@ export default function RemindersList({ announcements, completedActions }) {
       {activeReminders.length === 0 ? (
         <div className="text-center py-6 bg-slate-800/40 rounded-2xl border border-dashed border-slate-800">
           <p className="text-xs font-black uppercase tracking-wider text-indigo-300">All Up To Date</p>
-          <p className="text-[11px] text-slate-405 dark:text-slate-400 mt-1">Excellent! No high priority deadlines left within the next 7 days.</p>
+          <p className="text-[11px] text-slate-400 dark:text-slate-400 mt-1">Excellent! No high priority deadlines left within the next 7 days.</p>
         </div>
       ) : (
         <div className="space-y-4 text-left">
@@ -46,7 +46,7 @@ export default function RemindersList({ announcements, completedActions }) {
 
             if (daysRemaining === 7) {
               bracketLabel = '7 Days Left';
-              bracketTheme = 'text-blue-405 dark:text-blue-400';
+              bracketTheme = 'text-blue-400 dark:text-blue-400';
             } else if (daysRemaining <= 3 && daysRemaining > 1) {
               bracketLabel = '3 Days Left';
               bracketTheme = 'text-orange-400';
@@ -81,10 +81,10 @@ export default function RemindersList({ announcements, completedActions }) {
                     <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Event:</span>
                     <p className="text-sm font-black uppercase leading-tight truncate text-white mb-1.5">{ann.title}</p>
                     
-                    <span className="text-[8px] font-bold text-slate-405 uppercase tracking-widest">Deadline:</span>
+                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Deadline:</span>
                     <p className="text-xs font-black italic text-indigo-300 mb-2">{ann.deadline}</p>
                     
-                    <span className="text-[8px] font-bold text-slate-405 uppercase tracking-widest">Action Required:</span>
+                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Action Required:</span>
                     <p className="text-[11px] text-slate-300 font-medium leading-tight mb-3 whitespace-pre-wrap">{ann.actionRequired}</p>
                   </div>
 

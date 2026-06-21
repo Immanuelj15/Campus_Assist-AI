@@ -79,7 +79,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
   return (
     <div id="deadline-extractor-container" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 text-left transition-all duration-300">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-indigo-605 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-sans font-black text-xl border border-indigo-400">
+        <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-sans font-black text-xl border border-indigo-400">
           <FileText size={18} />
         </div>
         <div>
@@ -101,7 +101,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5">
           <button
             onClick={() => setRawText(sampleNotice)}
-            className="text-[10px] font-black text-indigo-600 dark:text-indigo-405 hover:text-indigo-800 dark:hover:text-indigo-350 uppercase tracking-widest inline-flex items-center gap-1 cursor-pointer"
+            className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 uppercase tracking-widest inline-flex items-center gap-1 cursor-pointer"
           >
             <HelpCircle size={13} />
             Insert Sample Text Notice
@@ -147,19 +147,19 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="border border-indigo-150 dark:border-indigo-900 bg-indigo-50/20 dark:bg-indigo-950/10 rounded-2xl p-5 space-y-4 text-left"
+            className="border border-indigo-200 dark:border-indigo-900 bg-indigo-50/20 dark:bg-indigo-950/10 rounded-2xl p-5 space-y-4 text-left"
           >
-            <div className="flex items-center justify-between border-b border-indigo-150 dark:border-indigo-900 pb-3">
+            <div className="flex items-center justify-between border-b border-indigo-200 dark:border-indigo-900 pb-3">
               <span className="font-sans font-black text-slate-900 dark:text-white text-[10px] uppercase tracking-widest flex items-center gap-1.5">
                 <Cpu size={14} className="text-indigo-600 animate-pulse" />
                 Groq AI Extracted Schema Output
               </span>
               <span className={`px-2 py-0.5 text-[9px] uppercase font-black rounded border ${
                 extractedData.priority === 'HIGH'
-                  ? 'bg-rose-100 text-rose-700 border-rose-150 dark:bg-rose-950/20 dark:text-rose-405 dark:border-rose-900'
+                  ? 'bg-rose-100 text-rose-700 border-rose-200 dark:bg-rose-950/20 dark:text-rose-400 dark:border-rose-900'
                   : extractedData.priority === 'MEDIUM'
-                    ? 'bg-amber-100 text-amber-700 border-amber-150 dark:bg-amber-950/20 dark:text-amber-405 dark:border-amber-900'
-                    : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:border-slate-700'
+                    ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-900'
+                    : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
               }`}>
                 {extractedData.priority} Priority
               </span>

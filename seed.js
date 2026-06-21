@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 import { seedDatabase } from './server_db.js';
 
 dotenv.config();
@@ -86,10 +87,21 @@ async function run() {
     const announcements = generateAnnouncements();
     const placementPipelines = [];
 
+    const studentPassword = await bcrypt.hash('studentpassword', 10);
+    const facultyPassword = await bcrypt.hash('facultypassword', 10);
+    const adminPassword = await bcrypt.hash('adminpassword', 10);
+
+    const users = [
+      { username: 'arun', password: studentPassword, role: 'student' },
+      { username: 'srinivasan', password: facultyPassword, role: 'faculty' },
+      { username: 'admin', password: adminPassword, role: 'admin' }
+    ];
+
     const data = {
       profiles: students,
       announcements: announcements,
-      placementPipelines: placementPipelines
+      placementPipelines: placementPipelines,
+      users: users
     };
 
     console.log(`Generated:
