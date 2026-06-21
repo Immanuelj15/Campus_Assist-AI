@@ -6,6 +6,7 @@ import AnnouncementCard from './components/AnnouncementCard';
 import CampusChat from './components/CampusChat';
 import DeadlineExtractor from './components/DeadlineExtractor';
 import AnalyticsPanel from './components/AnalyticsPanel';
+import KanbanTracker from './components/KanbanTracker';
 import { 
   Sparkles, 
   Search, 
@@ -34,7 +35,8 @@ import {
   Lock,
   ChevronRight,
   User,
-  Key
+  Key,
+  Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -354,6 +356,21 @@ export default function App() {
       },
       body: JSON.stringify(updated)
     }).catch(err => console.error('Failed to save pipelines:', err));
+  };
+
+  const handleUpdatePipelineStatus = (company, newStatus) => {
+    const updated = placementPipelines.map(x => 
+      x.companyName === company ? { ...x, status: newStatus } : x
+    );
+    setPlacementPipelines(updated);
+    fetch('/api/pipelines', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(updated)
+    }).catch(err => console.error('Failed to update pipeline status:', err));
   };
 
   const handleUpdateProfile = (updatedProfile) => {
@@ -926,6 +943,37 @@ export default function App() {
                   if (selected) handleUpdateProfile(selected);
                 }} 
               />
+
+              <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-4 text-left transition-all duration-300">
+                <span className="text-[9px] font-black text-slate-450 dark:text-slate-500 uppercase tracking-widest block">Student Workspace</span>
+                <nav className="flex flex-col gap-1.5">
+                  {[
+                    { id: 'opportunities', label: 'Opportunities Feed', icon: BookOpen },
+                    { id: 'advisor', label: 'AI Advisor Chat', icon: Bot },
+                    { id: 'kanban', label: 'Application Tracker', icon: TrendingUp }
+                  ].map((tab) => {
+                    const Icon = tab.icon;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
+                          activeTab === tab.id 
+                            ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
+                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <Icon size={14} />
+                          {tab.label}
+                        </span>
+                        <ChevronRight size={12} />
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+
               <RemindersList announcements={announcements} completedActions={completedIds} />
             </>
           )}
@@ -949,6 +997,7 @@ export default function App() {
                     { id: 'manual-publish', label: 'Publish Manual Notice', icon: PlusCircle },
                     { id: 'extractor', label: 'AI notice extractor', icon: Cpu },
                     { id: 'import-csv', label: 'CSV/Excel roster import', icon: FileText },
+                    { id: 'kanban', label: 'Application Kanban', icon: TrendingUp },
                     { id: 'ingestion-logs', label: 'notice Ingestion logs', icon: Clock }
                   ].map((tab) => {
                     const Icon = tab.icon;
@@ -959,7 +1008,7 @@ export default function App() {
                         className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
                           activeTab === tab.id 
                             ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
-                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-650 dark:text-slate-355 text-slate-600 dark:text-slate-300'
                         }`}
                       >
                         <span className="flex items-center gap-2">
@@ -990,7 +1039,7 @@ export default function App() {
                 </div>
                 <div>
                   <h3 className="font-sans font-black text-slate-900 dark:text-white text-base leading-tight uppercase">Admin Desk</h3>
-                  <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold tracking-widest uppercase">Platform Control Center</span>
+                  <span className="text-[9px] text-slate-400 dark:text-slate-550 font-bold tracking-widest uppercase">Platform Control Center</span>
                 </div>
               </div>
 
@@ -999,6 +1048,7 @@ export default function App() {
                 <nav className="flex flex-col gap-1.5">
                   {[
                     { id: 'analytics', label: 'System Analytics & track', icon: TrendingUp },
+                    { id: 'kanban', label: 'Corporate Funnels', icon: Briefcase },
                     { id: 'notifications-logs', label: 'Dispatched notifications', icon: Bell },
                     { id: 'system-syncs', label: 'Ingestion sync controls', icon: Database }
                   ].map((tab) => {
@@ -1010,7 +1060,7 @@ export default function App() {
                         className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
                           activeTab === tab.id 
                             ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
-                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-655 dark:text-slate-355 text-slate-600 dark:text-slate-300'
                         }`}
                       >
                         <span className="flex items-center gap-2">
@@ -1211,6 +1261,23 @@ export default function App() {
                 exit={{ opacity: 0, x: -10 }}
               >
                 <CampusChat profile={profile} announcements={announcements} darkMode={darkMode} />
+              </motion.div>
+            )}
+
+            {/* TAB: Student Career Kanban Tracker */}
+            {activeTab === 'kanban' && role === 'student' && (
+              <motion.div
+                key="student-kanban"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+              >
+                <KanbanTracker 
+                  placementPipelines={placementPipelines}
+                  onAddPipeline={handleAddPipeline}
+                  onRemovePipeline={handleRemovePipeline}
+                  onUpdatePipelineStatus={handleUpdatePipelineStatus}
+                />
               </motion.div>
             )}
 
@@ -1503,6 +1570,24 @@ export default function App() {
               </motion.div>
             )}
 
+            {/* TAB: Faculty Placement Kanban Tracker View */}
+            {activeTab === 'kanban' && role === 'faculty' && (
+              <motion.div
+                key="faculty-kanban"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl"
+              >
+                <KanbanTracker 
+                  placementPipelines={placementPipelines}
+                  onAddPipeline={handleAddPipeline}
+                  onRemovePipeline={handleRemovePipeline}
+                  onUpdatePipelineStatus={handleUpdatePipelineStatus}
+                />
+              </motion.div>
+            )}
+
             {/* TAB: Notice Ingestion Logs */}
             {activeTab === 'ingestion-logs' && role === 'faculty' && (
               <motion.div
@@ -1658,6 +1743,24 @@ export default function App() {
                     <div className="text-center py-10 text-[10px] font-bold uppercase text-slate-500 dark:text-slate-500">No alerts have been dispatched yet. Trigger the engine below or publish notices.</div>
                   )}
                 </div>
+              </motion.div>
+            )}
+
+            {/* TAB: Admin Placement Kanban Tracker View */}
+            {activeTab === 'kanban' && role === 'admin' && (
+              <motion.div
+                key="admin-kanban"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl"
+              >
+                <KanbanTracker 
+                  placementPipelines={placementPipelines}
+                  onAddPipeline={handleAddPipeline}
+                  onRemovePipeline={handleRemovePipeline}
+                  onUpdatePipelineStatus={handleUpdatePipelineStatus}
+                />
               </motion.div>
             )}
 
