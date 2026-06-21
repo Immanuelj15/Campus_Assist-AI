@@ -278,8 +278,15 @@ export default function App() {
 
   const handleResetData = () => {
     if (window.confirm('Are you sure you want to reset all dashboard data, student profiles, and pipelines back to default?')) {
-      localStorage.clear();
-      window.location.reload();
+      fetch('/api/reset', {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(() => {
+        localStorage.clear();
+        window.location.reload();
+      })
+      .catch(err => console.error('Failed to reset backend database:', err));
     }
   };
 
