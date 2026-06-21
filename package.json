@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node --watch server.js",
     "build": "vite build",
     "start": "node server.js",
     "clean": "rm -rf dist"

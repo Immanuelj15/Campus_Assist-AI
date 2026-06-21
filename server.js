@@ -17,6 +17,12 @@ const PORT = 3000;
 
 app.use(express.json());
 
+// Prevent browser caching for all API endpoints to guarantee dynamic responses
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  next();
+});
+
 // Initialize Groq Client
 const apiKey = process.env.GROQ_API_KEY;
 let groq = null;
@@ -317,7 +323,8 @@ async function readDb() {
     return JSON.parse(data);
   } catch (err) {
     console.error('Error reading db.json:', err);
-    return INITIAL_DB_STATE;
+    // Return a deep clone of default state
+    return JSON.parse(JSON.stringify(INITIAL_DB_STATE));
   }
 }
 
@@ -627,7 +634,8 @@ app.post('/api/pipelines', async (req, res) => {
 // 9. Reset database back to default initial state
 app.post('/api/reset', async (req, res) => {
   try {
-    await writeDb(INITIAL_DB_STATE);
+    const freshDb = JSON.parse(JSON.stringify(INITIAL_DB_STATE));
+    await writeDb(freshDb);
     res.json({ success: true, message: 'Database reset to default seeded state' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to reset database' });
