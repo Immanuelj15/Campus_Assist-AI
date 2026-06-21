@@ -230,6 +230,7 @@ export async function addRawAnnouncement(rawText, source) {
     db.rawAnnouncements = [newRaw, ...(db.rawAnnouncements || [])];
     await writeJsonDb(db);
     return newRaw;
+  }
 }
 
 export async function getRawAnnouncements() {

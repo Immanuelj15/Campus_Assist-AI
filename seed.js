@@ -15,7 +15,7 @@ const INTERESTS = [
   'Robotics', 'Full Stack Development', 'Research', 'Mobile App Development'
 ];
 const MOCK_NAMES = [
-  'Immanuel', 'Arun', 'Priya', 'Rahul', 'Keerthana', 'Siddharth', 'Divya', 'Vijay',
+  'Arun', 'Priya', 'Rahul', 'Keerthana', 'Siddharth', 'Divya', 'Vijay',
   'Deepika', 'Hari', 'Ananya', 'Rohan', 'Sneha', 'Manoj', 'Aswathy', 'Ganesh',
   'Kavitha', 'Vikram', 'Meera', 'Rithvik', 'Srinivasan', 'Abirami', 'Karthik',
   'Samyuktha', 'Pranav', 'Nisha', 'Aakash', 'Shruthi', 'Sanjay', 'Pooja',

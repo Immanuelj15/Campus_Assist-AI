@@ -595,18 +595,6 @@ app.post('/api/reset', async (req, res) => {
     const mockSeedData = {
       profiles: [
         {
-          name: "Immanuel",
-          registerNumber: "NEC-2023-085",
-          department: "CSE",
-          year: 3,
-          semester: 6,
-          cgpa: 8.2,
-          skills: ["Java", "Spring Boot", "React", "Node.js"],
-          interests: ["AI", "Full Stack", "Cloud"],
-          bookmarkedCategories: [],
-          previousSearches: []
-        },
-        {
           name: "Arun",
           registerNumber: "NEC-2022-142",
           department: "AI&DS",

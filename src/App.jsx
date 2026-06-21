@@ -46,7 +46,7 @@ export default function App() {
   
   // Role & Theme states
   const [role, setRole] = useState('student'); // 'student', 'faculty', 'admin'
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   
   // Notifications drawer state
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
@@ -98,7 +98,7 @@ export default function App() {
       body.style.backgroundColor = '#020617';
     } else {
       body.classList.remove('dark');
-      body.style.backgroundColor = '#f8fafc';
+      body.style.backgroundColor = '#ffffff';
     }
   }, [darkMode]);
 
@@ -568,7 +568,7 @@ export default function App() {
 
   return (
     <div id="main-container" className={`min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 ${
-      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50 text-slate-800 animated-gradient-light'
+      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-white text-slate-800'
     }`}>
       
       {/* College App Header Branding */}
