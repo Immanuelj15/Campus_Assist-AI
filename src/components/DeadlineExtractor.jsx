@@ -77,31 +77,31 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
   };
 
   return (
-    <div id="deadline-extractor-container" className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-6 text-left">
+    <div id="deadline-extractor-container" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-6 text-left transition-all duration-300">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-sans font-black text-xl">
+        <div className="w-10 h-10 bg-indigo-605 bg-indigo-600 text-white rounded-xl flex items-center justify-center font-sans font-black text-xl border border-indigo-400">
           <FileText size={18} />
         </div>
         <div>
-          <h3 className="font-sans font-black text-slate-900 text-lg uppercase tracking-tighter">AI NOTICE EXTRACTOR</h3>
-          <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Transform messy announcements into active structured deadlines</p>
+          <h3 className="font-sans font-black text-slate-900 dark:text-white text-lg uppercase tracking-tighter">AI NOTICE EXTRACTOR</h3>
+          <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Transform messy announcements into active structured deadlines</p>
         </div>
       </div>
 
       <div className="space-y-3.5">
-        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Raw Announcement Message Body</label>
+        <label className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block font-bold">Raw Announcement Message Body</label>
         <textarea
           rows={5}
           value={rawText}
           onChange={(e) => setRawText(e.target.value)}
           placeholder="Paste unstructured email, WhatsApp forward notice, or bulletin board texts here..."
-          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-600 font-medium"
+          className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-600 font-medium text-slate-900 dark:text-white"
         />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3.5">
           <button
             onClick={() => setRawText(sampleNotice)}
-            className="text-[10px] font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest inline-flex items-center gap-1 cursor-pointer"
+            className="text-[10px] font-black text-indigo-600 dark:text-indigo-405 hover:text-indigo-800 dark:hover:text-indigo-350 uppercase tracking-widest inline-flex items-center gap-1 cursor-pointer"
           >
             <HelpCircle size={13} />
             Insert Sample Text Notice
@@ -110,7 +110,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
           <button
             onClick={handleExtract}
             disabled={!rawText.trim() || isProcessing}
-            className="w-full sm:w-auto px-6 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-6 py-3 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 flex items-center justify-center gap-2 transition-colors cursor-pointer border dark:border-indigo-500"
           >
             <Cpu size={14} className={isProcessing ? 'animate-spin' : ''} />
             {isProcessing ? 'Extracting with Groq...' : 'Extract Deadlines'}
@@ -124,7 +124,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
-            className="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2"
+            className="p-3.5 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-400 rounded-xl text-xs font-semibold flex items-center gap-2"
           >
             <AlertCircle size={15} className="text-rose-600 shrink-0" />
             <span>{errorMsg}</span>
@@ -135,7 +135,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold flex items-center gap-2"
+            className="p-3.5 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-400 rounded-xl text-xs font-semibold flex items-center gap-2"
           >
             <Check size={15} className="text-emerald-600 shrink-0" />
             <span>Successfully parsed and loaded into the Campus Opportunities Feed! Notice is now live.</span>
@@ -147,25 +147,25 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="border border-indigo-150 bg-indigo-50/20 rounded-2xl p-5 space-y-4 text-left"
+            className="border border-indigo-150 dark:border-indigo-900 bg-indigo-50/20 dark:bg-indigo-950/10 rounded-2xl p-5 space-y-4 text-left"
           >
-            <div className="flex items-center justify-between border-b border-indigo-150 pb-3">
-              <span className="font-sans font-black text-slate-900 text-[10px] uppercase tracking-widest flex items-center gap-1.5">
+            <div className="flex items-center justify-between border-b border-indigo-150 dark:border-indigo-900 pb-3">
+              <span className="font-sans font-black text-slate-900 dark:text-white text-[10px] uppercase tracking-widest flex items-center gap-1.5">
                 <Cpu size={14} className="text-indigo-600 animate-pulse" />
                 Groq AI Extracted Schema Output
               </span>
               <span className={`px-2 py-0.5 text-[9px] uppercase font-black rounded border ${
                 extractedData.priority === 'HIGH'
-                  ? 'bg-rose-100 text-rose-700 border-rose-150'
+                  ? 'bg-rose-100 text-rose-700 border-rose-150 dark:bg-rose-950/20 dark:text-rose-405 dark:border-rose-900'
                   : extractedData.priority === 'MEDIUM'
-                    ? 'bg-amber-100 text-amber-700 border-amber-150'
-                    : 'bg-slate-100 text-slate-700 border-slate-200'
+                    ? 'bg-amber-100 text-amber-700 border-amber-150 dark:bg-amber-950/20 dark:text-amber-405 dark:border-amber-900'
+                    : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:border-slate-700'
               }`}>
                 {extractedData.priority} Priority
               </span>
             </div>
 
-            {/* Display EXACT requested fields format */}
+            {/* Display EXACT fields format */}
             <div className="space-y-4 leading-relaxed text-sm">
               <div className="bg-slate-900 border border-slate-800 text-slate-200 rounded-xl p-4 font-mono text-xs space-y-1 select-all">
                 <div className="text-amber-400 font-bold mb-2 flex items-center gap-1">
@@ -191,7 +191,7 @@ export default function DeadlineExtractor({ onAddExtractedAnnouncement }) {
                 </button>
                 <button
                   onClick={() => setExtractedData(null)}
-                  className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-colors cursor-pointer"
+                  className="py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-center text-[10px] font-black uppercase tracking-widest transition-colors cursor-pointer border dark:border-slate-700"
                 >
                   Discard
                 </button>

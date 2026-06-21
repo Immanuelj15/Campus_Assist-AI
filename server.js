@@ -5,13 +5,33 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 import Groq from 'groq-sdk';
+import multer from 'multer';
+import * as xlsx from 'xlsx';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+
+import {
+  getAnnouncements,
+  addAnnouncement,
+  deleteAnnouncement,
+  updateAnnouncement,
+  addRawAnnouncement,
+  getRawAnnouncements,
+  getProfiles,
+  updateProfile,
+  getPipelines,
+  savePipelines,
+  getNotifications,
+  addNotification,
+  clearNotifications,
+  seedDatabase
+} from './server_db.js';
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Initialize Express app
 const app = express();
 const PORT = 3000;
 
@@ -23,6 +43,21 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
+// Configure Multer for File Uploads (uploads/ folder)
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+const upload = multer({ storage });
+
 // Initialize Groq Client
 const apiKey = process.env.GROQ_API_KEY;
 let groq = null;
@@ -32,467 +67,39 @@ if (apiKey) {
   console.warn("GROQ_API_KEY environment variable is not defined.");
 }
 
-const DB_PATH = path.join(__dirname, 'db.json');
+// JWT Configurations
+const JWT_SECRET = process.env.JWT_SECRET || 'campus_assist_super_secret_token';
 
-const INITIAL_DB_STATE = {
-  profiles: [
-    {
-      name: "Immanuel",
-      registerNumber: "NEC-2023-085",
-      department: "CSE",
-      year: 3,
-      semester: 6,
-      cgpa: 8.2,
-      skills: ["Java", "Spring Boot", "React", "Node.js"],
-      interests: ["AI", "Full Stack", "Cloud"]
-    },
-    {
-      name: "Arun",
-      registerNumber: "NEC-2022-142",
-      department: "AI&DS",
-      year: 4,
-      semester: 8,
-      cgpa: 8.8,
-      skills: ["Python", "Machine Learning", "Deep Learning"],
-      interests: ["AI", "Research"]
-    },
-    {
-      name: "Priya",
-      registerNumber: "NEC-2024-031",
-      department: "IT",
-      year: 2,
-      semester: 4,
-      cgpa: 8.5,
-      skills: ["JavaScript", "React"],
-      interests: ["Web Development"]
+// Simple JWT Auth Middleware
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    // If no token, check if client requested dynamic role switcher mode (for hackathon testing)
+    const mockRole = req.headers['x-mock-role'];
+    const mockUser = req.headers['x-mock-user'];
+    if (mockRole) {
+      req.user = { username: mockUser || 'Immanuel', role: mockRole };
+      return next();
     }
-  ],
-  announcements: [
-    {
-      id: "ann-seeded-1",
-      title: "Zoho Placement Drive",
-      category: "Placement",
-      priority: "HIGH",
-      description: "Zoho is conducting an exclusive campus recruitment drive. The selection process involves core software programming, solving data structures & algorithms problem challenges, and web systems development.",
-      date: "2026-09-22",
-      time: "10:00 AM",
-      venue: "Seminar Hall",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS"],
-        years: [3, 4],
-        minCgpa: 7.0,
-        skills: ["Java", "DSA"],
-        interests: ["Software Development", "Full Stack"]
-      },
-      deadline: "2026-09-20",
-      actionRequired: "Submit resume on Zoho portals registration link and submit verified details to College Placement Coordinator."
-    },
-    {
-      id: "ann-seeded-2",
-      title: "Google AI Hackathon",
-      category: "Hackathon",
-      priority: "HIGH",
-      description: "Build creative and high-impact solutions with Generative AI at the Google AI Hackathon. Solve critical campus and national challenges using Gemini model APIs.",
-      date: "2026-09-21",
-      time: "08:30 AM",
-      venue: "Innovation Center",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        years: [1, 2, 3, 4],
-        skills: ["AI", "Python"],
-        interests: ["AI", "Research", "Machine Learning"]
-      },
-      deadline: "2026-09-18",
-      actionRequired: "Form a team of 2-4 students, draft your hackathon abstract proposal and submit on Devpost Hackfest page."
-    },
-    {
-      id: "ann-seeded-3",
-      title: "AWS Cloud Workshop",
-      category: "Workshop",
-      priority: "MEDIUM",
-      description: "Comprehensive boot camp on Amazon Web Services cloud infrastructure and DevOps. Get hands-on with AWS Beanstalk deployments, Docker containers, IAM, S3, and load balancers.",
-      date: "2026-09-27",
-      time: "01:30 PM",
-      venue: "Lab 4",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        years: [1, 2, 3, 4],
-        skills: ["Cloud"],
-        interests: ["Cloud Computing", "Full Stack"]
-      },
-      deadline: "2026-09-25",
-      actionRequired: "Complete AWS Educate sign-up and RSVP on the NEC Workshop scheduler dashboard."
-    },
-    {
-      id: "ann-seeded-4",
-      title: "Merit Scholarship",
-      category: "Scholarship",
-      priority: "HIGH",
-      description: "College-wide scholarship reward program for students with outstanding academic records. Completely sponsors college tuition and board fees for merit students with high CGPA standings.",
-      date: "2026-09-17",
-      time: "11:00 AM",
-      venue: "Admin Block",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        years: [1, 2, 3, 4],
-        minCgpa: 8.0
-      },
-      deadline: "2026-09-15",
-      actionRequired: "Prepare and compile your verified CGPA transcripts of semesters 1-4 and submit to Academic Admin Desk, Admin Block Room 202."
-    },
-    {
-      id: "ann-1",
-      title: "Accenture Campus Placement Drive 2026",
-      category: "Placement",
-      priority: "HIGH",
-      description: "Accenture is visiting NEC campus for recruitment of Associate Software Engineers. Open to Final/Pre-final year students of CSE, IT, AI&DS & ECE.",
-      date: "2026-06-25",
-      time: "09:00 AM",
-      venue: "NEC Auditorium",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS", "ECE"],
-        years: [3, 4],
-        minCgpa: 7.5,
-        skills: ["SQL", "Java", "Python"],
-        interests: ["Software Development"]
-      },
-      deadline: "2026-06-18",
-      actionRequired: "Register on the Accenture Careers portal and upload resume to College Placement Cell."
-    },
-    {
-      id: "ann-2",
-      title: "Cognizant Pre-Internship Program",
-      category: "Internship",
-      priority: "HIGH",
-      description: "A 6-month stipend internship with full-time conversion opportunities. Focused on full-stack web engineering & cloud native technologies.",
-      date: "2026-07-01",
-      time: "10:00 AM",
-      venue: "Online / Virtual",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS"],
-        years: [3],
-        minCgpa: 7.0,
-        skills: ["React", "TypeScript", "Tailwind CSS"],
-        interests: ["Web Development"]
-      },
-      deadline: "2026-06-16",
-      actionRequired: "Apply through the Cognizant campus link on the college LMS board."
-    },
-    {
-      id: "ann-3",
-      title: "National Post-Matric Merit Scholarship 2026",
-      category: "Scholarship",
-      priority: "HIGH",
-      description: "National Level Academic Merit Scholarship for talented engineering students. Reimburses 100% of tuition and research fees.",
-      date: "2026-06-22",
-      venue: "NEC Academic Administration Office",
-      eligibility: {
-        minCgpa: 8.5
-      },
-      deadline: "2026-06-21",
-      actionRequired: "Submit completed application form, household income proof, and CGPA transcript sheet to Admin Room 104."
-    },
-    {
-      id: "ann-4",
-      title: "NEC Hackfest 2026 (Smart Campus Hackathon)",
-      category: "Hackathon",
-      priority: "MEDIUM",
-      description: "24-hour non-stop development challenge to build smart college automation utilities. Exciting cash rewards to top 3 winning teams.",
-      date: "2026-06-28",
-      time: "08:00 AM",
-      venue: "IT Block Lab 3",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS", "ECE", "EEE"],
-        years: [1, 2, 3, 4],
-        skills: ["React", "TypeScript", "Python"],
-        interests: ["Web Development", "Machine Learning"]
-      },
-      deadline: "2026-06-24",
-      actionRequired: "Register a team of 3-4 members on the Hackfest portal."
-    },
-    {
-      id: "ann-5",
-      title: "Hands-on AI and Deep Learning Workshop",
-      category: "Workshop",
-      priority: "MEDIUM",
-      description: "Comprehensive practical laboratory workshop covering Neural Networks, PyTorch, and NLP models. Organized by AI&DS Department.",
-      date: "2026-06-22",
-      time: "02:00 PM",
-      venue: "AI Research Lab",
-      eligibility: {
-        departments: ["CSE", "IT", "AI&DS"],
-        skills: ["Python"],
-        interests: ["Machine Learning"]
-      },
-      deadline: "2026-06-19",
-      actionRequired: "Fill out the google RSVP registration form on AI&DS department website."
-    },
-    {
-      id: "ann-6",
-      title: "Robotics & Automation Club Inductions",
-      category: "Club Activity",
-      priority: "MEDIUM",
-      description: "Annual recruitment and tech challenge for the NEC Robotics & Automation wing. Work on custom microcontrollers and ROS experiments.",
-      date: "2026-06-20",
-      time: "04:05 PM",
-      venue: "Mechanical Seminar Hall",
-      eligibility: {
-        departments: ["Mechanical", "Civil", "ECE", "EEE"],
-        years: [1, 2, 3],
-        interests: ["UI/UX Design"]
-      },
-      deadline: "2026-06-18",
-      actionRequired: "Register and download the problem statements for the offline design rounds."
-    },
-    {
-      id: "ann-7",
-      title: "University Semester Lab/Practical Examinations",
-      category: "Examination",
-      priority: "HIGH",
-      description: "Official schedule published for semester practical examination boards. Students must print hall tickets and prepare lab manuals.",
-      date: "2026-06-19",
-      time: "08:30 AM",
-      venue: "Respective Department Labs",
-      eligibility: {},
-      deadline: "2026-06-17",
-      actionRequired: "Download hall tickets from college portal, get them attested, and complete lab record submissions."
-    },
-    {
-      id: "ann-8",
-      title: "Cloud Computing Practice Assignment 3",
-      category: "Assignment",
-      priority: "HIGH",
-      description: "Deployment checklist utilizing AWS Elastic Beanstalk and Docker containers. Submit working solution logs.",
-      date: "2026-06-15",
-      time: "11:59 PM",
-      venue: "Online LMS Portal",
-      eligibility: {
-        departments: ["CSE", "IT"],
-        years: [3]
-      },
-      deadline: "2026-06-15",
-      actionRequired: "Submit PDF report with cloud screenshots and GitHub repository codes link to the LMS module."
-    },
-    {
-      id: "ann-9",
-      title: "NEC Green Campus Tree Plantation Drive",
-      category: "General Notice",
-      priority: "LOW",
-      description: "A community engagement green standard campaign spearheaded by the NEC NSS unit. Open to everyone.",
-      date: "2026-06-18",
-      time: "07:30 AM",
-      venue: "NEC Playgrounds Campus Gate B",
-      eligibility: {},
-      deadline: "2026-06-18",
-      actionRequired: "Turn up with comfortable athletic outfit and track. Seedlings and tools will be provided."
-    },
-    {
-      id: "ann-10",
-      title: "L&T Build India Scholarship Program",
-      category: "Scholarship",
-      priority: "HIGH",
-      description: "Sponsorship for M.Tech in Construction Technology at IIT Madras/Delhi. Fully sponsored by Larsen & Toubro for core students.",
-      date: "2026-07-05",
-      venue: "L&T Corporate Portal",
-      eligibility: {
-        departments: ["Civil", "Mechanical"],
-        years: [4],
-        minCgpa: 8.0
-      },
-      deadline: "2026-06-25",
-      actionRequired: "Register online via L&T scholarship portal with verified UG academic reports."
-    }
-  ],
-  "placementPipelines": [
-    {
-      "companyName": "Accenture",
-      "status": "Preparing",
-      "dateApplied": "2026-06-12"
-    },
-    {
-      "companyName": "Cognizant",
-      "status": "Applied",
-      "dateApplied": "2026-06-14"
-    }
-  ]
-};
-
-async function readDb() {
-  try {
-    const data = await fs.promises.readFile(DB_PATH, 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error('Error reading db.json:', err);
-    // Return a deep clone of default state
-    return JSON.parse(JSON.stringify(INITIAL_DB_STATE));
+    return res.status(401).json({ error: 'Access token required' });
   }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: 'Invalid or expired token' });
+    req.user = user;
+    next();
+  });
 }
 
-async function writeDb(data) {
-  try {
-    await fs.promises.writeFile(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.error('Error writing to db.json:', err);
-  }
-}
-
-// Helper to calculate Match Score on server side if needed
-function calculateScore(profile, item) {
-  let score = 0;
-  
-  // Department match
-  const itemDepts = item.eligibility?.departments || [];
-  if (itemDepts.length === 0 || itemDepts.includes(profile.department)) {
-    score += 30;
+// Helper: Run Raw notice through Groq AI classification and structure generator
+async function processRawNoticeWithAI(rawText) {
+  if (!groq) {
+    throw new Error('Groq client not initialized. Check your GROQ_API_KEY.');
   }
 
-  // Year match
-  const itemYears = item.eligibility?.years || [];
-  if (itemYears.length === 0 || itemYears.includes(profile.year)) {
-    score += 20;
-  }
-
-  // CGPA match
-  const minCgpa = item.eligibility?.minCgpa || 0;
-  if (profile.cgpa >= minCgpa) {
-    score += 20;
-  }
-
-  // Skill match
-  const itemSkills = item.eligibility?.skills || [];
-  const hasSkillMatch = itemSkills.some(s => 
-    profile.skills.some(ps => ps.toLowerCase() === s.toLowerCase())
-  );
-  if (hasSkillMatch) {
-    score += 20;
-  }
-
-  // Interest match
-  const itemInterests = item.eligibility?.interests || [];
-  const hasInterestMatch = itemInterests.some(i => 
-    profile.interests.some(pi => pi.toLowerCase() === i.toLowerCase())
-  );
-  if (hasInterestMatch) {
-    score += 10;
-  }
-
-  return score;
-}
-
-// API Routes
-
-// 1. Chatbot powered by Groq
-app.post('/api/chat', async (req, res) => {
-  try {
-    const { message, history, profile, announcements } = req.body;
-
-    if (!groq) {
-      return res.status(500).json({ error: 'Groq client could not be initialized due to missing GROQ_API_KEY.' });
-    }
-
-    // Process matching scores for reference
-    const rankedAnnouncements = announcements.map(ann => {
-      const score = calculateScore(profile, ann);
-      return { ...ann, score };
-    }).sort((a, b) => b.score - a.score);
-
-    // Format announcements context for Groq
-    const contextString = rankedAnnouncements.map(ann => {
-      return `ID: ${ann.id}
-Event: ${ann.title}
-Category: ${ann.category}
-Priority: ${ann.priority}
-Score: ${ann.score} Match Points
-Description: ${ann.description}
-Date: ${ann.date || 'TBD'}
-Venue: ${ann.venue || 'Online / Physical'}
-Eligibility: Depts: ${ann.eligibility?.departments?.join(', ') || 'All'}, Year: ${ann.eligibility?.years?.join(', ') || 'All'}, Min CGPA: ${ann.eligibility?.minCgpa || 'None'}, Skills: ${ann.eligibility?.skills?.join(', ') || 'None'}, Interests: ${ann.eligibility?.interests?.join(', ') || 'None'}
-Deadline: ${ann.deadline}
-Action Required: ${ann.actionRequired}`;
-    }).join('\n\n');
-
-    const systemInstruction = `You are CampusAssist AI, the intelligent friendly campus assistant for National Engineering College (NEC).
-You are speaking to ${profile.name}, a Year ${profile.year} student in the ${profile.department} department (Semester ${profile.semester}, CGPA ${profile.cgpa}).
-The student's skills are: ${profile.skills.join(', ')}.
-Their interests are: ${profile.interests.join(', ')}.
-
-Your goals:
-- Help students discover relevant opportunities, answer campus-related questions, prioritize announcements, and provide deadline reminders.
-- Reduce information overload.
-- Rank and recommend opportunities strictly prioritizing the student-specific matched ones. Let them know if it matches their profile and explain matching scores.
-
-Personalization Scoring rules:
-- Department Match = +30 (if target department list is empty, it matches all)
-- Year Match = +20 (if target year list is empty, it matches all)
-- CGPA Match = +20 (if student's CGPA is >= minimum CGPA required)
-- Skill Match = +20 (if student has at least one matching skill)
-- Interest Match = +10 (if student has at least one matching interest)
-Score ranges from 0 to 100.
-
-Announcements & Opportunities currently active:
-${contextString}
-
-Response Style:
-- Be concise, clear, and student-friendly.
-- Use bullet points.
-- Highlight deadlines clearly (e.g. use **BOLD**).
-- Mention urgency when deadlines are close (especially inside 3 days).
-- Stay in character as the NEC CampusAssist AI assistant.
-- Never suggest opportunities that do not exist in the announcements database.
-- If asked "Show scholarships for final year students" or any subset, filter the list correctly and display them.
-
-Required Response Block format when highlighting or recommending specific items (use exactly this block to describe items):
-Category: [Category]
-Priority: [Priority]
-Summary: [Brief core description]
-Eligibility: [Who can apply]
-Deadline: [Deadline date]
-Recommended For: [Why this fits them, mentioning score or matching parameter]
-Action Required: [What concrete action is needed]`;
-
-    // Map history to OpenAI/Groq format
-    const messages = [
-      { role: 'system', content: systemInstruction }
-    ];
-
-    (history || []).forEach(h => {
-      const role = h.role === 'model' || h.role === 'assistant' ? 'assistant' : 'user';
-      messages.push({
-        role: role,
-        content: h.text || h.content || ''
-      });
-    });
-
-    messages.push({
-      role: 'user',
-      content: message
-    });
-
-    const completion = await groq.chat.completions.create({
-      messages: messages,
-      model: 'llama-3.3-70b-versatile',
-      temperature: 0.7,
-    });
-
-    const reply = completion.choices[0]?.message?.content || '';
-    res.json({ reply });
-  } catch (err) {
-    console.error('Chat error:', err);
-    res.status(500).json({ error: err?.message || 'Failed to generate response' });
-  }
-});
-
-// 2. Deadline Extraction from raw text
-app.post('/api/extract', async (req, res) => {
-  try {
-    const { rawText } = req.body;
-
-    if (!groq) {
-      return res.status(500).json({ error: 'Groq client could not be initialized due to missing GROQ_API_KEY.' });
-    }
-
-    const extractionInstruction = `You are a strict data extraction processor for CampusAssist AI.
-Your task is to take any unformatted, raw notice/announcement message from National Engineering College and extract structured fields about deadlines and events.
+  const prompt = `You are a strict data extraction processor for CampusAssist AI.
+Your task is to take any unstructured notice, email, text or announcement and extract structured fields about deadlines and events.
 
 You must categorize the announcement into one of the following exact categories:
 1. Placement
@@ -517,144 +124,648 @@ Output your reply strictly as a JSON object matching this schema structure:
   "category": "One of the 10 categories above",
   "priority": "HIGH, MEDIUM, or LOW",
   "description": "Short explanation of the notice",
-  "date": "Date of Event/Exam (e.g. YYYY-MM-DD or Month DD, YYYY if not specified exact)",
-  "time": "Time of event if any",
-  "venue": "Venue of the event if any specified",
+  "date": "Date of Event/Exam (e.g. YYYY-MM-DD or Month DD, YYYY if not specified)",
+  "time": "Time of event if specified",
+  "venue": "Venue of the event if specified",
   "eligibility": {
-    "departments": ["CSE", "IT", etc. - array of matching departments, or empty if general],
+    "departments": ["CSE", "IT", "AI&DS", etc. - array of matching departments, or empty if general],
     "years": [1, 2, 3, 4 - array of numbers, or empty if general],
     "minCgpa": 7.5 (number or null),
     "skills": ["Python", etc. - array or empty],
     "interests": ["Machine Learning", etc. - array or empty]
   },
   "deadline": "Deadline to apply/submit (format: YYYY-MM-DD)",
-  "actionRequired": "Concrete step the student needs to take"
+  "actionRequired": "Concrete step the student needs to take",
+  "summary": "One line brief summary of the entire notice",
+  "keywords": ["Placement", "CSE", "Zoho", etc. - array of 5-8 search tags]
+}`;
+
+  const completion = await groq.chat.completions.create({
+    messages: [
+      { role: 'system', content: prompt },
+      { role: 'user', content: `Raw Notice body:\n"${rawText}"\n\nPlease structure this.` }
+    ],
+    model: 'llama-3.3-70b-versatile',
+    response_format: { type: 'json_object' },
+    temperature: 0.1
+  });
+
+  return JSON.parse(completion.choices[0]?.message?.content || '{}');
 }
 
-If critical details aren't specified, write intelligent defaults (e.g. "All students eligible" or current year). Ensure it parses to valid JSON.`;
+// REST ENDPOINTS
 
-    const response = await groq.chat.completions.create({
-      messages: [
-        { role: 'system', content: extractionInstruction },
-        { role: 'user', content: `Raw notice body:\n"${rawText}"\n\nPlease extract instructions as structured JSON.` }
-      ],
-      model: 'llama-3.3-70b-versatile',
-      response_format: { type: 'json_object' },
-      temperature: 0.1,
-    });
-
-    const parsedData = JSON.parse(response.choices[0]?.message?.content || '{}');
-    res.json(parsedData);
+// 1. Authentication APIs
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { username, password, role } = req.body;
+    if (!username || !password || !role) {
+      return res.status(400).json({ error: 'All fields required' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // In our fallbacks or MongoDB setup, we can save user credentials.
+    // For local ease, we just generate a JWT for registered credentials
+    const token = jwt.sign({ username, role }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role, username });
   } catch (err) {
-    console.error('Extraction error:', err);
-    res.status(500).json({ error: err?.message || 'Failed to extract data correctly' });
+    res.status(500).json({ error: 'Registration failed' });
   }
 });
 
-// 3. Get announcements list
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Simple placeholder credentials logic for Hackathon purposes
+    // Admin login or standard user logins
+    let role = 'student';
+    if (username.toLowerCase().includes('faculty') || username.toLowerCase() === 'teacher') {
+      role = 'faculty';
+    } else if (username.toLowerCase().includes('admin') || username.toLowerCase() === 'principal') {
+      role = 'admin';
+    }
+    const token = jwt.sign({ username, role }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, role, username });
+  } catch (err) {
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// 2. Fetch/Create Announcements (REST)
 app.get('/api/announcements', async (req, res) => {
   try {
-    const db = await readDb();
-    res.json(db.announcements || []);
+    const list = await getAnnouncements();
+    res.json(list);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to read announcements' });
+    res.status(500).json({ error: 'Failed to retrieve announcements' });
   }
 });
 
-// 4. Save/Post a new announcement
-app.post('/api/announcements', async (req, res) => {
+app.post('/api/announcements', authenticateToken, async (req, res) => {
   try {
-    const newAnn = req.body;
-    if (!newAnn || !newAnn.id) {
-      return res.status(400).json({ error: 'Invalid announcement payload' });
+    const payload = req.body;
+    // AI Ingestion: Send text raw announcement or save direct
+    let processedAnn = { ...payload };
+    if (!payload.id) {
+      processedAnn.id = `ann-manual-${Date.now()}`;
     }
-    const db = await readDb();
-    db.announcements = [newAnn, ...(db.announcements || [])];
-    await writeDb(db);
-    res.json({ success: true, announcements: db.announcements });
+    const updated = await addAnnouncement(processedAnn);
+    
+    // Automatically dispatch an in-app notice notification to everyone eligible
+    await addNotification({
+      studentName: 'All',
+      title: `New notice published: ${processedAnn.title}`,
+      body: processedAnn.summary || processedAnn.description.slice(0, 100),
+      type: 'in-app',
+      deadline: processedAnn.deadline
+    });
+
+    res.json({ success: true, announcements: updated });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to write announcement' });
+    res.status(500).json({ error: 'Failed to publish announcement' });
   }
 });
 
-// 5. Get profiles
+app.delete('/api/announcements/:id', authenticateToken, async (req, res) => {
+  try {
+    const list = await deleteAnnouncement(req.params.id);
+    res.json({ success: true, announcements: list });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete announcement' });
+  }
+});
+
+app.put('/api/announcements/:id', authenticateToken, async (req, res) => {
+  try {
+    const list = await updateAnnouncement(req.params.id, req.body);
+    res.json({ success: true, announcements: list });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update announcement' });
+  }
+});
+
+// AI Extract notice endpoint
+app.post('/api/extract', async (req, res) => {
+  try {
+    const { rawText } = req.body;
+    if (!rawText) {
+      return res.status(400).json({ error: 'rawText query is required' });
+    }
+    const aiProcessed = await processRawNoticeWithAI(rawText);
+    res.json(aiProcessed);
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'AI extraction failed' });
+  }
+});
+
+// Retrieve raw log announcements
+app.get('/api/raw-announcements', async (req, res) => {
+  try {
+    const list = await getRawAnnouncements();
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve raw announcements' });
+  }
+});
+
+// 3. User & Student Profiles
 app.get('/api/profiles', async (req, res) => {
   try {
-    const db = await readDb();
-    res.json(db.profiles || []);
+    const list = await getProfiles();
+    res.json(list);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to read profiles' });
+    res.status(500).json({ error: 'Failed to load profiles' });
   }
 });
 
-// 6. Update student profile
 app.put('/api/profile', async (req, res) => {
   try {
-    const updatedProfile = req.body;
-    if (!updatedProfile || !updatedProfile.name) {
-      return res.status(400).json({ error: 'Invalid profile data' });
-    }
-    const db = await readDb();
-    const index = db.profiles.findIndex(p => p.name.toLowerCase() === updatedProfile.name.toLowerCase());
-    if (index !== -1) {
-      db.profiles[index] = updatedProfile;
-    } else {
-      db.profiles.push(updatedProfile);
-    }
-    await writeDb(db);
-    res.json({ success: true, profile: updatedProfile });
+    const updatedList = await updateProfile(req.body);
+    res.json({ success: true, profiles: updatedList });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update profile' });
+    res.status(500).json({ error: 'Failed to save profile' });
   }
 });
 
-// 7. Get placement pipelines
+// 4. File uploads & PDF/Docx Extraction
+app.post('/api/faculty/upload', authenticateToken, upload.single('attachment'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file attachment uploaded' });
+    }
+    const filePath = req.file.path;
+    const fileExt = path.extname(req.file.originalname).toLowerCase();
+    
+    // Extracted raw text mock based on filename to simulate document parsing
+    let mockExtractedText = `This is a raw notice from Faculty Portal regarding an upcoming placement session at NEC.
+Company Name: Amazon Web Services.
+Event: AWS Cloud Engineering recruitment workshop.
+Venue: Seminar Hall 2.
+Eligibility: 3rd and 4th years in CSE, IT, ECE.
+Min CGPA Required: 8.0.
+Deadline to apply is 2026-06-28.
+Action Required: Upload resume on AWS careers portal.`;
+
+    if (fileExt === '.xlsx' || fileExt === '.xls') {
+      mockExtractedText += ` This contains tabular placement schedules for final year students.`;
+    }
+
+    // Pass through Groq AI classification pipeline
+    const aiProcessed = await processRawNoticeWithAI(mockExtractedText);
+    aiProcessed.id = `ann-upload-${Date.now()}`;
+    
+    // Save to raw collection
+    await addRawAnnouncement(mockExtractedText, 'faculty');
+    
+    // Save to processed collection
+    const list = await addAnnouncement(aiProcessed);
+
+    res.json({ success: true, announcement: aiProcessed, announcements: list });
+  } catch (err) {
+    res.status(500).json({ error: err?.message || 'File upload Ingestion failed' });
+  }
+});
+
+// 5. Excel/CSV bulk import
+app.post('/api/faculty/import-csv', authenticateToken, upload.single('csvFile'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No CSV/Excel sheet uploaded' });
+    }
+    const workbook = xlsx.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    // Parse each row, validate, structure it, and process with Groq if needed
+    const processedAnnouncements = [];
+    for (const row of sheetData) {
+      const title = row.Title || row.title || 'Untitled Excel Notice';
+      const description = row.Description || row.description || 'No description provided';
+      const deadline = row.Deadline || row.deadline || '2026-06-30';
+      const category = row.Category || row.category || 'General Notice';
+      const priority = row.Priority || row.priority || 'MEDIUM';
+      
+      const newAnn = {
+        id: `ann-csv-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        title,
+        category,
+        priority,
+        description,
+        venue: row.Venue || row.venue || 'NEC Campus',
+        eligibility: {
+          departments: row.Departments ? row.Departments.split(',') : [],
+          years: row.Years ? row.Years.split(',').map(Number) : [3, 4],
+          minCgpa: row.MinCgpa ? parseFloat(row.MinCgpa) : null
+        },
+        deadline,
+        actionRequired: row.Action || row.action || 'Apply on college dashboard.'
+      };
+      
+      await addAnnouncement(newAnn);
+      processedAnnouncements.push(newAnn);
+    }
+
+    const currentList = await getAnnouncements();
+    res.json({ success: true, count: processedAnnouncements.length, announcements: currentList });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Excel import processing failed' });
+  }
+});
+
+// 6. LMS Integration sync endpoint
+app.get('/api/lms/sync', async (req, res) => {
+  try {
+    // Simulated LMS REST Pull (Canvas/Moodle Notice Board payload)
+    const mockLMSNotice = `Moodle LMS Announcement: Semester End Assignment submission checklist for Third Year Computer Science students.
+Please upload Assignment 4 of Computer Networks on the portal.
+Deadline: 2026-06-25.
+Department: CSE, IT.
+Action: Upload PDF files.`;
+
+    const aiProcessed = await processRawNoticeWithAI(mockLMSNotice);
+    aiProcessed.id = `ann-lms-${Date.now()}`;
+    
+    await addRawAnnouncement(mockLMSNotice, 'lms');
+    const list = await addAnnouncement(aiProcessed);
+
+    res.json({ success: true, announcement: aiProcessed, announcements: list });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'LMS Integration failed' });
+  }
+});
+
+// 7. Email Ingestion Trigger API
+app.get('/api/emails/sync', async (req, res) => {
+  try {
+    const mockEmailText = `Subject: Internship openings at Microsoft India research labs.
+Microsoft is looking for research engineering intern applicants who are familiar with machine learning and python scripting.
+Minimum CGPA required is 8.5. CSE/IT branch only.
+Submit profiles by 2026-06-27 on Microsoft research careers link.`;
+
+    const aiProcessed = await processRawNoticeWithAI(mockEmailText);
+    aiProcessed.id = `ann-email-${Date.now()}`;
+
+    await addRawAnnouncement(mockEmailText, 'email');
+    const list = await addAnnouncement(aiProcessed);
+
+    res.json({ success: true, announcement: aiProcessed, announcements: list });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Email Ingestion failed' });
+  }
+});
+
+// Email background checker mock (Every 10 minutes)
+setInterval(async () => {
+  try {
+    if (groq) {
+      const mockEmailText = `Subject: Semester examination practical schedules.
+University exams scheduled from June 24 onwards. Apply for halls tickets immediately.`;
+      const aiProcessed = await processRawNoticeWithAI(mockEmailText);
+      aiProcessed.id = `ann-email-sched-${Date.now()}`;
+      await addRawAnnouncement(mockEmailText, 'email');
+      await addAnnouncement(aiProcessed);
+      console.log('✓ Simulated email background poller executed successfully.');
+    }
+  } catch (e) {
+    console.error('Email scheduler error:', e.message);
+  }
+}, 10 * 60 * 1000);
+
+// 8. Smart Notification Engine (Calculates hours/days remaining and schedules reminders)
+app.get('/api/notifications/reminders', async (req, res) => {
+  try {
+    const announcements = await getAnnouncements();
+    const currTime = new Date('2026-06-14').getTime(); // System Mock Date
+
+    let count = 0;
+    for (const ann of announcements) {
+      const deadlineTime = new Date(ann.deadline).getTime();
+      const diffTime = deadlineTime - currTime;
+      const daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (daysRemaining >= 0 && [1, 3, 7].includes(daysRemaining)) {
+        await addNotification({
+          studentName: 'All',
+          title: `⚠️ Deadline Approaching: ${ann.title}`,
+          body: `Only ${daysRemaining} days left to apply! Action: ${ann.actionRequired}`,
+          type: 'push',
+          deadline: ann.deadline
+        });
+        count++;
+      }
+    }
+    const notifs = await getNotifications();
+    res.json({ success: true, remindersSent: count, notifications: notifs });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to run notifications reminder engine' });
+  }
+});
+
+app.get('/api/notifications', async (req, res) => {
+  try {
+    const list = await getNotifications();
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load notifications' });
+  }
+});
+
+app.delete('/api/notifications', async (req, res) => {
+  try {
+    const list = await clearNotifications();
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to clear notifications' });
+  }
+});
+
+// 9. Placement Pipelines
 app.get('/api/pipelines', async (req, res) => {
   try {
-    const db = await readDb();
-    res.json(db.placementPipelines || []);
+    const list = await getPipelines();
+    res.json(list);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to read pipelines' });
+    res.status(500).json({ error: 'Failed to load pipelines' });
   }
 });
 
-// 8. Save placement pipelines
 app.post('/api/pipelines', async (req, res) => {
   try {
-    const pipelines = req.body;
-    const db = await readDb();
-    db.placementPipelines = pipelines;
-    await writeDb(db);
-    res.json({ success: true, placementPipelines: db.placementPipelines });
+    const list = await savePipelines(req.body);
+    res.json(list);
   } catch (err) {
     res.status(500).json({ error: 'Failed to save pipelines' });
   }
 });
 
-// 9. Reset database back to default initial state
-app.post('/api/reset', async (req, res) => {
+// 10. AI Chatbot with TF-IDF Keyword Match RAG
+app.post('/api/chat', async (req, res) => {
   try {
-    const freshDb = JSON.parse(JSON.stringify(INITIAL_DB_STATE));
-    await writeDb(freshDb);
-    res.json({ success: true, message: 'Database reset to default seeded state' });
+    const { message, history, profile, announcements } = req.body;
+
+    if (!groq) {
+      return res.status(500).json({ error: 'Groq client could not be initialized due to missing GROQ_API_KEY.' });
+    }
+
+    // TF-IDF / RAG Keyword Intersection Retrieval
+    // Search words from query message
+    const searchTerms = message.toLowerCase().split(/\W+/).filter(w => w.length > 2);
+    
+    // Score each announcement based on intersection with keywords/title/description
+    const scoredDocs = announcements.map(ann => {
+      let matchScore = 0;
+      const textToSearch = `${ann.title} ${ann.category} ${ann.description} ${ann.actionRequired} ${ann.keywords?.join(' ') || ''}`.toLowerCase();
+      
+      searchTerms.forEach(term => {
+        if (textToSearch.includes(term)) matchScore += 10;
+        if (ann.title.toLowerCase().includes(term)) matchScore += 20; // weight title matches higher
+      });
+      
+      return { ann, matchScore };
+    });
+
+    // Retrieve top 5 documents
+    const retrievedDocs = scoredDocs
+      .filter(d => d.matchScore > 0)
+      .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, 5)
+      .map(d => d.ann);
+
+    // Build context string from RAG results
+    let contextString = '';
+    if (retrievedDocs.length > 0) {
+      contextString = retrievedDocs.map(ann => {
+        return `Event: ${ann.title} | Category: ${ann.category} | Deadline: ${ann.deadline} | Description: ${ann.description} | Action Required: ${ann.actionRequired} | Venue: ${ann.venue || 'NEC Campus'}`;
+      }).join('\n\n');
+    } else {
+      contextString = 'No direct matches found in announcements database. Rely on general guidelines.';
+    }
+
+    const systemInstruction = `You are CampusAssist AI, the intelligent friendly campus counselor assistant for National Engineering College (NEC).
+You are speaking to ${profile.name}, a Year ${profile.year} student in the ${profile.department} department (Semester ${profile.semester}, CGPA ${profile.cgpa}).
+
+RULES:
+- Never answer using general internet knowledge.
+- Answer ONLY using the retrieved MongoDB document context below. If the answer is not in the context, politely state you do not know.
+- Filter recommendations strictly prioritizing matched ones.
+
+RETRIEVED CONTEXT DOCUMENTS:
+${contextString}
+
+Response Style:
+- Be concise, clear, and student-friendly.
+- Use bullet points.
+- Highlight deadlines clearly (e.g. use **BOLD**).
+- Stay in character as the NEC CampusAssist AI assistant.`;
+
+    const messages = [
+      { role: 'system', content: systemInstruction }
+    ];
+
+    (history || []).forEach(h => {
+      const role = h.role === 'model' || h.role === 'assistant' ? 'assistant' : 'user';
+      messages.push({
+        role: role,
+        content: h.text || h.content || ''
+      });
+    });
+
+    messages.push({
+      role: 'user',
+      content: message
+    });
+
+    const completion = await groq.chat.completions.create({
+      messages: messages,
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.5
+    });
+
+    const reply = completion.choices[0]?.message?.content || '';
+    res.json({ reply });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to reset database' });
+    console.error('Chat error:', err);
+    res.status(500).json({ error: err?.message || 'Failed to generate response' });
   }
 });
 
-// Vite Middleware for Development / Static serving for Production
+// 11. Full Database Reseed API (Faculty/Admin utility)
+app.post('/api/reset', async (req, res) => {
+  try {
+    // Complete Seed DB payload mock loader
+    const mockSeedData = {
+      profiles: [
+        {
+          name: "Immanuel",
+          registerNumber: "NEC-2023-085",
+          department: "CSE",
+          year: 3,
+          semester: 6,
+          cgpa: 8.2,
+          skills: ["Java", "Spring Boot", "React", "Node.js"],
+          interests: ["AI", "Full Stack", "Cloud"],
+          bookmarkedCategories: [],
+          previousSearches: []
+        },
+        {
+          name: "Arun",
+          registerNumber: "NEC-2022-142",
+          department: "AI&DS",
+          year: 4,
+          semester: 8,
+          cgpa: 8.8,
+          skills: ["Python", "Machine Learning", "Deep Learning"],
+          interests: ["AI", "Research"],
+          bookmarkedCategories: [],
+          previousSearches: []
+        },
+        {
+          name: "Priya",
+          registerNumber: "NEC-2024-031",
+          department: "IT",
+          year: 2,
+          semester: 4,
+          cgpa: 8.5,
+          skills: ["JavaScript", "React"],
+          interests: ["Web Development"],
+          bookmarkedCategories: [],
+          previousSearches: []
+        }
+      ],
+      announcements: [
+        {
+          id: "ann-seeded-1",
+          title: "Zoho Placement Drive",
+          category: "Placement",
+          priority: "HIGH",
+          description: "Zoho is conducting an exclusive campus recruitment drive. The selection process involves core software programming, solving data structures & algorithms problem challenges, and web systems development.",
+          date: "2026-09-22",
+          time: "10:00 AM",
+          venue: "Seminar Hall",
+          eligibility: {
+            departments: ["CSE", "IT", "AI&DS"],
+            years: [3, 4],
+            minCgpa: 7.0,
+            skills: ["Java", "DSA"],
+            interests: ["Software Development", "Full Stack"]
+          },
+          deadline: "2026-09-20",
+          actionRequired: "Submit resume on Zoho portals registration link and submit verified details to College Placement Coordinator.",
+          summary: "Zoho Campus Placement Recruitment drive for final and pre-final year students.",
+          keywords: ["Placement", "Zoho", "CSE", "IT", "Java"]
+        },
+        {
+          id: "ann-seeded-2",
+          title: "Google AI Hackathon",
+          category: "Hackathon",
+          priority: "HIGH",
+          description: "Build creative and high-impact solutions with Generative AI at the Google AI Hackathon. Solve critical campus and national challenges using Gemini model APIs.",
+          date: "2026-09-21",
+          time: "08:30 AM",
+          venue: "Innovation Center",
+          eligibility: {
+            departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
+            years: [1, 2, 3, 4],
+            skills: ["AI", "Python"],
+            interests: ["AI", "Research", "Machine Learning"]
+          },
+          deadline: "2026-09-18",
+          actionRequired: "Form a team of 2-4 students, draft your hackathon abstract proposal and submit on Devpost Hackfest page.",
+          summary: "Google Generative AI Smart Campus Hackathon.",
+          keywords: ["Hackathon", "Google", "AI", "Python"]
+        },
+        {
+          id: "ann-seeded-3",
+          title: "AWS Cloud Workshop",
+          category: "Workshop",
+          priority: "MEDIUM",
+          description: "Comprehensive boot camp on Amazon Web Services cloud infrastructure and DevOps. Get hands-on with AWS Beanstalk deployments, Docker containers, IAM, S3, and load balancers.",
+          date: "2026-09-27",
+          time: "01:30 PM",
+          venue: "Lab 4",
+          eligibility: {
+            departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
+            years: [1, 2, 3, 4],
+            skills: ["Cloud"],
+            interests: ["Cloud Computing", "Full Stack"]
+          },
+          deadline: "2026-09-25",
+          actionRequired: "Complete AWS Educate sign-up and RSVP on the NEC Workshop scheduler dashboard.",
+          summary: "AWS Cloud Infrastructure & DevOps practical Boot Camp.",
+          keywords: ["Workshop", "AWS", "Cloud", "DevOps"]
+        },
+        {
+          id: "ann-seeded-4",
+          title: "Merit Scholarship",
+          category: "Scholarship",
+          priority: "HIGH",
+          description: "College-wide scholarship reward program for students with outstanding academic records. Completely sponsors college tuition and board fees for merit students with high CGPA standings.",
+          date: "2026-09-17",
+          time: "11:00 AM",
+          venue: "Admin Block",
+          eligibility: {
+            departments: ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
+            years: [1, 2, 3, 4],
+            minCgpa: 8.0
+          },
+          deadline: "2026-09-15",
+          actionRequired: "Prepare and compile your verified CGPA transcripts of semesters 1-4 and submit to Academic Admin Desk, Admin Block Room 202.",
+          summary: "Merit Scholarship sponsoring full college tuition for top CGPA students.",
+          keywords: ["Scholarship", "Merit", "CGPA", "Tuition"]
+        },
+        {
+          id: "ann-1",
+          title: "Accenture Campus Placement Drive 2026",
+          category: "Placement",
+          priority: "HIGH",
+          description: "Accenture is visiting NEC campus for recruitment of Associate Software Engineers. Open to Final/Pre-final year students.",
+          date: "2026-06-25",
+          time: "09:00 AM",
+          venue: "NEC Auditorium",
+          eligibility: {
+            departments: ["CSE", "IT", "AI&DS", "ECE"],
+            years: [3, 4],
+            minCgpa: 7.5,
+            skills: ["SQL", "Java", "Python"]
+          },
+          deadline: "2026-06-18",
+          actionRequired: "Register on the Accenture Careers portal.",
+          summary: "Accenture associate software developer campus placement sprint.",
+          keywords: ["Placement", "Accenture", "CSE"]
+        }
+      ],
+      placementPipelines: [
+        {
+          companyName: "Accenture",
+          status: "Preparing",
+          dateApplied: "2026-06-12"
+        },
+        {
+          companyName: "Cognizant",
+          status: "Applied",
+          dateApplied: "2026-06-14"
+        }
+      ]
+    };
+
+    await seedDatabase(mockSeedData);
+    res.json({ success: true, message: 'Database state reset and re-seeded successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Reseed logic failed' });
+  }
+});
+
+// Vite Middleware & Static Serves
 async function startServer() {
   const isProduction = process.env.NODE_ENV === 'production' || fs.existsSync(path.join(__dirname, 'dist'));
   if (!isProduction) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'spa'
     });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(__dirname, 'dist');
     app.use(express.static(distPath));
-    // Support SPA fallback
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });

@@ -2,269 +2,5899 @@
   "profiles": [
     {
       "name": "Immanuel",
-      "registerNumber": "NEC-2023-085",
-      "department": "CSE",
+      "registerNumber": "NEC-2023-100",
+      "department": "ECE",
       "year": 3,
       "semester": 6,
-      "cgpa": 8.2,
-      "skills": ["Java", "Spring Boot", "React", "Node.js"],
-      "interests": ["AI", "Full Stack", "Cloud"]
+      "cgpa": 8.16,
+      "skills": [
+        "Java",
+        "React",
+        "MongoDB"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "AI/ML",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
     },
     {
       "name": "Arun",
-      "registerNumber": "NEC-2022-142",
-      "department": "AI&DS",
-      "year": 4,
-      "semester": 8,
-      "cgpa": 8.8,
-      "skills": ["Python", "Machine Learning", "Deep Learning"],
-      "interests": ["AI", "Research"]
+      "registerNumber": "NEC-2023-101",
+      "department": "EEE",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 7.33,
+      "skills": [
+        "MongoDB",
+        "C++",
+        "Java"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
     },
     {
       "name": "Priya",
-      "registerNumber": "NEC-2024-031",
+      "registerNumber": "NEC-2023-102",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.39,
+      "skills": [
+        "C++",
+        "Node.js",
+        "Python",
+        "Tailwind CSS"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Rahul",
+      "registerNumber": "NEC-2023-103",
+      "department": "CSE",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 7.63,
+      "skills": [
+        "Python",
+        "Java",
+        "C++",
+        "AWS"
+      ],
+      "interests": [
+        "Web Development",
+        "Cloud Computing",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Keerthana",
+      "registerNumber": "NEC-2023-104",
+      "department": "Civil",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.1,
+      "skills": [
+        "Machine Learning",
+        "Docker",
+        "Tailwind CSS",
+        "AWS",
+        "MongoDB"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Siddharth",
+      "registerNumber": "NEC-2023-105",
+      "department": "AI&DS",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 8.47,
+      "skills": [
+        "JavaScript",
+        "Python"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Divya",
+      "registerNumber": "NEC-2023-106",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 7.43,
+      "skills": [
+        "AWS",
+        "Tailwind CSS",
+        "Spring Boot",
+        "Data Structures"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Vijay",
+      "registerNumber": "NEC-2023-107",
+      "department": "EEE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.93,
+      "skills": [
+        "AWS",
+        "Algorithms"
+      ],
+      "interests": [
+        "Research",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Deepika",
+      "registerNumber": "NEC-2023-108",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.39,
+      "skills": [
+        "Docker",
+        "SQL",
+        "MongoDB",
+        "AWS",
+        "C++"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML",
+        "Full Stack Development",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Hari",
+      "registerNumber": "NEC-2023-109",
+      "department": "EEE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.88,
+      "skills": [
+        "SQL",
+        "Python",
+        "Docker",
+        "Java"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ananya",
+      "registerNumber": "NEC-2023-110",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.36,
+      "skills": [
+        "JavaScript",
+        "Python",
+        "Data Structures"
+      ],
+      "interests": [
+        "Robotics",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Rohan",
+      "registerNumber": "NEC-2023-111",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 7.35,
+      "skills": [
+        "Java",
+        "SQL",
+        "JavaScript"
+      ],
+      "interests": [
+        "Web Development",
+        "Mobile App Development",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sneha",
+      "registerNumber": "NEC-2023-112",
+      "department": "IT",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.73,
+      "skills": [
+        "Docker",
+        "JavaScript",
+        "C++"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Manoj",
+      "registerNumber": "NEC-2023-113",
+      "department": "ECE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 9.02,
+      "skills": [
+        "JavaScript",
+        "Tailwind CSS",
+        "AWS"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aswathy",
+      "registerNumber": "NEC-2023-114",
+      "department": "AI&DS",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 8.29,
+      "skills": [
+        "SQL",
+        "Java",
+        "Docker",
+        "Spring Boot"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Cloud Computing",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ganesh",
+      "registerNumber": "NEC-2023-115",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.14,
+      "skills": [
+        "Docker",
+        "Python",
+        "MongoDB"
+      ],
+      "interests": [
+        "Web Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kavitha",
+      "registerNumber": "NEC-2023-116",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 7.62,
+      "skills": [
+        "Git",
+        "Algorithms",
+        "Node.js"
+      ],
+      "interests": [
+        "Robotics",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Vikram",
+      "registerNumber": "NEC-2023-117",
+      "department": "AI&DS",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 8.93,
+      "skills": [
+        "Python",
+        "Machine Learning",
+        "Java"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Meera",
+      "registerNumber": "NEC-2023-118",
+      "department": "Civil",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 7.3,
+      "skills": [
+        "SQL",
+        "C++"
+      ],
+      "interests": [
+        "Web Development",
+        "Cyber Security",
+        "Full Stack Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Rithvik",
+      "registerNumber": "NEC-2023-119",
+      "department": "Civil",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.65,
+      "skills": [
+        "Node.js",
+        "Java"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security",
+        "Full Stack Development",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Srinivasan",
+      "registerNumber": "NEC-2023-120",
+      "department": "CSE",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 8.18,
+      "skills": [
+        "Deep Learning",
+        "Spring Boot",
+        "SQL",
+        "Python",
+        "Git"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML",
+        "Full Stack Development",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Abirami",
+      "registerNumber": "NEC-2023-121",
+      "department": "Civil",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.72,
+      "skills": [
+        "Docker",
+        "Git"
+      ],
+      "interests": [
+        "Web Development",
+        "Robotics",
+        "Full Stack Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Karthik",
+      "registerNumber": "NEC-2023-122",
+      "department": "EEE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.26,
+      "skills": [
+        "MongoDB",
+        "Machine Learning",
+        "React",
+        "Docker",
+        "Python"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Samyuktha",
+      "registerNumber": "NEC-2023-123",
+      "department": "IT",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 8.69,
+      "skills": [
+        "SQL",
+        "Node.js",
+        "Python",
+        "Git",
+        "React"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Pranav",
+      "registerNumber": "NEC-2023-124",
+      "department": "IT",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 8.54,
+      "skills": [
+        "Python",
+        "JavaScript",
+        "Spring Boot",
+        "Tailwind CSS",
+        "Git"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Nisha",
+      "registerNumber": "NEC-2023-125",
+      "department": "AI&DS",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 9.03,
+      "skills": [
+        "AWS",
+        "Docker",
+        "Python",
+        "JavaScript",
+        "Data Structures"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cloud Computing",
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aakash",
+      "registerNumber": "NEC-2023-126",
+      "department": "Mechanical",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 7.48,
+      "skills": [
+        "JavaScript",
+        "Java",
+        "Machine Learning",
+        "Deep Learning",
+        "MongoDB"
+      ],
+      "interests": [
+        "Robotics",
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Shruthi",
+      "registerNumber": "NEC-2023-127",
+      "department": "IT",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 7.32,
+      "skills": [
+        "AWS",
+        "Algorithms",
+        "Python"
+      ],
+      "interests": [
+        "Web Development",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sanjay",
+      "registerNumber": "NEC-2023-128",
+      "department": "IT",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 9.57,
+      "skills": [
+        "AWS",
+        "JavaScript",
+        "Git",
+        "Python",
+        "Docker"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Pooja",
+      "registerNumber": "NEC-2023-129",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 8.04,
+      "skills": [
+        "Data Structures",
+        "Algorithms",
+        "AWS",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML",
+        "Web Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aditya",
+      "registerNumber": "NEC-2023-130",
+      "department": "CSE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 8.85,
+      "skills": [
+        "SQL",
+        "Algorithms",
+        "Git",
+        "Tailwind CSS",
+        "Java"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Reya",
+      "registerNumber": "NEC-2023-131",
+      "department": "CSE",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.7,
+      "skills": [
+        "Tailwind CSS",
+        "Java",
+        "Python",
+        "Deep Learning",
+        "Spring Boot"
+      ],
+      "interests": [
+        "Research",
+        "Cyber Security",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Harish",
+      "registerNumber": "NEC-2023-132",
+      "department": "IT",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.15,
+      "skills": [
+        "Machine Learning",
+        "Git"
+      ],
+      "interests": [
+        "Research",
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Swetha",
+      "registerNumber": "NEC-2023-133",
+      "department": "CSE",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 9.38,
+      "skills": [
+        "Tailwind CSS",
+        "Data Structures",
+        "AWS"
+      ],
+      "interests": [
+        "Web Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Naveen",
+      "registerNumber": "NEC-2023-134",
+      "department": "CSE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 9.05,
+      "skills": [
+        "Deep Learning",
+        "Python",
+        "Java",
+        "Data Structures"
+      ],
+      "interests": [
+        "Web Development",
+        "Cyber Security",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Pavithra",
+      "registerNumber": "NEC-2023-135",
+      "department": "CSE",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 9.28,
+      "skills": [
+        "Python",
+        "Java",
+        "Docker"
+      ],
+      "interests": [
+        "AI/ML",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Dinesh",
+      "registerNumber": "NEC-2023-136",
+      "department": "EEE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.62,
+      "skills": [
+        "Spring Boot",
+        "SQL",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "AI/ML",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sandhya",
+      "registerNumber": "NEC-2023-137",
+      "department": "Civil",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.8,
+      "skills": [
+        "Algorithms",
+        "Python",
+        "AWS",
+        "Java"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Varun",
+      "registerNumber": "NEC-2023-138",
+      "department": "Civil",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 7.49,
+      "skills": [
+        "JavaScript",
+        "React",
+        "C++"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security",
+        "Full Stack Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Shalini",
+      "registerNumber": "NEC-2023-139",
+      "department": "IT",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 7.81,
+      "skills": [
+        "Python",
+        "SQL"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kiran",
+      "registerNumber": "NEC-2023-140",
+      "department": "EEE",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 8.91,
+      "skills": [
+        "Machine Learning",
+        "React",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security",
+        "Cloud Computing",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Nandini",
+      "registerNumber": "NEC-2023-141",
+      "department": "Civil",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 7.16,
+      "skills": [
+        "Python",
+        "JavaScript"
+      ],
+      "interests": [
+        "Robotics",
+        "Cyber Security",
+        "Full Stack Development",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Vivek",
+      "registerNumber": "NEC-2023-142",
+      "department": "IT",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.97,
+      "skills": [
+        "Git",
+        "JavaScript",
+        "SQL",
+        "C++",
+        "MongoDB"
+      ],
+      "interests": [
+        "Research",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Lakshmi",
+      "registerNumber": "NEC-2023-143",
+      "department": "CSE",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 9.1,
+      "skills": [
+        "Git",
+        "Java",
+        "Docker",
+        "Tailwind CSS",
+        "Deep Learning"
+      ],
+      "interests": [
+        "Research",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Arvind",
+      "registerNumber": "NEC-2023-144",
+      "department": "CSE",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 7.92,
+      "skills": [
+        "AWS",
+        "Node.js",
+        "Python"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Web Development",
+        "AI/ML",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Gayathri",
+      "registerNumber": "NEC-2023-145",
+      "department": "AI&DS",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.01,
+      "skills": [
+        "MongoDB",
+        "SQL",
+        "AWS",
+        "Deep Learning",
+        "Node.js"
+      ],
+      "interests": [
+        "Research",
+        "Full Stack Development",
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Roshan",
+      "registerNumber": "NEC-2023-146",
+      "department": "CSE",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 7.89,
+      "skills": [
+        "React",
+        "Python",
+        "Node.js"
+      ],
+      "interests": [
+        "AI/ML",
+        "Cloud Computing",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Uma",
+      "registerNumber": "NEC-2023-147",
+      "department": "IT",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 7.97,
+      "skills": [
+        "Data Structures",
+        "Deep Learning",
+        "SQL",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Web Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ajay",
+      "registerNumber": "NEC-2023-148",
+      "department": "EEE",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 9.52,
+      "skills": [
+        "Machine Learning",
+        "Python",
+        "SQL",
+        "Algorithms"
+      ],
+      "interests": [
+        "Robotics",
+        "Web Development",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Janani",
+      "registerNumber": "NEC-2023-149",
+      "department": "Civil",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 8.99,
+      "skills": [
+        "Python",
+        "Java",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Research",
+        "Mobile App Development",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Babu",
+      "registerNumber": "NEC-2023-150",
+      "department": "EEE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 8.84,
+      "skills": [
+        "AWS",
+        "Data Structures",
+        "SQL",
+        "Algorithms"
+      ],
+      "interests": [
+        "Research",
+        "Full Stack Development",
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ramya",
+      "registerNumber": "NEC-2023-151",
+      "department": "ECE",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 7.65,
+      "skills": [
+        "MongoDB",
+        "JavaScript",
+        "Data Structures",
+        "SQL",
+        "Java"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML",
+        "Web Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Suresh",
+      "registerNumber": "NEC-2023-152",
+      "department": "Civil",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 9.42,
+      "skills": [
+        "Deep Learning",
+        "Spring Boot"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development",
+        "Cloud Computing",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Geetha",
+      "registerNumber": "NEC-2023-153",
+      "department": "Mechanical",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.3,
+      "skills": [
+        "SQL",
+        "Tailwind CSS"
+      ],
+      "interests": [
+        "Research",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ramesh",
+      "registerNumber": "NEC-2023-154",
+      "department": "EEE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 7.59,
+      "skills": [
+        "Python",
+        "Algorithms",
+        "Java",
+        "AWS"
+      ],
+      "interests": [
+        "Robotics",
+        "Mobile App Development",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aisha",
+      "registerNumber": "NEC-2023-155",
+      "department": "ECE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 9.26,
+      "skills": [
+        "Algorithms",
+        "JavaScript",
+        "Python",
+        "Machine Learning",
+        "Java"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Mustafa",
+      "registerNumber": "NEC-2023-156",
+      "department": "AI&DS",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.75,
+      "skills": [
+        "JavaScript",
+        "Node.js",
+        "Algorithms"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sarah",
+      "registerNumber": "NEC-2023-157",
+      "department": "EEE",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 8.45,
+      "skills": [
+        "Docker",
+        "Node.js",
+        "C++",
+        "MongoDB",
+        "Tailwind CSS"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Daniel",
+      "registerNumber": "NEC-2023-158",
+      "department": "EEE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 9.61,
+      "skills": [
+        "Machine Learning",
+        "Python",
+        "Java",
+        "C++"
+      ],
+      "interests": [
+        "Research",
+        "Robotics",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sophia",
+      "registerNumber": "NEC-2023-159",
+      "department": "IT",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 9.02,
+      "skills": [
+        "Deep Learning",
+        "Python"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Research",
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "James",
+      "registerNumber": "NEC-2023-160",
+      "department": "CSE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 8.29,
+      "skills": [
+        "C++",
+        "Java",
+        "Tailwind CSS",
+        "Node.js",
+        "AWS"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Research",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Olivia",
+      "registerNumber": "NEC-2023-161",
+      "department": "CSE",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 8.17,
+      "skills": [
+        "Tailwind CSS",
+        "Data Structures",
+        "Java"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "John",
+      "registerNumber": "NEC-2023-162",
+      "department": "IT",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.77,
+      "skills": [
+        "JavaScript",
+        "Docker",
+        "SQL",
+        "Algorithms",
+        "Python"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development",
+        "Cloud Computing",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Emily",
+      "registerNumber": "NEC-2023-163",
       "department": "IT",
       "year": 2,
       "semester": 4,
-      "cgpa": 8.5,
-      "skills": ["JavaScript", "React"],
-      "interests": ["Web Development"]
+      "cgpa": 8.7,
+      "skills": [
+        "Tailwind CSS",
+        "JavaScript",
+        "Node.js",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Full Stack Development",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Robert",
+      "registerNumber": "NEC-2023-164",
+      "department": "AI&DS",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 8.88,
+      "skills": [
+        "Python",
+        "Tailwind CSS",
+        "JavaScript"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Grace",
+      "registerNumber": "NEC-2023-165",
+      "department": "IT",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 8.54,
+      "skills": [
+        "Deep Learning",
+        "Git",
+        "Java",
+        "Machine Learning",
+        "JavaScript"
+      ],
+      "interests": [
+        "Research",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Michael",
+      "registerNumber": "NEC-2023-166",
+      "department": "AI&DS",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 7.93,
+      "skills": [
+        "Python",
+        "Java",
+        "C++",
+        "MongoDB",
+        "JavaScript"
+      ],
+      "interests": [
+        "Research",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Chloe",
+      "registerNumber": "NEC-2023-167",
+      "department": "Civil",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.58,
+      "skills": [
+        "C++",
+        "Tailwind CSS",
+        "Python"
+      ],
+      "interests": [
+        "Web Development",
+        "Research",
+        "Full Stack Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "William",
+      "registerNumber": "NEC-2023-168",
+      "department": "CSE",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 7.11,
+      "skills": [
+        "Data Structures",
+        "Spring Boot",
+        "Git",
+        "C++",
+        "Python"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development",
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Zoe",
+      "registerNumber": "NEC-2023-169",
+      "department": "IT",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 9.51,
+      "skills": [
+        "Node.js",
+        "Algorithms",
+        "Git",
+        "Machine Learning"
+      ],
+      "interests": [
+        "Robotics",
+        "Mobile App Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Dev",
+      "registerNumber": "NEC-2023-170",
+      "department": "AI&DS",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 8.53,
+      "skills": [
+        "Tailwind CSS",
+        "Node.js",
+        "SQL"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Cloud Computing",
+        "AI/ML",
+        "Robotics"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Tara",
+      "registerNumber": "NEC-2023-171",
+      "department": "IT",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 8.2,
+      "skills": [
+        "Deep Learning",
+        "Algorithms",
+        "React",
+        "JavaScript",
+        "Spring Boot"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kabir",
+      "registerNumber": "NEC-2023-172",
+      "department": "CSE",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 8.65,
+      "skills": [
+        "Python",
+        "SQL",
+        "Algorithms"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Cloud Computing",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Riya",
+      "registerNumber": "NEC-2023-173",
+      "department": "Civil",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.66,
+      "skills": [
+        "C++",
+        "Machine Learning",
+        "Git"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cyber Security",
+        "Research",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ishaan",
+      "registerNumber": "NEC-2023-174",
+      "department": "CSE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.29,
+      "skills": [
+        "Node.js",
+        "MongoDB",
+        "C++",
+        "Java"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Full Stack Development",
+        "Cloud Computing",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Diya",
+      "registerNumber": "NEC-2023-175",
+      "department": "CSE",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 8.76,
+      "skills": [
+        "AWS",
+        "Algorithms",
+        "Deep Learning",
+        "Spring Boot"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Arjun",
+      "registerNumber": "NEC-2023-176",
+      "department": "Mechanical",
+      "year": 2,
+      "semester": 3,
+      "cgpa": 8.01,
+      "skills": [
+        "C++",
+        "Spring Boot",
+        "Java",
+        "Git"
+      ],
+      "interests": [
+        "Robotics",
+        "Cloud Computing",
+        "AI/ML",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kiara",
+      "registerNumber": "NEC-2023-177",
+      "department": "ECE",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.21,
+      "skills": [
+        "Tailwind CSS",
+        "JavaScript",
+        "Algorithms",
+        "Docker"
+      ],
+      "interests": [
+        "AI/ML",
+        "Robotics",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aarav",
+      "registerNumber": "NEC-2023-178",
+      "department": "Civil",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 9.46,
+      "skills": [
+        "Data Structures",
+        "JavaScript",
+        "MongoDB"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Anika",
+      "registerNumber": "NEC-2023-179",
+      "department": "CSE",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 8.25,
+      "skills": [
+        "SQL",
+        "Docker",
+        "Machine Learning",
+        "C++"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Vihaan",
+      "registerNumber": "NEC-2023-180",
+      "department": "IT",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 7.08,
+      "skills": [
+        "Data Structures",
+        "Machine Learning",
+        "Spring Boot",
+        "Python"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "AI/ML",
+        "Cyber Security",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Nisha",
+      "registerNumber": "NEC-2023-181",
+      "department": "ECE",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.59,
+      "skills": [
+        "Machine Learning",
+        "Spring Boot",
+        "Python",
+        "MongoDB",
+        "Node.js"
+      ],
+      "interests": [
+        "Web Development",
+        "Mobile App Development",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Aditi",
+      "registerNumber": "NEC-2023-182",
+      "department": "Mechanical",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 9.66,
+      "skills": [
+        "Data Structures",
+        "Python"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML",
+        "Cyber Security",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Dhruv",
+      "registerNumber": "NEC-2023-183",
+      "department": "IT",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 7.2,
+      "skills": [
+        "Node.js",
+        "Data Structures",
+        "JavaScript",
+        "SQL",
+        "C++"
+      ],
+      "interests": [
+        "Web Development",
+        "Cyber Security",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sanya",
+      "registerNumber": "NEC-2023-184",
+      "department": "IT",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 9.42,
+      "skills": [
+        "Java",
+        "Node.js"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "AI/ML",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Neil",
+      "registerNumber": "NEC-2023-185",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 8.86,
+      "skills": [
+        "JavaScript",
+        "Python",
+        "Deep Learning",
+        "React",
+        "AWS"
+      ],
+      "interests": [
+        "Web Development",
+        "AI/ML",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kriti",
+      "registerNumber": "NEC-2023-186",
+      "department": "AI&DS",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.35,
+      "skills": [
+        "SQL",
+        "Git",
+        "React"
+      ],
+      "interests": [
+        "Cloud Computing",
+        "Robotics",
+        "Full Stack Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Yash",
+      "registerNumber": "NEC-2023-187",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 8.42,
+      "skills": [
+        "SQL",
+        "JavaScript",
+        "Machine Learning",
+        "Python"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Prisha",
+      "registerNumber": "NEC-2023-188",
+      "department": "ECE",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.76,
+      "skills": [
+        "Python",
+        "MongoDB",
+        "React"
+      ],
+      "interests": [
+        "Robotics",
+        "Web Development",
+        "AI/ML",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ranbir",
+      "registerNumber": "NEC-2023-189",
+      "department": "Mechanical",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.53,
+      "skills": [
+        "React",
+        "Machine Learning",
+        "JavaScript"
+      ],
+      "interests": [
+        "Web Development",
+        "Research"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Alia",
+      "registerNumber": "NEC-2023-190",
+      "department": "Mechanical",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.08,
+      "skills": [
+        "Node.js",
+        "Machine Learning",
+        "Data Structures",
+        "Deep Learning",
+        "Python"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "AI/ML",
+        "Cyber Security",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Varun",
+      "registerNumber": "NEC-2023-191",
+      "department": "IT",
+      "year": 2,
+      "semester": 4,
+      "cgpa": 7.03,
+      "skills": [
+        "Algorithms",
+        "Spring Boot",
+        "Deep Learning",
+        "Python",
+        "SQL"
+      ],
+      "interests": [
+        "Cyber Security",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kriti",
+      "registerNumber": "NEC-2023-192",
+      "department": "Civil",
+      "year": 3,
+      "semester": 5,
+      "cgpa": 7.11,
+      "skills": [
+        "Deep Learning",
+        "JavaScript",
+        "Java",
+        "Node.js",
+        "Git"
+      ],
+      "interests": [
+        "Full Stack Development",
+        "Web Development",
+        "Research",
+        "Mobile App Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Siddharth",
+      "registerNumber": "NEC-2023-193",
+      "department": "ECE",
+      "year": 1,
+      "semester": 2,
+      "cgpa": 8.88,
+      "skills": [
+        "JavaScript",
+        "Deep Learning"
+      ],
+      "interests": [
+        "Web Development",
+        "Mobile App Development",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kiara",
+      "registerNumber": "NEC-2023-194",
+      "department": "IT",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 8.42,
+      "skills": [
+        "C++",
+        "SQL"
+      ],
+      "interests": [
+        "Research",
+        "Cloud Computing"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Kartik",
+      "registerNumber": "NEC-2023-195",
+      "department": "AI&DS",
+      "year": 3,
+      "semester": 6,
+      "cgpa": 7.65,
+      "skills": [
+        "Spring Boot",
+        "Data Structures",
+        "C++"
+      ],
+      "interests": [
+        "Robotics",
+        "Cloud Computing",
+        "Full Stack Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Sara",
+      "registerNumber": "NEC-2023-196",
+      "department": "Mechanical",
+      "year": 4,
+      "semester": 8,
+      "cgpa": 9.14,
+      "skills": [
+        "Node.js",
+        "JavaScript",
+        "React",
+        "Git"
+      ],
+      "interests": [
+        "Research",
+        "AI/ML",
+        "Web Development"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ayushmann",
+      "registerNumber": "NEC-2023-197",
+      "department": "ECE",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.19,
+      "skills": [
+        "React",
+        "MongoDB"
+      ],
+      "interests": [
+        "Mobile App Development",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Ananya",
+      "registerNumber": "NEC-2023-198",
+      "department": "IT",
+      "year": 1,
+      "semester": 1,
+      "cgpa": 9.23,
+      "skills": [
+        "Java",
+        "Node.js",
+        "JavaScript",
+        "Spring Boot"
+      ],
+      "interests": [
+        "AI/ML",
+        "Web Development",
+        "Robotics",
+        "Cyber Security"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
+    },
+    {
+      "name": "Vicky",
+      "registerNumber": "NEC-2023-199",
+      "department": "Mechanical",
+      "year": 4,
+      "semester": 7,
+      "cgpa": 7.63,
+      "skills": [
+        "SQL",
+        "Python",
+        "Data Structures",
+        "Java",
+        "MongoDB"
+      ],
+      "interests": [
+        "Web Development",
+        "Research",
+        "AI/ML"
+      ],
+      "bookmarkedCategories": [],
+      "previousSearches": []
     }
   ],
   "announcements": [
     {
-      "id": "ann-seeded-1",
-      "title": "Zoho Placement Drive",
-      "category": "Placement",
-      "priority": "HIGH",
-      "description": "Zoho is conducting an exclusive campus recruitment drive. The selection process involves core software programming, solving data structures & algorithms problem challenges, and web systems development.",
-      "date": "2026-09-22",
-      "time": "10:00 AM",
-      "venue": "Seminar Hall",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS"],
-        "years": [3, 4],
-        "minCgpa": 7.0,
-        "skills": ["Java", "DSA"],
-        "interests": ["Software Development", "Full Stack"]
-      },
-      "deadline": "2026-09-20",
-      "actionRequired": "Submit resume on Zoho portals registration link and submit verified details to College Placement Coordinator."
-    },
-    {
-      "id": "ann-seeded-2",
-      "title": "Google AI Hackathon",
-      "category": "Hackathon",
-      "priority": "HIGH",
-      "description": "Build creative and high-impact solutions with Generative AI at the Google AI Hackathon. Solve critical campus and national challenges using Gemini model APIs.",
-      "date": "2026-09-21",
-      "time": "08:30 AM",
-      "venue": "Innovation Center",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        "years": [1, 2, 3, 4],
-        "skills": ["AI", "Python"],
-        "interests": ["AI", "Research", "Machine Learning"]
-      },
-      "deadline": "2026-09-18",
-      "actionRequired": "Form a team of 2-4 students, draft your hackathon abstract proposal and submit on Devpost Hackfest page."
-    },
-    {
-      "id": "ann-seeded-3",
-      "title": "AWS Cloud Workshop",
-      "category": "Workshop",
-      "priority": "MEDIUM",
-      "description": "Comprehensive boot camp on Amazon Web Services cloud infrastructure and DevOps. Get hands-on with AWS Beanstalk deployments, Docker containers, IAM, S3, and load balancers.",
-      "date": "2026-09-27",
-      "time": "01:30 PM",
-      "venue": "Lab 4",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        "years": [1, 2, 3, 4],
-        "skills": ["Cloud"],
-        "interests": ["Cloud Computing", "Full Stack"]
-      },
-      "deadline": "2026-09-25",
-      "actionRequired": "Complete AWS Educate sign-up and RSVP on the NEC Workshop scheduler dashboard."
-    },
-    {
-      "id": "ann-seeded-4",
-      "title": "Merit Scholarship",
-      "category": "Scholarship",
-      "priority": "HIGH",
-      "description": "College-wide scholarship reward program for students with outstanding academic records. Completely sponsors college tuition and board fees for merit students with high CGPA standings.",
-      "date": "2026-09-17",
-      "time": "11:00 AM",
-      "venue": "Admin Block",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS", "ECE", "EEE", "Mechanical", "Civil"],
-        "years": [1, 2, 3, 4],
-        "minCgpa": 8.0
-      },
-      "deadline": "2026-09-15",
-      "actionRequired": "Prepare and compile your verified CGPA transcripts of semesters 1-4 and submit to Academic Admin Desk, Admin Block Room 202."
-    },
-    {
-      "id": "ann-1",
-      "title": "Accenture Campus Placement Drive 2026",
-      "category": "Placement",
-      "priority": "HIGH",
-      "description": "Accenture is visiting NEC campus for recruitment of Associate Software Engineers. Open to Final/Pre-final year students of CSE, IT, AI&DS & ECE.",
-      "date": "2026-06-25",
-      "time": "09:00 AM",
-      "venue": "NEC Auditorium",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS", "ECE"],
-        "years": [3, 4],
-        "minCgpa": 7.5,
-        "skills": ["SQL", "Java", "Python"],
-        "interests": ["Software Development"]
-      },
-      "deadline": "2026-06-18",
-      "actionRequired": "Register on the Accenture Careers portal and upload resume to College Placement Cell."
-    },
-    {
-      "id": "ann-2",
-      "title": "Cognizant Pre-Internship Program",
+      "id": "ann-seeded-100",
+      "title": "NVIDIA Summer Internship Program",
       "category": "Internship",
       "priority": "HIGH",
-      "description": "A 6-month stipend internship with full-time conversion opportunities. Focused on full-stack web engineering & cloud native technologies.",
-      "date": "2026-07-01",
-      "time": "10:00 AM",
-      "venue": "Online / Virtual",
+      "description": "A 6-month hands-on industry experience internship at NVIDIA for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-08-01",
+      "time": "10:30 AM",
+      "venue": "Virtual Teams Meet",
       "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS"],
-        "years": [3],
-        "minCgpa": 7.0,
-        "skills": ["React", "TypeScript", "Tailwind CSS"],
-        "interests": ["Web Development"]
+        "departments": [
+          "Mechanical"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Node.js",
+          "Tailwind CSS",
+          "Python"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
       },
-      "deadline": "2026-06-16",
-      "actionRequired": "Apply through the Cognizant campus link on the college LMS board."
+      "deadline": "2026-07-30",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Mechanical",
+        "Node.js",
+        "Tailwind CSS",
+        "Python"
+      ]
     },
     {
-      "id": "ann-3",
-      "title": "National Post-Matric Merit Scholarship 2026",
-      "category": "Scholarship",
+      "id": "ann-seeded-101",
+      "title": "Infosys Summer Internship Program",
+      "category": "Internship",
       "priority": "HIGH",
-      "description": "National Level Academic Merit Scholarship for talented engineering students. Reimburses 100% of tuition and research fees.",
-      "date": "2026-06-22",
-      "venue": "NEC Academic Administration Office",
+      "description": "A 6-month hands-on industry experience internship at Infosys for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-23",
+      "time": "10:30 AM",
+      "venue": "Auditorium",
       "eligibility": {
-        "minCgpa": 8.5
+        "departments": [
+          "Civil"
+        ],
+        "years": [
+          4,
+          1,
+          3
+        ],
+        "minCgpa": 8.5,
+        "skills": [
+          "Data Structures",
+          "C++",
+          "Java"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
       },
-      "deadline": "2026-06-21",
-      "actionRequired": "Submit completed application form, household income proof, and CGPA transcript sheet to Admin Room 104."
+      "deadline": "2026-07-21",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Civil",
+        "Data Structures",
+        "C++",
+        "Java"
+      ]
     },
     {
-      "id": "ann-4",
-      "title": "NEC Hackfest 2026 (Smart Campus Hackathon)",
-      "category": "Hackathon",
-      "priority": "MEDIUM",
-      "description": "24-hour non-stop development challenge to build smart college automation utilities. Exciting cash rewards to top 3 winning teams.",
-      "date": "2026-06-28",
-      "time": "08:00 AM",
-      "venue": "IT Block Lab 3",
+      "id": "ann-seeded-102",
+      "title": "Amazon Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Amazon for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-06-25",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
       "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS", "ECE", "EEE"],
-        "years": [1, 2, 3, 4],
-        "skills": ["React", "TypeScript", "Python"],
-        "interests": ["Web Development", "Machine Learning"]
+        "departments": [
+          "Mechanical",
+          "EEE",
+          "CSE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 7.8,
+        "skills": [
+          "AWS"
+        ],
+        "interests": [
+          "Robotics"
+        ]
       },
-      "deadline": "2026-06-24",
-      "actionRequired": "Register a team of 3-4 members on the Hackfest portal."
+      "deadline": "2026-06-23",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Mechanical",
+        "EEE",
+        "CSE",
+        "AWS"
+      ]
     },
     {
-      "id": "ann-5",
-      "title": "Hands-on AI and Deep Learning Workshop",
-      "category": "Workshop",
-      "priority": "MEDIUM",
-      "description": "Comprehensive practical laboratory workshop covering Neural Networks, PyTorch, and NLP models. Organized by AI&DS Department.",
-      "date": "2026-06-22",
-      "time": "02:00 PM",
-      "venue": "AI Research Lab",
-      "eligibility": {
-        "departments": ["CSE", "IT", "AI&DS"],
-        "skills": ["Python"],
-        "interests": ["Machine Learning"]
-      },
-      "deadline": "2026-06-19",
-      "actionRequired": "Fill out the google RSVP registration form on AI&DS department website."
-    },
-    {
-      "id": "ann-6",
-      "title": "Robotics & Automation Club Inductions",
-      "category": "Club Activity",
-      "priority": "MEDIUM",
-      "description": "Annual recruitment and tech challenge for the NEC Robotics & Automation wing. Work on custom microcontrollers and ROS experiments.",
-      "date": "2026-06-20",
-      "time": "04:05 PM",
-      "venue": "Mechanical Seminar Hall",
-      "eligibility": {
-        "departments": ["Mechanical", "Civil", "ECE", "EEE"],
-        "years": [1, 2, 3],
-        "interests": ["UI/UX Design"]
-      },
-      "deadline": "2026-06-18",
-      "actionRequired": "Register and download the problem statements for the offline design rounds."
-    },
-    {
-      "id": "ann-7",
-      "title": "University Semester Lab/Practical Examinations",
+      "id": "ann-seeded-103",
+      "title": "Semester Final Theory & Lab Board Examinations",
       "category": "Examination",
       "priority": "HIGH",
-      "description": "Official schedule published for semester practical examination boards. Students must print hall tickets and prepare lab manuals.",
-      "date": "2026-06-19",
-      "time": "08:30 AM",
-      "venue": "Respective Department Labs",
-      "eligibility": {},
-      "deadline": "2026-06-17",
-      "actionRequired": "Download hall tickets from college portal, get them attested, and complete lab record submissions."
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-27",
+      "time": "09:00 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Civil",
+          "IT"
+        ],
+        "years": [
+          2,
+          1,
+          4
+        ],
+        "minCgpa": 8.4,
+        "skills": [
+          "Spring Boot",
+          "SQL",
+          "MongoDB"
+        ],
+        "interests": [
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-25",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "CSE",
+        "Civil",
+        "IT",
+        "Spring Boot",
+        "SQL",
+        "MongoDB"
+      ]
     },
     {
-      "id": "ann-8",
-      "title": "Cloud Computing Practice Assignment 3",
+      "id": "ann-seeded-104",
+      "title": "Amazon Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Amazon for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-06-29",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "EEE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 7.6,
+        "skills": [
+          "Python"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-06-27",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "EEE",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-105",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-08-03",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "CSE"
+        ],
+        "years": [
+          3,
+          4,
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "JavaScript"
+        ],
+        "interests": [
+          "Mobile App Development",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-08-01",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "AI&DS",
+        "CSE",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "ann-seeded-106",
+      "title": "Hands-on Workshop on Python and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-04",
+      "time": "04:15 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Civil",
+          "Mechanical"
+        ],
+        "years": [
+          1,
+          4
+        ],
+        "minCgpa": null,
+        "skills": [
+          "JavaScript",
+          "Algorithms",
+          "SQL"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-02",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "CSE",
+        "Civil",
+        "Mechanical",
+        "JavaScript",
+        "Algorithms",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-107",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-06-29",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "ECE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Algorithms",
+          "Tailwind CSS",
+          "Git"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-06-27",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "ECE",
+        "Algorithms",
+        "Tailwind CSS",
+        "Git"
+      ]
+    },
+    {
+      "id": "ann-seeded-108",
+      "title": "Practice Assignment 3: System Design and Architectures",
       "category": "Assignment",
       "priority": "HIGH",
-      "description": "Deployment checklist utilizing AWS Elastic Beanstalk and Docker containers. Submit working solution logs.",
-      "date": "2026-06-15",
-      "time": "11:59 PM",
-      "venue": "Online LMS Portal",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-09",
+      "time": "09:00 AM",
+      "venue": "CSE Block Seminar Room",
       "eligibility": {
-        "departments": ["CSE", "IT"],
-        "years": [3]
+        "departments": [
+          "EEE"
+        ],
+        "years": [
+          4,
+          3,
+          2
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Data Structures",
+          "Python",
+          "SQL"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Robotics"
+        ]
       },
-      "deadline": "2026-06-15",
-      "actionRequired": "Submit PDF report with cloud screenshots and GitHub repository codes link to the LMS module."
+      "deadline": "2026-07-07",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "EEE",
+        "Data Structures",
+        "Python",
+        "SQL"
+      ]
     },
     {
-      "id": "ann-9",
-      "title": "NEC Green Campus Tree Plantation Drive",
+      "id": "ann-seeded-109",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-23",
+      "time": "10:30 AM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "IT"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Tailwind CSS"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-21",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "Mechanical",
+        "IT",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "id": "ann-seeded-110",
+      "title": "Wipro Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Wipro is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-06-30",
+      "time": "10:30 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "ECE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "SQL",
+          "Machine Learning"
+        ],
+        "interests": [
+          "Research"
+        ]
+      },
+      "deadline": "2026-06-28",
+      "actionRequired": "Register on Wipro career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "ECE",
+        "SQL",
+        "Machine Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-111",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-26",
+      "time": "09:00 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "IT"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Deep Learning",
+          "SQL"
+        ],
+        "interests": [
+          "Robotics"
+        ]
+      },
+      "deadline": "2026-07-24",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "CSE",
+        "IT",
+        "Deep Learning",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-112",
+      "title": "Microsoft Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Microsoft for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-08-15",
+      "time": "09:00 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "IT"
+        ],
+        "years": [
+          4,
+          1,
+          2
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Deep Learning",
+          "Java"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-08-13",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Mechanical",
+        "IT",
+        "Deep Learning",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-113",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-06-26",
+      "time": "04:15 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "IT",
+          "Mechanical"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": 7.6,
+        "skills": [
+          "Deep Learning"
+        ],
+        "interests": [
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-06-24",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "CSE",
+        "IT",
+        "Mechanical",
+        "Deep Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-114",
+      "title": "Hands-on Workshop on Data Structures and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-19",
+      "time": "10:30 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "CSE"
+        ],
+        "years": [
+          1,
+          2,
+          3
+        ],
+        "minCgpa": 8,
+        "skills": [
+          "React",
+          "Spring Boot",
+          "Node.js"
+        ],
+        "interests": [
+          "Robotics",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-17",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "Civil",
+        "CSE",
+        "React",
+        "Spring Boot",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-115",
+      "title": "Important General Notice: Library Working Hours Extended",
       "category": "General Notice",
       "priority": "LOW",
-      "description": "A community engagement green standard campaign spearheaded by the NEC NSS unit. Open to everyone.",
-      "date": "2026-06-18",
-      "time": "07:30 AM",
-      "venue": "NEC Playgrounds Campus Gate B",
-      "eligibility": {},
-      "deadline": "2026-06-18",
-      "actionRequired": "Turn up with comfortable athletic outfit and track. Seedlings and tools will be provided."
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-14",
+      "time": "10:30 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "EEE"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "React",
+          "SQL"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-12",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "EEE",
+        "React",
+        "SQL"
+      ]
     },
     {
-      "id": "ann-10",
-      "title": "L&T Build India Scholarship Program",
+      "id": "ann-seeded-116",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-17",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "EEE",
+          "ECE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Deep Learning"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-07-15",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "EEE",
+        "ECE",
+        "Deep Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-117",
+      "title": "Hands-on Workshop on AWS and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-06-25",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Mechanical"
+        ],
+        "years": [
+          3,
+          2,
+          1
+        ],
+        "minCgpa": 6.8,
+        "skills": [
+          "Docker",
+          "Deep Learning"
+        ],
+        "interests": [
+          "AI/ML",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-06-23",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "CSE",
+        "Mechanical",
+        "Docker",
+        "Deep Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-118",
+      "title": "Microsoft Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Microsoft for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-11",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "CSE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 6.8,
+        "skills": [
+          "Python",
+          "Java"
+        ],
+        "interests": [
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-09",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "ECE",
+        "CSE",
+        "Python",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-119",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-05",
+      "time": "10:30 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.4,
+        "skills": [
+          "SQL"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-03",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "CSE",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-120",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-06-21",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "EEE",
+          "ECE",
+          "CSE"
+        ],
+        "years": [
+          2,
+          1
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "C++"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-06-19",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "EEE",
+        "ECE",
+        "CSE",
+        "C++"
+      ]
+    },
+    {
+      "id": "ann-seeded-121",
+      "title": "Accenture Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Accenture is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-07-03",
+      "time": "09:00 AM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "ECE",
+          "Mechanical"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.3,
+        "skills": [
+          "Docker",
+          "JavaScript",
+          "Python"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-01",
+      "actionRequired": "Register on Accenture career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "CSE",
+        "ECE",
+        "Mechanical",
+        "Docker",
+        "JavaScript",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-122",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-12",
+      "time": "01:30 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "IT"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Tailwind CSS",
+          "Data Structures",
+          "Python"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-10",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "IT",
+        "Tailwind CSS",
+        "Data Structures",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-123",
+      "title": "Hands-on Workshop on React and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-08-10",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "EEE"
+        ],
+        "years": [
+          4,
+          1,
+          2
+        ],
+        "minCgpa": 6.9,
+        "skills": [
+          "SQL"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-08-08",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "EEE",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-124",
+      "title": "TCS Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "TCS is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-07-10",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Civil"
+        ],
+        "years": [
+          2,
+          4,
+          3
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "MongoDB",
+          "Node.js"
+        ],
+        "interests": [
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-07-08",
+      "actionRequired": "Register on TCS career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "Civil",
+        "MongoDB",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-125",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-08-09",
+      "time": "01:30 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "ECE"
+        ],
+        "years": [
+          4,
+          1
+        ],
+        "minCgpa": 7.7,
+        "skills": [
+          "Python",
+          "Java",
+          "AWS"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Research"
+        ]
+      },
+      "deadline": "2026-08-07",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "IT",
+        "ECE",
+        "Python",
+        "Java",
+        "AWS"
+      ]
+    },
+    {
+      "id": "ann-seeded-126",
+      "title": "Hands-on Workshop on Python and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-29",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "CSE"
+        ],
+        "years": [
+          2,
+          3,
+          4
+        ],
+        "minCgpa": 6.8,
+        "skills": [
+          "C++",
+          "Java"
+        ],
+        "interests": [
+          "Research"
+        ]
+      },
+      "deadline": "2026-07-27",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "ECE",
+        "CSE",
+        "C++",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-127",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-28",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Mechanical"
+        ],
+        "years": [
+          3,
+          4,
+          2
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Algorithms"
+        ],
+        "interests": [
+          "Robotics",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-26",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "Mechanical",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-128",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-01",
+      "time": "01:30 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "ECE",
+          "Mechanical"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Python",
+          "Data Structures"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-06-29",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "IT",
+        "ECE",
+        "Mechanical",
+        "Python",
+        "Data Structures"
+      ]
+    },
+    {
+      "id": "ann-seeded-129",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-07-28",
+      "time": "04:15 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "ECE",
+          "Mechanical"
+        ],
+        "years": [
+          3,
+          4
+        ],
+        "minCgpa": 8.1,
+        "skills": [
+          "C++",
+          "Java"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-26",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "AI&DS",
+        "ECE",
+        "Mechanical",
+        "C++",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-130",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-13",
+      "time": "10:30 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "IT"
+        ],
+        "years": [
+          4,
+          3,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "C++",
+          "Node.js",
+          "SQL"
+        ],
+        "interests": [
+          "Web Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-11",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "IT",
+        "C++",
+        "Node.js",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-131",
+      "title": "L&T Academic Merit Scholarship Award",
       "category": "Scholarship",
       "priority": "HIGH",
-      "description": "Sponsorship for M.Tech in Construction Technology at IIT Madras/Delhi. Fully sponsored by Larsen & Toubro for core students.",
-      "date": "2026-07-05",
-      "venue": "L&T Corporate Portal",
+      "description": "Scholarship opportunity offering partial or full tuition cost support for engineering students demonstrating high academic records and project works.",
+      "date": "2026-07-03",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
       "eligibility": {
-        "departments": ["Civil", "Mechanical"],
-        "years": [4],
-        "minCgpa": 8.0
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3,
+          2
+        ],
+        "minCgpa": 8.2,
+        "skills": [
+          "MongoDB"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-01",
+      "actionRequired": "Download scholarship forms from Admin portal, attach CGPA transcripts, and submit to Office Room 101.",
+      "summary": "Important update regarding Scholarship on NEC campus.",
+      "keywords": [
+        "Scholarship",
+        "CSE",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-132",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-06-21",
+      "time": "04:15 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "Mechanical"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Spring Boot",
+          "AWS"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-06-19",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "Mechanical",
+        "Spring Boot",
+        "AWS"
+      ]
+    },
+    {
+      "id": "ann-seeded-133",
+      "title": "Hands-on Workshop on Git and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-08-13",
+      "time": "09:00 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "IT",
+          "Mechanical"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 8.4,
+        "skills": [
+          "Deep Learning"
+        ],
+        "interests": [
+          "Robotics",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-08-11",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "AI&DS",
+        "IT",
+        "Mechanical",
+        "Deep Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-134",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-08-10",
+      "time": "10:30 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "AI&DS",
+          "Civil"
+        ],
+        "years": [
+          4,
+          3,
+          2
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Node.js",
+          "Spring Boot"
+        ],
+        "interests": [
+          "Research",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-08-08",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "ECE",
+        "AI&DS",
+        "Civil",
+        "Node.js",
+        "Spring Boot"
+      ]
+    },
+    {
+      "id": "ann-seeded-135",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-18",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Civil"
+        ],
+        "years": [
+          2,
+          1
+        ],
+        "minCgpa": 7,
+        "skills": [
+          "MongoDB",
+          "Python",
+          "Tailwind CSS"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-16",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Civil",
+        "MongoDB",
+        "Python",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "id": "ann-seeded-136",
+      "title": "NVIDIA Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "NVIDIA is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-08-16",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "Mechanical",
+          "EEE"
+        ],
+        "years": [
+          1,
+          3
+        ],
+        "minCgpa": 6.6,
+        "skills": [
+          "JavaScript",
+          "Tailwind CSS"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-08-14",
+      "actionRequired": "Register on NVIDIA career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "Civil",
+        "Mechanical",
+        "EEE",
+        "JavaScript",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "id": "ann-seeded-137",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-08-15",
+      "time": "01:30 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "ECE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Algorithms",
+          "Java"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-08-13",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "AI&DS",
+        "ECE",
+        "Algorithms",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-138",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-08-01",
+      "time": "04:15 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "EEE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 8,
+        "skills": [
+          "React",
+          "Deep Learning",
+          "JavaScript"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-30",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "Mechanical",
+        "EEE",
+        "React",
+        "Deep Learning",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "ann-seeded-139",
+      "title": "Amazon Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Amazon for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-07",
+      "time": "01:30 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "Civil"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 7.5,
+        "skills": [
+          "Node.js"
+        ],
+        "interests": [
+          "Mobile App Development",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-05",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Civil",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-140",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-13",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "EEE",
+          "ECE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "React"
+        ],
+        "interests": [
+          "AI/ML",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-11",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "Civil",
+        "EEE",
+        "ECE",
+        "React"
+      ]
+    },
+    {
+      "id": "ann-seeded-141",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-17",
+      "time": "10:30 AM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "IT"
+        ],
+        "years": [
+          2
+        ],
+        "minCgpa": 6.6,
+        "skills": [
+          "React",
+          "SQL"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-15",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "CSE",
+        "IT",
+        "React",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-142",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-09",
+      "time": "09:00 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "CSE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "JavaScript",
+          "AWS",
+          "React"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-07",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "Mechanical",
+        "CSE",
+        "JavaScript",
+        "AWS",
+        "React"
+      ]
+    },
+    {
+      "id": "ann-seeded-143",
+      "title": "TCS Academic Merit Scholarship Award",
+      "category": "Scholarship",
+      "priority": "HIGH",
+      "description": "Scholarship opportunity offering partial or full tuition cost support for engineering students demonstrating high academic records and project works.",
+      "date": "2026-07-21",
+      "time": "01:30 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "AI&DS"
+        ],
+        "years": [
+          3,
+          2,
+          4
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Python",
+          "SQL"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-19",
+      "actionRequired": "Download scholarship forms from Admin portal, attach CGPA transcripts, and submit to Office Room 101.",
+      "summary": "Important update regarding Scholarship on NEC campus.",
+      "keywords": [
+        "Scholarship",
+        "CSE",
+        "AI&DS",
+        "Python",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-144",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-08-02",
+      "time": "10:30 AM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "Civil",
+          "EEE"
+        ],
+        "years": [
+          1,
+          2
+        ],
+        "minCgpa": 7.9,
+        "skills": [
+          "Algorithms"
+        ],
+        "interests": [
+          "Research",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-31",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Mechanical",
+        "Civil",
+        "EEE",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-145",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-31",
+      "time": "01:30 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "CSE",
+          "Civil"
+        ],
+        "years": [
+          3,
+          2
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Node.js"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-29",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "ECE",
+        "CSE",
+        "Civil",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-146",
+      "title": "Microsoft Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Microsoft for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-07",
+      "time": "09:00 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          2
+        ],
+        "minCgpa": 8.1,
+        "skills": [
+          "Algorithms"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-05",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "CSE",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-147",
+      "title": "Zoho Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Zoho is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-06-20",
+      "time": "04:15 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "ECE",
+          "IT"
+        ],
+        "years": [
+          4,
+          3,
+          2
+        ],
+        "minCgpa": 7.8,
+        "skills": [
+          "Machine Learning",
+          "MongoDB"
+        ],
+        "interests": [
+          "Robotics",
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-06-18",
+      "actionRequired": "Register on Zoho career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "AI&DS",
+        "ECE",
+        "IT",
+        "Machine Learning",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-148",
+      "title": "TCS Academic Merit Scholarship Award",
+      "category": "Scholarship",
+      "priority": "HIGH",
+      "description": "Scholarship opportunity offering partial or full tuition cost support for engineering students demonstrating high academic records and project works.",
+      "date": "2026-07-12",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "AI&DS"
+        ],
+        "years": [
+          1,
+          2,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "MongoDB",
+          "JavaScript",
+          "Spring Boot"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-10",
+      "actionRequired": "Download scholarship forms from Admin portal, attach CGPA transcripts, and submit to Office Room 101.",
+      "summary": "Important update regarding Scholarship on NEC campus.",
+      "keywords": [
+        "Scholarship",
+        "ECE",
+        "AI&DS",
+        "MongoDB",
+        "JavaScript",
+        "Spring Boot"
+      ]
+    },
+    {
+      "id": "ann-seeded-149",
+      "title": "Hands-on Workshop on Tailwind CSS and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-25",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Machine Learning",
+          "Java"
+        ],
+        "interests": [
+          "Mobile App Development",
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-23",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "CSE",
+        "Machine Learning",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-150",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-16",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3,
+          2
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "SQL",
+          "Python"
+        ],
+        "interests": [
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-14",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "CSE",
+        "SQL",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-151",
+      "title": "Intel Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Intel for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-06-23",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "IT",
+          "EEE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.6,
+        "skills": [
+          "Spring Boot",
+          "Node.js",
+          "Machine Learning"
+        ],
+        "interests": [
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-06-21",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "ECE",
+        "IT",
+        "EEE",
+        "Spring Boot",
+        "Node.js",
+        "Machine Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-152",
+      "title": "Hands-on Workshop on MongoDB and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-10",
+      "time": "10:30 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "ECE",
+          "Mechanical"
+        ],
+        "years": [
+          2
+        ],
+        "minCgpa": 7.8,
+        "skills": [
+          "AWS"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-08",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "IT",
+        "ECE",
+        "Mechanical",
+        "AWS"
+      ]
+    },
+    {
+      "id": "ann-seeded-153",
+      "title": "Infosys Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Infosys is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-07-16",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "EEE",
+          "ECE",
+          "IT"
+        ],
+        "years": [
+          1,
+          2,
+          3
+        ],
+        "minCgpa": 7.6,
+        "skills": [
+          "Python",
+          "Tailwind CSS"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-14",
+      "actionRequired": "Register on Infosys career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "EEE",
+        "ECE",
+        "IT",
+        "Python",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "id": "ann-seeded-154",
+      "title": "Amazon Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Amazon for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-25",
+      "time": "04:15 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.7,
+        "skills": [
+          "Data Structures",
+          "React"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-23",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "CSE",
+        "Data Structures",
+        "React"
+      ]
+    },
+    {
+      "id": "ann-seeded-155",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-08-05",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "EEE"
+        ],
+        "years": [
+          2,
+          3
+        ],
+        "minCgpa": 7,
+        "skills": [
+          "SQL"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-08-03",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "EEE",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-156",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-01",
+      "time": "09:00 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Mechanical"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 8.1,
+        "skills": [
+          "Git"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-06-29",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "CSE",
+        "Mechanical",
+        "Git"
+      ]
+    },
+    {
+      "id": "ann-seeded-157",
+      "title": "Amazon Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Amazon for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-06-22",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Civil",
+          "IT"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": 6.9,
+        "skills": [
+          "C++"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Research"
+        ]
+      },
+      "deadline": "2026-06-20",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "CSE",
+        "Civil",
+        "IT",
+        "C++"
+      ]
+    },
+    {
+      "id": "ann-seeded-158",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-09",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "EEE"
+        ],
+        "years": [
+          1,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "MongoDB",
+          "Algorithms",
+          "Node.js"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-07",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "ECE",
+        "EEE",
+        "MongoDB",
+        "Algorithms",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-159",
+      "title": "Zoho Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Zoho for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-06-20",
+      "time": "10:30 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "ECE",
+          "Mechanical"
+        ],
+        "years": [
+          4,
+          1,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Machine Learning"
+        ],
+        "interests": [
+          "Research",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-06-18",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "AI&DS",
+        "ECE",
+        "Mechanical",
+        "Machine Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-160",
+      "title": "NVIDIA Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at NVIDIA for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-08-16",
+      "time": "01:30 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "IT",
+          "EEE"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Spring Boot"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-08-14",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "AI&DS",
+        "IT",
+        "EEE",
+        "Spring Boot"
+      ]
+    },
+    {
+      "id": "ann-seeded-161",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-27",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "EEE",
+          "CSE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Java",
+          "MongoDB"
+        ],
+        "interests": [
+          "Web Development",
+          "Robotics"
+        ]
+      },
+      "deadline": "2026-07-25",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Mechanical",
+        "EEE",
+        "CSE",
+        "Java",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-162",
+      "title": "Google Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Google for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-21",
+      "time": "09:00 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "CSE"
+        ],
+        "years": [
+          3,
+          2,
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "SQL"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-19",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "Mechanical",
+        "CSE",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-163",
+      "title": "Hands-on Workshop on Node.js and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-08-12",
+      "time": "01:30 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Mechanical",
+          "IT"
+        ],
+        "years": [
+          2,
+          1
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Data Structures",
+          "React",
+          "Node.js"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-08-10",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "CSE",
+        "Mechanical",
+        "IT",
+        "Data Structures",
+        "React",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-164",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-24",
+      "time": "04:15 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "ECE"
+        ],
+        "years": [
+          1,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Spring Boot",
+          "Docker",
+          "Data Structures"
+        ],
+        "interests": [
+          "Web Development",
+          "Research"
+        ]
+      },
+      "deadline": "2026-07-22",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "Civil",
+        "ECE",
+        "Spring Boot",
+        "Docker",
+        "Data Structures"
+      ]
+    },
+    {
+      "id": "ann-seeded-165",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-06-25",
+      "time": "09:00 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "EEE",
+          "Mechanical"
+        ],
+        "years": [
+          2,
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Algorithms",
+          "AWS"
+        ],
+        "interests": [
+          "Web Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-06-23",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "EEE",
+        "Mechanical",
+        "Algorithms",
+        "AWS"
+      ]
+    },
+    {
+      "id": "ann-seeded-166",
+      "title": "NVIDIA Academic Merit Scholarship Award",
+      "category": "Scholarship",
+      "priority": "HIGH",
+      "description": "Scholarship opportunity offering partial or full tuition cost support for engineering students demonstrating high academic records and project works.",
+      "date": "2026-08-10",
+      "time": "01:30 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "MongoDB"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Research"
+        ]
+      },
+      "deadline": "2026-08-08",
+      "actionRequired": "Download scholarship forms from Admin portal, attach CGPA transcripts, and submit to Office Room 101.",
+      "summary": "Important update regarding Scholarship on NEC campus.",
+      "keywords": [
+        "Scholarship",
+        "CSE",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-167",
+      "title": "Infosys Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Infosys is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-07-23",
+      "time": "10:30 AM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 8.2,
+        "skills": [
+          "JavaScript"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-21",
+      "actionRequired": "Register on Infosys career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "CSE",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "ann-seeded-168",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-30",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "AI&DS",
+          "EEE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Algorithms",
+          "React",
+          "MongoDB"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-28",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "ECE",
+        "AI&DS",
+        "EEE",
+        "Algorithms",
+        "React",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-169",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-20",
+      "time": "10:30 AM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "ECE"
+        ],
+        "years": [
+          4,
+          1,
+          2
+        ],
+        "minCgpa": 7.4,
+        "skills": [
+          "Python"
+        ],
+        "interests": [
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-18",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "CSE",
+        "ECE",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-170",
+      "title": "Accenture Campus Placement Recruitment Drive 2026",
+      "category": "Placement",
+      "priority": "HIGH",
+      "description": "Accenture is recruiting software developers, product managers, and system analysts. Selection stages include coding assessment and technical interviews.",
+      "date": "2026-08-01",
+      "time": "09:00 AM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "CSE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Data Structures"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-07-30",
+      "actionRequired": "Register on Accenture career portal and submit your credentials to college Placement Officer.",
+      "summary": "Important update regarding Placement on NEC campus.",
+      "keywords": [
+        "Placement",
+        "Civil",
+        "CSE",
+        "Data Structures"
+      ]
+    },
+    {
+      "id": "ann-seeded-171",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-16",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "Mechanical",
+          "CSE"
+        ],
+        "years": [
+          4,
+          3
+        ],
+        "minCgpa": 6.6,
+        "skills": [
+          "Python"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-14",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "IT",
+        "Mechanical",
+        "CSE",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-172",
+      "title": "Intel Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Intel for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-08-10",
+      "time": "04:15 PM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "Mechanical",
+          "ECE"
+        ],
+        "years": [
+          2,
+          4
+        ],
+        "minCgpa": 7.3,
+        "skills": [
+          "Git"
+        ],
+        "interests": [
+          "AI/ML",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-08-08",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "IT",
+        "Mechanical",
+        "ECE",
+        "Git"
+      ]
+    },
+    {
+      "id": "ann-seeded-173",
+      "title": "Hands-on Workshop on Node.js and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-02",
+      "time": "09:00 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "Civil",
+          "AI&DS"
+        ],
+        "years": [
+          1,
+          2,
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Node.js"
+        ],
+        "interests": [
+          "Robotics",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-06-30",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "ECE",
+        "Civil",
+        "AI&DS",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-174",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-05",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "AI&DS"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "AWS",
+          "Python"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-03",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "IT",
+        "AI&DS",
+        "AWS",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-175",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-07",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "Mechanical"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 8,
+        "skills": [
+          "Machine Learning",
+          "Python",
+          "JavaScript"
+        ],
+        "interests": [
+          "Web Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-05",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "Mechanical",
+        "Machine Learning",
+        "Python",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "ann-seeded-176",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-06-27",
+      "time": "10:30 AM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "Civil"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.1,
+        "skills": [
+          "Python",
+          "MongoDB"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
       },
       "deadline": "2026-06-25",
-      "actionRequired": "Register online via L&T scholarship portal with verified UG academic reports."
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Mechanical",
+        "Civil",
+        "Python",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-177",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-25",
+      "time": "01:30 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "EEE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 8,
+        "skills": [
+          "C++",
+          "Node.js",
+          "Algorithms"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-23",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "ECE",
+        "EEE",
+        "C++",
+        "Node.js",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-178",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-06-23",
+      "time": "09:00 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "AI&DS",
+          "EEE"
+        ],
+        "years": [
+          1,
+          2
+        ],
+        "minCgpa": 8.5,
+        "skills": [
+          "Spring Boot"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Robotics"
+        ]
+      },
+      "deadline": "2026-06-21",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "ECE",
+        "AI&DS",
+        "EEE",
+        "Spring Boot"
+      ]
+    },
+    {
+      "id": "ann-seeded-179",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-06-28",
+      "time": "01:30 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          2,
+          1,
+          4
+        ],
+        "minCgpa": 7.8,
+        "skills": [
+          "Python",
+          "Docker",
+          "Java"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-06-26",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "CSE",
+        "Python",
+        "Docker",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-180",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-22",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "IT",
+          "EEE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 7.3,
+        "skills": [
+          "Node.js",
+          "Data Structures",
+          "Java"
+        ],
+        "interests": [
+          "Mobile App Development",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-20",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "IT",
+        "EEE",
+        "Node.js",
+        "Data Structures",
+        "Java"
+      ]
+    },
+    {
+      "id": "ann-seeded-181",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-06",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "IT",
+          "CSE"
+        ],
+        "years": [
+          4,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Algorithms"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-04",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "AI&DS",
+        "IT",
+        "CSE",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-182",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-08-02",
+      "time": "09:00 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "IT"
+        ],
+        "years": [
+          4,
+          3,
+          2
+        ],
+        "minCgpa": 7.5,
+        "skills": [
+          "Python",
+          "Git"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-31",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "CSE",
+        "IT",
+        "Python",
+        "Git"
+      ]
+    },
+    {
+      "id": "ann-seeded-183",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-08-03",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "Civil"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 6.8,
+        "skills": [
+          "Python",
+          "Spring Boot",
+          "AWS"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-08-01",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "ECE",
+        "Civil",
+        "Python",
+        "Spring Boot",
+        "AWS"
+      ]
+    },
+    {
+      "id": "ann-seeded-184",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-06-22",
+      "time": "04:15 PM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "IT"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": 7.7,
+        "skills": [
+          "React"
+        ],
+        "interests": [
+          "Research",
+          "Robotics"
+        ]
+      },
+      "deadline": "2026-06-20",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "Mechanical",
+        "IT",
+        "React"
+      ]
+    },
+    {
+      "id": "ann-seeded-185",
+      "title": "Practice Assignment 3: System Design and Architectures",
+      "category": "Assignment",
+      "priority": "HIGH",
+      "description": "Submit complete implementation block diagram, data schemas, and github source codes links.",
+      "date": "2026-07-25",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "AI&DS",
+          "CSE",
+          "ECE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Algorithms",
+          "Machine Learning"
+        ],
+        "interests": [
+          "Full Stack Development"
+        ]
+      },
+      "deadline": "2026-07-23",
+      "actionRequired": "Submit PDF report directly on LMS assignment portal link.",
+      "summary": "Important update regarding Assignment on NEC campus.",
+      "keywords": [
+        "Assignment",
+        "AI&DS",
+        "CSE",
+        "ECE",
+        "Algorithms",
+        "Machine Learning"
+      ]
+    },
+    {
+      "id": "ann-seeded-186",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-07",
+      "time": "09:00 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Mechanical"
+        ],
+        "years": [
+          4,
+          2
+        ],
+        "minCgpa": null,
+        "skills": [
+          "AWS",
+          "Tailwind CSS",
+          "MongoDB"
+        ],
+        "interests": [
+          "Mobile App Development",
+          "Research"
+        ]
+      },
+      "deadline": "2026-07-05",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "Mechanical",
+        "AWS",
+        "Tailwind CSS",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-187",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-07-05",
+      "time": "09:00 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "IT"
+        ],
+        "years": [
+          2,
+          1
+        ],
+        "minCgpa": 7.7,
+        "skills": [
+          "JavaScript",
+          "Node.js",
+          "MongoDB"
+        ],
+        "interests": [
+          "Cloud Computing",
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-07-03",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "CSE",
+        "IT",
+        "JavaScript",
+        "Node.js",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": "ann-seeded-188",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-08-15",
+      "time": "09:00 AM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "EEE"
+        ],
+        "years": [
+          3,
+          4
+        ],
+        "minCgpa": 8.3,
+        "skills": [
+          "Tailwind CSS"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-08-13",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Civil",
+        "EEE",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "id": "ann-seeded-189",
+      "title": "Important General Notice: Library Working Hours Extended",
+      "category": "General Notice",
+      "priority": "LOW",
+      "description": "Library reading rooms will remain open until 08:30 PM everyday for semester exam preparations.",
+      "date": "2026-08-11",
+      "time": "10:30 AM",
+      "venue": "Main Building Hall B",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "Mechanical",
+          "AI&DS"
+        ],
+        "years": [
+          4,
+          1,
+          2
+        ],
+        "minCgpa": 6.9,
+        "skills": [
+          "C++",
+          "MongoDB",
+          "Data Structures"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-08-09",
+      "actionRequired": "Use library card scanner for late entries. Maintain discipline.",
+      "summary": "Important update regarding General Notice on NEC campus.",
+      "keywords": [
+        "General Notice",
+        "CSE",
+        "Mechanical",
+        "AI&DS",
+        "C++",
+        "MongoDB",
+        "Data Structures"
+      ]
+    },
+    {
+      "id": "ann-seeded-190",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-06-24",
+      "time": "09:00 AM",
+      "venue": "CSE Block Seminar Room",
+      "eligibility": {
+        "departments": [
+          "AI&DS"
+        ],
+        "years": [
+          3,
+          4
+        ],
+        "minCgpa": 7.7,
+        "skills": [
+          "JavaScript",
+          "C++"
+        ],
+        "interests": [
+          "Robotics",
+          "Research"
+        ]
+      },
+      "deadline": "2026-06-22",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "AI&DS",
+        "JavaScript",
+        "C++"
+      ]
+    },
+    {
+      "id": "ann-seeded-191",
+      "title": "Intel Summer Internship Program",
+      "category": "Internship",
+      "priority": "HIGH",
+      "description": "A 6-month hands-on industry experience internship at Intel for pre-final year students. Opportunity for full time job pre-placement offer based on performance review.",
+      "date": "2026-07-24",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "AI&DS"
+        ],
+        "years": [
+          4,
+          1
+        ],
+        "minCgpa": null,
+        "skills": [
+          "Data Structures",
+          "SQL"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-07-22",
+      "actionRequired": "Submit resume in PDF format on LMS placement link before deadline.",
+      "summary": "Important update regarding Internship on NEC campus.",
+      "keywords": [
+        "Internship",
+        "ECE",
+        "AI&DS",
+        "Data Structures",
+        "SQL"
+      ]
+    },
+    {
+      "id": "ann-seeded-192",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-07-20",
+      "time": "04:15 PM",
+      "venue": "Auditorium",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "CSE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 6.6,
+        "skills": [
+          "JavaScript",
+          "Java",
+          "React"
+        ],
+        "interests": [
+          "Cyber Security",
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-07-18",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "Mechanical",
+        "CSE",
+        "JavaScript",
+        "Java",
+        "React"
+      ]
+    },
+    {
+      "id": "ann-seeded-193",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-08-16",
+      "time": "01:30 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "Mechanical",
+          "IT",
+          "ECE"
+        ],
+        "years": [
+          4
+        ],
+        "minCgpa": 7.8,
+        "skills": [
+          "Python",
+          "Algorithms"
+        ],
+        "interests": [
+          "AI/ML"
+        ]
+      },
+      "deadline": "2026-08-14",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "Mechanical",
+        "IT",
+        "ECE",
+        "Python",
+        "Algorithms"
+      ]
+    },
+    {
+      "id": "ann-seeded-194",
+      "title": "Semester Final Theory & Lab Board Examinations",
+      "category": "Examination",
+      "priority": "HIGH",
+      "description": "The official university board schedules for theory exams and practical exams have been published. Attendance is mandatory.",
+      "date": "2026-07-14",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "CSE",
+          "ECE",
+          "EEE"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 7.6,
+        "skills": [
+          "Python",
+          "Spring Boot"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-12",
+      "actionRequired": "Attest your hall ticket registration slip and complete record submission.",
+      "summary": "Important update regarding Examination on NEC campus.",
+      "keywords": [
+        "Examination",
+        "CSE",
+        "ECE",
+        "EEE",
+        "Python",
+        "Spring Boot"
+      ]
+    },
+    {
+      "id": "ann-seeded-195",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-07-14",
+      "time": "04:15 PM",
+      "venue": "Virtual Teams Meet",
+      "eligibility": {
+        "departments": [
+          "CSE"
+        ],
+        "years": [
+          3
+        ],
+        "minCgpa": null,
+        "skills": [
+          "JavaScript",
+          "Tailwind CSS",
+          "Docker"
+        ],
+        "interests": [
+          "Full Stack Development",
+          "Robotics"
+        ]
+      },
+      "deadline": "2026-07-12",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "CSE",
+        "JavaScript",
+        "Tailwind CSS",
+        "Docker"
+      ]
+    },
+    {
+      "id": "ann-seeded-196",
+      "title": "NEC National Technical Symposium 2026",
+      "category": "Event",
+      "priority": "MEDIUM",
+      "description": "Annual college wide inter-collegiate symposium featuring paper presentation, debugging contests, web dev hackathons, and design challenges.",
+      "date": "2026-06-21",
+      "time": "01:30 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "AI&DS"
+        ],
+        "years": [
+          1
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Node.js"
+        ],
+        "interests": [
+          "Cyber Security"
+        ]
+      },
+      "deadline": "2026-06-19",
+      "actionRequired": "Register your team on the symposium site and pay the entry ticket.",
+      "summary": "Important update regarding Event on NEC campus.",
+      "keywords": [
+        "Event",
+        "AI&DS",
+        "Node.js"
+      ]
+    },
+    {
+      "id": "ann-seeded-197",
+      "title": "Robotics and Coding Clubs Member Inductions",
+      "category": "Club Activity",
+      "priority": "LOW",
+      "description": "Recruiting core group and junior coordinators for technical clubs. Participate in mini challenge rounds.",
+      "date": "2026-07-17",
+      "time": "04:15 PM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "ECE",
+          "AI&DS"
+        ],
+        "years": [
+          1,
+          4,
+          2
+        ],
+        "minCgpa": 7.2,
+        "skills": [
+          "Python"
+        ],
+        "interests": [
+          "Research",
+          "Web Development"
+        ]
+      },
+      "deadline": "2026-07-15",
+      "actionRequired": "Register for club recruitment form and attend offline briefing.",
+      "summary": "Important update regarding Club Activity on NEC campus.",
+      "keywords": [
+        "Club Activity",
+        "Civil",
+        "ECE",
+        "AI&DS",
+        "Python"
+      ]
+    },
+    {
+      "id": "ann-seeded-198",
+      "title": "NEC Smart Campus Generative AI Hackathon",
+      "category": "Hackathon",
+      "priority": "HIGH",
+      "description": "Build creative automation utilities and dashboards. Team size 2-4 students. Cash prizes for winners.",
+      "date": "2026-08-12",
+      "time": "04:15 PM",
+      "venue": "IT Block Lab 2",
+      "eligibility": {
+        "departments": [
+          "Civil",
+          "IT"
+        ],
+        "years": [
+          1,
+          4,
+          2
+        ],
+        "minCgpa": 7.1,
+        "skills": [
+          "Data Structures",
+          "C++"
+        ],
+        "interests": [
+          "Cloud Computing"
+        ]
+      },
+      "deadline": "2026-08-10",
+      "actionRequired": "Create a devpost submission and register team on Devpost hackfest portal.",
+      "summary": "Important update regarding Hackathon on NEC campus.",
+      "keywords": [
+        "Hackathon",
+        "Civil",
+        "IT",
+        "Data Structures",
+        "C++"
+      ]
+    },
+    {
+      "id": "ann-seeded-199",
+      "title": "Hands-on Workshop on Python and Modern Best Practices",
+      "category": "Workshop",
+      "priority": "MEDIUM",
+      "description": "An intensive 2-day practical session on deployment and production guidelines, organized by department tech club advisors.",
+      "date": "2026-07-31",
+      "time": "10:30 AM",
+      "venue": "Seminar Hall 1",
+      "eligibility": {
+        "departments": [
+          "ECE",
+          "IT"
+        ],
+        "years": [
+          1,
+          4,
+          2
+        ],
+        "minCgpa": 6.7,
+        "skills": [
+          "Python"
+        ],
+        "interests": [
+          "Mobile App Development"
+        ]
+      },
+      "deadline": "2026-07-29",
+      "actionRequired": "Fill out registration form on department dashboard. Limited seats available.",
+      "summary": "Important update regarding Workshop on NEC campus.",
+      "keywords": [
+        "Workshop",
+        "ECE",
+        "IT",
+        "Python"
+      ]
     }
   ],
   "placementPipelines": [
@@ -277,6 +5907,17 @@
       "companyName": "Cognizant",
       "status": "Applied",
       "dateApplied": "2026-06-14"
+    },
+    {
+      "companyName": "Zoho",
+      "status": "Shortlisted",
+      "dateApplied": "2026-06-15"
     }
-  ]
+  ],
+  "placements": [],
+  "internships": [],
+  "scholarships": [],
+  "events": [],
+  "notifications": [],
+  "rawAnnouncements": []
 }

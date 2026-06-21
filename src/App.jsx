@@ -15,7 +15,24 @@ import {
   PlusCircle, 
   BookOpen, 
   Filter, 
-  X
+  X,
+  Bell,
+  Moon,
+  Sun,
+  Upload,
+  Database,
+  RefreshCw,
+  Clock,
+  CheckCircle,
+  FileText,
+  Bookmark,
+  Calendar,
+  AlertTriangle,
+  Mail,
+  CloudLightning,
+  Trash2,
+  Lock,
+  ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -24,8 +41,17 @@ export default function App() {
   const [profile, setProfile] = useState(DEFAULT_STUDENT_PROFILE);
   const [announcements, setAnnouncements] = useState([]);
   const [placementPipelines, setPlacementPipelines] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [rawAnnouncements, setRawAnnouncements] = useState([]);
+  
+  // Role & Theme states
+  const [role, setRole] = useState('student'); // 'student', 'faculty', 'admin'
+  const [darkMode, setDarkMode] = useState(true);
+  
+  // Notifications drawer state
+  const [showNotifDrawer, setShowNotifDrawer] = useState(false);
 
-  // Session-based read/completed UI states can remain in localStorage
+  // Session UI states (bookmarks, completed)
   const [viewedIds, setViewedIds] = useState(() => {
     const saved = localStorage.getItem('nec_viewed_announcements');
     return saved ? JSON.parse(saved) : [];
@@ -36,8 +62,48 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Fetch dynamic data from the server on mount
+  const [bookmarkedIds, setBookmarkedIds] = useState(() => {
+    const saved = localStorage.getItem('nec_bookmarked_announcements');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // activeTab changes based on the role
+  const [activeTab, setActiveTab] = useState('opportunities');
+
+  // Sync tab when role changes
   useEffect(() => {
+    if (role === 'student') {
+      setActiveTab('opportunities');
+    } else if (role === 'faculty') {
+      setActiveTab('manual-publish');
+    } else if (role === 'admin') {
+      setActiveTab('analytics');
+    }
+  }, [role]);
+
+  // Load theme preference on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('nec_theme_dark');
+    if (savedTheme !== null) {
+      setDarkMode(savedTheme === 'true');
+    }
+  }, []);
+
+  // Save theme to localStorage and body class
+  useEffect(() => {
+    localStorage.setItem('nec_theme_dark', darkMode.toString());
+    const body = document.body;
+    if (darkMode) {
+      body.classList.add('dark');
+      body.style.backgroundColor = '#020617';
+    } else {
+      body.classList.remove('dark');
+      body.style.backgroundColor = '#f8fafc';
+    }
+  }, [darkMode]);
+
+  // Fetch profiles, announcements, pipelines, raw logs, notifications on mount
+  const fetchAllData = () => {
     // Fetch profiles
     fetch('/api/profiles')
       .then(res => res.json())
@@ -60,6 +126,22 @@ export default function App() {
       .then(res => res.json())
       .then(data => setPlacementPipelines(data))
       .catch(err => console.error('Failed to load pipelines:', err));
+
+    // Fetch raw announcements (ingestion logs)
+    fetch('/api/raw-announcements')
+      .then(res => res.json())
+      .then(data => setRawAnnouncements(data))
+      .catch(err => console.error('Failed to load raw announcements:', err));
+
+    // Fetch system notifications
+    fetch('/api/notifications')
+      .then(res => res.json())
+      .then(data => setNotifications(data))
+      .catch(err => console.error('Failed to load notifications:', err));
+  };
+
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
   // Sync session UI state modifications to localStorage
@@ -71,13 +153,16 @@ export default function App() {
     localStorage.setItem('nec_completed_actions', JSON.stringify(completedIds));
   }, [completedIds]);
 
-  // View settings
-  const [activeTab, setActiveTab] = useState('opportunities');
+  useEffect(() => {
+    localStorage.setItem('nec_bookmarked_announcements', JSON.stringify(bookmarkedIds));
+  }, [bookmarkedIds]);
+
+  // Search & filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPriority, setSelectedPriority] = useState('All');
   const [onlyMatched, setOnlyMatched] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [onlyBookmarked, setOnlyBookmarked] = useState(false);
 
   // Manual Notice Entry Form states
   const [newTitle, setNewTitle] = useState('');
@@ -92,7 +177,22 @@ export default function App() {
   const [newDeptCriteria, setNewDeptCriteria] = useState('');
   const [newMinCgpa, setNewMinCgpa] = useState('');
 
-  // Utility to count match scores dynamically
+  // Ingestion upload status states
+  const [uploadFile, setUploadFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+
+  const [csvFile, setCsvFile] = useState(null);
+  const [isCsvUploading, setIsCsvUploading] = useState(false);
+  const [csvSuccess, setCsvSuccess] = useState(false);
+  const [csvError, setCsvError] = useState(null);
+
+  // Admin controls status
+  const [syncStatus, setSyncStatus] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  // Scoring engine utility (+30 Dept, +20 Year, +20 CGPA, +20 Skills, +10 Interest)
   const getScore = (p, ann) => {
     let score = 0;
     
@@ -142,6 +242,7 @@ export default function App() {
       if (selectedCategory !== 'All' && ann.category !== selectedCategory) return false;
       if (selectedPriority !== 'All' && ann.priority !== selectedPriority) return false;
       if (onlyMatched && ann.score < 50) return false;
+      if (onlyBookmarked && !bookmarkedIds.includes(ann.id)) return false;
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         return (
@@ -170,16 +271,29 @@ export default function App() {
     }
   };
 
+  const handleToggleBookmark = (id) => {
+    if (bookmarkedIds.includes(id)) {
+      setBookmarkedIds((prev) => prev.filter((item) => item !== id));
+    } else {
+      setBookmarkedIds((prev) => [...prev, id]);
+    }
+  };
+
   const handleAddExtractedAnnouncement = (ann) => {
     fetch('/api/announcements', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-mock-role': 'admin',
+        'x-mock-user': 'System'
+      },
       body: JSON.stringify(ann)
     })
     .then(res => res.json())
     .then(data => {
       if (data.announcements) {
         setAnnouncements(data.announcements);
+        fetchAllData();
       }
     })
     .catch(err => console.error('Failed to save extracted announcement:', err));
@@ -233,7 +347,6 @@ export default function App() {
       : [];
 
     const newAnn = {
-      id: `ann-manual-${Date.now()}`,
       title: newTitle.trim(),
       category: newCat,
       priority: newPriority,
@@ -243,26 +356,30 @@ export default function App() {
       venue: newVenue || 'NEC Campus',
       eligibility: {
         departments: parsedDepts.length ? parsedDepts : undefined,
-        minCgpa: newMinCgpa ? parseFloat(newMinCgpa) : undefined
+        minCgpa: newMinCgpa ? parseFloat(newMinCgpa) : undefined,
+        years: [3, 4] // default to final/pre-final years
       },
       deadline: newDeadline,
-      actionRequired: newAction.trim() || 'Register/apply on LMS.'
+      actionRequired: newAction.trim() || 'Register/apply on college LMS portal.'
     };
 
     fetch('/api/announcements', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-mock-role': 'faculty',
+        'x-mock-user': 'Prof. Srinivasan'
+      },
       body: JSON.stringify(newAnn)
     })
     .then(res => res.json())
     .then(data => {
       if (data.announcements) {
         setAnnouncements(data.announcements);
+        fetchAllData();
       }
     })
     .catch(err => console.error('Failed to post announcement:', err));
-
-    setShowAddModal(false);
 
     // Clear form fields
     setNewTitle('');
@@ -274,97 +391,256 @@ export default function App() {
     setNewAction('');
     setNewDeptCriteria('');
     setNewMinCgpa('');
+
+    alert('Notice published manually and alerts sent to eligible student feeds!');
+    setActiveTab('opportunities');
+  };
+
+  // Multer Ingestion API Upload handler
+  const handleFileUploadSubmit = async (e) => {
+    e.preventDefault();
+    if (!uploadFile) return;
+
+    setIsUploading(true);
+    setUploadError(null);
+    setUploadSuccess(false);
+
+    const formData = new FormData();
+    formData.append('attachment', uploadFile);
+
+    try {
+      const res = await fetch('/api/faculty/upload', {
+        method: 'POST',
+        headers: {
+          'x-mock-role': 'faculty',
+          'x-mock-user': 'Prof. Srinivasan'
+        },
+        body: formData
+      });
+
+      if (!res.ok) {
+        throw new Error(`Upload failed with status code ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setUploadSuccess(true);
+      setUploadFile(null);
+      setAnnouncements(data.announcements || []);
+      fetchAllData();
+      alert(`Successfully uploaded & ingested notice: "${data.announcement?.title}"`);
+      setActiveTab('opportunities');
+    } catch (err) {
+      console.error(err);
+      setUploadError(err.message || 'Failed to ingest file via Faculty attachment api.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // CSV/Excel import handler
+  const handleCsvUploadSubmit = async (e) => {
+    e.preventDefault();
+    if (!csvFile) return;
+
+    setIsCsvUploading(true);
+    setCsvError(null);
+    setCsvSuccess(false);
+
+    const formData = new FormData();
+    formData.append('csvFile', csvFile);
+
+    try {
+      const res = await fetch('/api/faculty/import-csv', {
+        method: 'POST',
+        headers: {
+          'x-mock-role': 'faculty',
+          'x-mock-user': 'Prof. Srinivasan'
+        },
+        body: formData
+      });
+
+      if (!res.ok) {
+        throw new Error(`Upload failed with status code ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setCsvSuccess(true);
+      setCsvFile(null);
+      setAnnouncements(data.announcements || []);
+      fetchAllData();
+      alert(`CSV Roster Imported successfully! Added ${data.count} new notice items to database.`);
+      setActiveTab('opportunities');
+    } catch (err) {
+      console.error(err);
+      setCsvError(err.message || 'Failed to import CSV roster sheets.');
+    } finally {
+      setIsCsvUploading(false);
+    }
+  };
+
+  // Admin sync handlers
+  const handleTriggerLmsSync = async () => {
+    setIsSyncing(true);
+    setSyncStatus('Polling Moodle LMS Canvas boards notifications...');
+    try {
+      const res = await fetch('/api/lms/sync');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSyncStatus(`LMS Sync Completed! Pulled: "${data.announcement?.title}"`);
+      setAnnouncements(data.announcements || []);
+      fetchAllData();
+    } catch (err) {
+      setSyncStatus(`LMS Sync failed: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleTriggerEmailSync = async () => {
+    setIsSyncing(true);
+    setSyncStatus('Reading unread emails from college mail inbox logs...');
+    try {
+      const res = await fetch('/api/emails/sync');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSyncStatus(`Email Sync Ingestion Successful! Pulled notice: "${data.announcement?.title}"`);
+      setAnnouncements(data.announcements || []);
+      fetchAllData();
+    } catch (err) {
+      setSyncStatus(`Email sync failed: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleTriggerNotificationEngine = async () => {
+    setIsSyncing(true);
+    setSyncStatus('Running smart notification deadline scheduler...');
+    try {
+      const res = await fetch('/api/notifications/reminders');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSyncStatus(`Notification Engine Triggered! Generated ${data.remindersSent} new deadline push alerts.`);
+      setNotifications(data.notifications || []);
+      fetchAllData();
+    } catch (err) {
+      setSyncStatus(`Notification engine trigger failed: ${err.message}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleClearNotifications = async () => {
+    if (!window.confirm('Delete all notifications from database log?')) return;
+    try {
+      const res = await fetch('/api/notifications', { method: 'DELETE' });
+      const data = await res.json();
+      setNotifications(data || []);
+      alert('Notifications log cleared.');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleResetData = () => {
-    if (window.confirm('Are you sure you want to reset all dashboard data, student profiles, and pipelines back to default?')) {
-      fetch('/api/reset', {
-        method: 'POST'
-      })
+    if (window.confirm('Reset all databases, clear custom uploads, and reseed mock dataset back to factory defaults?')) {
+      fetch('/api/reset', { method: 'POST' })
       .then(res => res.json())
       .then(() => {
         localStorage.clear();
+        alert('Database cleared and seeded with fresh data!');
         window.location.reload();
       })
       .catch(err => console.error('Failed to reset backend database:', err));
     }
   };
 
+  // Notification badge calculation
+  const unreadNotifCount = notifications.filter(n => !n.read).length;
+
   return (
-    <div id="main-container" className="min-h-screen bg-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased">
+    <div id="main-container" className={`min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 ${
+      darkMode ? 'dark bg-slate-950 text-slate-100 animated-gradient' : 'bg-slate-50 text-slate-800 animated-gradient-light'
+    }`}>
       
       {/* College App Header Branding */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-40 transition-colors">
+      <header className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-40 backdrop-blur-md transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          {/* Logo Title */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-sans font-black text-xl shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-indigo-650 bg-indigo-600 flex items-center justify-center text-white font-sans font-black text-xl shadow-lg border border-indigo-400">
               N
             </div>
             <div className="text-left">
-              <h1 className="font-sans font-black text-xl tracking-tighter text-slate-900 flex items-center gap-2 uppercase">
+              <h1 className="font-sans font-black text-xl tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 uppercase">
                 CampusAssist AI
-                <span className="text-[9px] font-black bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded border border-indigo-150 uppercase tracking-widest leading-none">
+                <span className="text-[9px] font-black bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-150 dark:border-indigo-800/50 uppercase tracking-widest leading-none">
                   NEC PORTAL
                 </span>
               </h1>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">National Engineering College • Intelligent Assist Platform</p>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">National Engineering College • Intelligent Assist Platform</p>
             </div>
           </div>
 
-          {/* Navigation Tab buttons bar */}
-          <nav className="flex flex-wrap bg-slate-100 p-1 rounded-2xl border border-slate-200">
-            <button
-              onClick={() => setActiveTab('opportunities')}
-              className={`px-4 py-2.5 text-[10px] font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-widest ${
-                activeTab === 'opportunities' 
-                  ? 'bg-slate-900 text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              <BookOpen size={13} />
-              Opportunities
-            </button>
-            <button
-              onClick={() => setActiveTab('advisor')}
-              className={`px-4 py-2.5 text-[10px] font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-widest ${
-                activeTab === 'advisor' 
-                  ? 'bg-slate-900 text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              <Bot size={13} />
-              AI Counselor
-            </button>
-            <button
-              onClick={() => setActiveTab('extractor')}
-              className={`px-4 py-2.5 text-[10px] font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-widest ${
-                activeTab === 'extractor' 
-                  ? 'bg-slate-900 text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              <Cpu size={13} />
-              AI Extractor
-            </button>
-            <button
-              onClick={() => setActiveTab('analytics')}
-              className={`px-4 py-2.5 text-[10px] font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer uppercase tracking-widest ${
-                activeTab === 'analytics' 
-                  ? 'bg-slate-900 text-white shadow-md' 
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              <TrendingUp size={13} />
-              Analytics & Track
-            </button>
-          </nav>
-
+          {/* Role Simulator Switcher */}
           <div className="flex items-center gap-2">
+            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 hidden sm:inline">Role Simulator:</span>
+            <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-2xl border border-slate-200 dark:border-slate-800/80">
+              {['student', 'faculty', 'admin'].map((r) => (
+                <button
+                  key={r}
+                  onClick={() => setRole(r)}
+                  className={`px-3.5 py-1.5 text-[9px] font-black rounded-xl transition-all cursor-pointer uppercase tracking-widest ${
+                    role === r 
+                      ? 'bg-indigo-600 text-white shadow-md' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Actions (Theme & Notification alerts bell) */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer"
+              title="Toggle Theme"
+            >
+              {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
+
+            {/* Notification Bell */}
+            <button
+              onClick={() => setShowNotifDrawer(true)}
+              className="relative p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer"
+              title="Notifications Drawer"
+            >
+              <Bell size={15} />
+              {unreadNotifCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-black text-white ring-2 ring-white dark:ring-slate-900 animate-pulse">
+                  {unreadNotifCount}
+                </span>
+              )}
+            </button>
+
             <button
               onClick={handleResetData}
-              className="text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-800 px-2.5 py-1.5 border border-slate-200 hover:border-slate-300 rounded-xl transition-colors cursor-pointer"
+              className="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white px-2.5 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 transition-colors cursor-pointer"
             >
-              Reset Data
+              Reset DB
             </button>
           </div>
         </div>
@@ -373,44 +649,170 @@ export default function App() {
       {/* Main layout contents */}
       <main className="max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
         
-        {/* Left Side Info Panel: Profile Summary + Warnings Board (Span 4 columns) */}
+        {/* Left Side Profile & Status Panel (Span 4 columns) */}
         <section className="lg:col-span-4 space-y-6">
-          <StudentProfileCard 
-            profile={profile} 
-            profiles={profiles} 
-            onChange={handleUpdateProfile} 
-            onSelectProfile={(pName) => {
-              const selected = profiles.find(p => p.name === pName);
-              if (selected) handleUpdateProfile(selected);
-            }} 
-          />
-          
-          <RemindersList announcements={announcements} completedActions={completedIds} />
+          {role === 'student' && (
+            <>
+              <StudentProfileCard 
+                profile={profile} 
+                profiles={profiles} 
+                onChange={handleUpdateProfile} 
+                onSelectProfile={(pName) => {
+                  const selected = profiles.find(p => p.name === pName);
+                  if (selected) handleUpdateProfile(selected);
+                }} 
+              />
+              <RemindersList announcements={announcements} completedActions={completedIds} />
+            </>
+          )}
+
+          {role === 'faculty' && (
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-5 text-left transition-all duration-300">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-violet-650 bg-violet-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
+                  FS
+                </div>
+                <div>
+                  <h3 className="font-sans font-black text-slate-900 dark:text-white text-base leading-tight uppercase">Faculty Portal</h3>
+                  <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold tracking-widest uppercase">Prof. Srinivasan • CSE</span>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Workspace tools</span>
+                <nav className="flex flex-col gap-1.5">
+                  {[
+                    { id: 'manual-publish', label: 'Publish Manual Notice', icon: PlusCircle },
+                    { id: 'extractor', label: 'AI notice extractor', icon: Cpu },
+                    { id: 'import-csv', label: 'CSV/Excel roster import', icon: FileText },
+                    { id: 'ingestion-logs', label: 'notice Ingestion logs', icon: Clock }
+                  ].map((tab) => {
+                    const Icon = tab.icon;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
+                          activeTab === tab.id 
+                            ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
+                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <Icon size={14} />
+                          {tab.label}
+                        </span>
+                        <ChevronRight size={12} />
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
+                <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase text-[9px] tracking-wider">Ingestion Feed Statistics</span>
+                <p>✓ Active Board Items: <span className="font-bold text-indigo-500">{announcements.length}</span></p>
+                <p>✓ Unprocessed Mail Snippets: <span className="font-bold text-rose-500">{rawAnnouncements.filter(r => r.processedStatus === 'pending').length}</span></p>
+                <p>✓ Active Ingested Logs: <span className="font-bold text-slate-800 dark:text-slate-200">{rawAnnouncements.length}</span></p>
+              </div>
+            </div>
+          )}
+
+          {role === 'admin' && (
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-5 text-left transition-all duration-300">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-indigo-650 bg-indigo-650/80 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-inner">
+                  AD
+                </div>
+                <div>
+                  <h3 className="font-sans font-black text-slate-900 dark:text-white text-base leading-tight uppercase">Admin Desk</h3>
+                  <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold tracking-widest uppercase">Platform Control Center</span>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Admin Views</span>
+                <nav className="flex flex-col gap-1.5">
+                  {[
+                    { id: 'analytics', label: 'System Analytics & track', icon: TrendingUp },
+                    { id: 'notifications-logs', label: 'Dispatched notifications', icon: Bell },
+                    { id: 'system-syncs', label: 'Ingestion sync controls', icon: Database }
+                  ].map((tab) => {
+                    const Icon = tab.icon;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
+                          activeTab === tab.id 
+                            ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
+                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <Icon size={14} />
+                          {tab.label}
+                        </span>
+                        <ChevronRight size={12} />
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-2">
+                <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase text-[9px] tracking-wider">Sync Quick Actions</span>
+                <div className="flex flex-wrap gap-2">
+                  <button 
+                    onClick={handleTriggerLmsSync} 
+                    className="flex-1 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-800 text-white rounded-lg text-[9px] font-black uppercase tracking-widest text-center hover:bg-slate-800 cursor-pointer"
+                  >
+                    LMS Sync
+                  </button>
+                  <button 
+                    onClick={handleTriggerEmailSync} 
+                    className="flex-1 px-2.5 py-1.5 bg-slate-900 dark:bg-slate-800 text-white rounded-lg text-[9px] font-black uppercase tracking-widest text-center hover:bg-slate-800 cursor-pointer"
+                  >
+                    Mail Sync
+                  </button>
+                </div>
+                <button 
+                  onClick={handleTriggerNotificationEngine}
+                  className="w-full px-2.5 py-1.5 bg-indigo-600 text-white rounded-lg text-[9px] font-black uppercase tracking-widest text-center hover:bg-indigo-700 cursor-pointer"
+                >
+                  Trigger Deadline Alert engine
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
-        {/* Right Side Workspaces: Grid Panels based on Active Tab (Span 8 columns) */}
+        {/* Right Side Main Workspaces (Span 8 columns) */}
         <section className="lg:col-span-8">
           <AnimatePresence mode="wait">
             
-            {/* TAB 1: Opportunities Feed */}
-            {activeTab === 'opportunities' && (
+            {/* ============================================================== */}
+            {/* STUDENT ROLES WORKSPACES */}
+            {/* ============================================================== */}
+
+            {/* TAB: Opportunities Feed */}
+            {activeTab === 'opportunities' && role === 'student' && (
               <motion.div
                 key="opportunities"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
-                {/* Hero design template box */}
-                <div className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                {/* Hero design card */}
+                <div className="bg-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden border border-indigo-950 neon-glow">
                   <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
                   <div className="space-y-3 z-10 text-left">
                     <h2 className="text-4xl md:text-5xl font-black leading-none tracking-tighter italic uppercase text-white">
                       HOW CAN I<br />HELP TODAY?
                     </h2>
                     <p className="text-indigo-200 text-xs font-black uppercase tracking-wider max-w-sm">
-                      Ask about placements, deadlines, or check your personalized eligibility.
+                      Consult your AI advisor, check matched openings, and download calendar .ics invites.
                     </p>
                   </div>
                   <div className="flex gap-2.5 shrink-0 z-10 w-full md:w-auto">
@@ -420,41 +822,25 @@ export default function App() {
                     >
                       Ask Counselor
                     </button>
-                    <button
-                      onClick={() => setActiveTab('extractor')}
-                      className="flex-1 md:flex-none px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all cursor-pointer text-center border border-slate-700"
-                    >
-                      AI Extractor
-                    </button>
                   </div>
                 </div>
 
                 {/* Search & Actions toolbar filter */}
-                <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-left">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-                    <div className="relative flex-1 w-full">
-                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                      <input
-                        type="text"
-                        placeholder="Search opportunities, branches, prerequisites..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case"
-                      />
-                    </div>
-                    
-                    <button
-                      onClick={() => setShowAddModal(true)}
-                      className="w-full md:w-auto px-4 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm shrink-0"
-                    >
-                      <PlusCircle size={14} />
-                      Publish Manual Notice
-                    </button>
+                <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 text-left">
+                  <div className="relative flex-1 w-full">
+                    <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Search opportunities, branches, prerequisites, topics..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case text-slate-850 dark:text-slate-100"
+                    />
                   </div>
 
-                  {/* Multi Filters criteria */}
-                  <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-100 text-xs font-semibold">
-                    <div className="flex items-center gap-1.5 text-slate-500">
+                  {/* Multi Filters categories */}
+                  <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold">
+                    <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                       <Filter size={13} />
                       <span>Category:</span>
                     </div>
@@ -463,10 +849,10 @@ export default function App() {
                         <button
                           key={cat}
                           onClick={() => setSelectedCategory(cat)}
-                          className={`px-2.5 py-1 rounded-md transition-colors border cursor-pointer ${
+                          className={`px-2.5 py-1 rounded-md transition-colors border cursor-pointer text-[10px] uppercase tracking-wide ${
                             selectedCategory === cat
-                              ? 'bg-slate-900 border-slate-950 text-white font-bold'
-                              : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                              ? 'bg-slate-900 dark:bg-indigo-600 border-slate-950 dark:border-indigo-700 text-white font-bold'
+                              : 'bg-slate-50 dark:bg-slate-850 text-slate-650 dark:text-slate-350 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                           }`}
                         >
                           {cat}
@@ -476,13 +862,14 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-5 justify-between pt-1 text-xs">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1.5 font-semibold text-slate-500">
-                        <span>Priority Level:</span>
+                    <div className="flex flex-wrap items-center gap-4">
+                      {/* Priority selector */}
+                      <div className="flex items-center gap-1.5 font-semibold text-slate-500 dark:text-slate-400">
+                        <span>Priority:</span>
                         <select
                           value={selectedPriority}
                           onChange={(e) => setSelectedPriority(e.target.value)}
-                          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded focus:outline-none"
+                          className="px-2 py-1 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded focus:outline-none text-slate-800 dark:text-slate-200"
                         >
                           <option value="All">All Priorities</option>
                           <option value="HIGH">High Priority</option>
@@ -491,19 +878,34 @@ export default function App() {
                         </select>
                       </div>
 
-                      <label className="flex items-center gap-1.5 font-semibold text-slate-600 select-none cursor-pointer">
+                      {/* Matching toggle */}
+                      <label className="flex items-center gap-1.5 font-semibold text-slate-600 dark:text-slate-400 select-none cursor-pointer">
                         <input
                           type="checkbox"
                           checked={onlyMatched}
                           onChange={(e) => setOnlyMatched(e.target.checked)}
                           className="accent-indigo-600 h-3.5 w-3.5"
                         />
-                        <span>Highly Matched (Score &gt;= 50)</span>
+                        <span>Highly Matched Feed (Score &gt;= 50)</span>
+                      </label>
+
+                      {/* Bookmarks toggle */}
+                      <label className="flex items-center gap-1.5 font-semibold text-slate-600 dark:text-slate-400 select-none cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={onlyBookmarked}
+                          onChange={(e) => setOnlyBookmarked(e.target.checked)}
+                          className="accent-indigo-600 h-3.5 w-3.5"
+                        />
+                        <span className="flex items-center gap-1">
+                          <Bookmark size={11} className="fill-current text-indigo-500" />
+                          Bookmarks Only
+                        </span>
                       </label>
                     </div>
 
-                    <p className="text-[11px] font-mono font-bold text-slate-400">
-                      Showing {processedAnnouncements.length} of {announcements.length} notices
+                    <p className="text-[11px] font-mono font-bold text-slate-450 dark:text-slate-500">
+                      Found {processedAnnouncements.length} of {announcements.length} entries
                     </p>
                   </div>
                 </div>
@@ -517,56 +919,415 @@ export default function App() {
                       profile={profile}
                       isViewed={viewedIds.includes(ann.id)}
                       isCompleted={completedIds.includes(ann.id)}
+                      isBookmarked={bookmarkedIds.includes(ann.id)}
                       onMarkViewed={() => handleMarkViewed(ann.id)}
                       onToggleComplete={() => handleToggleCompleted(ann.id)}
+                      onToggleBookmark={() => handleToggleBookmark(ann.id)}
                       index={idx}
+                      darkMode={darkMode}
                     />
                   ))}
 
                   {processedAnnouncements.length === 0 && (
-                    <div className="text-center py-12 bg-white rounded-2xl border border-slate-200 space-y-2">
-                      <p className="font-display font-bold text-slate-600 text-base">No Matching Notices Found</p>
-                      <p className="text-xs text-slate-400 max-w-sm mx-auto">Try resetting filters, searching for alternate titles, or generating a prototype notice via the Extractor.</p>
+                    <div className="text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 shadow-sm">
+                      <p className="font-display font-bold text-slate-600 dark:text-slate-350 text-base">No Matching Notices Found</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 max-w-sm mx-auto">Try resetting filters, searching for alternate keywords, or toggling bookmarked filters.</p>
                     </div>
                   )}
                 </div>
               </motion.div>
             )}
 
-            {/* TAB 2: AI Counselor Chat interface */}
-            {activeTab === 'advisor' && (
+            {/* TAB: Student Counselor Chatbot */}
+            {activeTab === 'advisor' && role === 'student' && (
               <motion.div
                 key="advisor"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
               >
-                <CampusChat profile={profile} announcements={announcements} />
+                <CampusChat profile={profile} announcements={announcements} darkMode={darkMode} />
               </motion.div>
             )}
 
-            {/* TAB 3: Notice Extractor */}
-            {activeTab === 'extractor' && (
+            {/* ============================================================== */}
+            {/* FACULTY PORTAL WORKSPACES */}
+            {/* ============================================================== */}
+
+            {/* TAB: Faculty Manual Publish Form */}
+            {activeTab === 'manual-publish' && role === 'faculty' && (
+              <motion.div
+                key="manual-publish"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-6"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl">
+                    <PlusCircle size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-sans font-black text-slate-900 dark:text-white text-lg uppercase tracking-tighter">Publish Notice Item</h3>
+                    <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Submit manual announcement inputs to college board database</p>
+                  </div>
+                </div>
+
+                <form onSubmit={handleManualNoticeSubmit} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Notice/Event Title *</label>
+                    <input
+                      type="text"
+                      required
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      placeholder="e.g. Zoho Corporation Hiring Drive 2026"
+                      className="w-full px-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none text-slate-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Notice Category</label>
+                      <select
+                        value={newCat}
+                        onChange={(e) => setNewCat(e.target.value)}
+                        className="w-full px-2.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none text-slate-800 dark:text-slate-200"
+                      >
+                        {CATEGORIES.map(c => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Default Priority Level</label>
+                      <select
+                        value={newPriority}
+                        onChange={(e) => setNewPriority(e.target.value)}
+                        className="w-full px-2.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none text-slate-800 dark:text-slate-200"
+                      >
+                        <option value="LOW">LOW</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="HIGH">HIGH</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Detailed Description *</label>
+                    <textarea
+                      rows={4}
+                      required
+                      value={newDesc}
+                      onChange={(e) => setNewDesc(e.target.value)}
+                      placeholder="Provide full details of the notice, guidelines, eligibility instructions..."
+                      className="w-full px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none text-slate-900 dark:text-white"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2.5">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Event Date</label>
+                      <input
+                        type="date"
+                        value={newDate}
+                        onChange={(e) => setNewDate(e.target.value)}
+                        className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Venue</label>
+                      <input
+                        type="text"
+                        value={newVenue}
+                        onChange={(e) => setNewVenue(e.target.value)}
+                        placeholder="e.g. IT Labs, Auditorium"
+                        className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Deadline Date *</label>
+                      <input
+                        type="date"
+                        required
+                        value={newDeadline}
+                        onChange={(e) => setNewDeadline(e.target.value)}
+                        className="w-full px-2 py-2 bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-300 dark:border-indigo-800 rounded-xl text-xs font-bold text-indigo-700 dark:text-indigo-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Target Departments (comma-separated)</label>
+                      <input
+                        type="text"
+                        value={newDeptCriteria}
+                        onChange={(e) => setNewDeptCriteria(e.target.value)}
+                        placeholder="e.g. CSE, IT, AI&DS"
+                        className="w-full px-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Min CGPA Required</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={newMinCgpa}
+                        onChange={(e) => setNewMinCgpa(e.target.value)}
+                        placeholder="e.g. 7.5"
+                        className="w-full px-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400">Action Required *</label>
+                    <input
+                      type="text"
+                      required
+                      value={newAction}
+                      onChange={(e) => setNewAction(e.target.value)}
+                      placeholder="e.g. Apply on Zoho hiring link and upload verified CV."
+                      className="w-full px-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none text-slate-900 dark:text-white"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black uppercase text-[10px] tracking-widest rounded-xl text-center shadow-md transition-all cursor-pointer"
+                  >
+                    Publish Board Notice
+                  </button>
+                </form>
+              </motion.div>
+            )}
+
+            {/* TAB: Faculty AI Notice Extractor (Multer Ingestion File Upload) */}
+            {activeTab === 'extractor' && role === 'faculty' && (
               <motion.div
                 key="extractor"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
+                className="space-y-6"
               >
+                {/* Text Ingestion extractor */}
                 <DeadlineExtractor onAddExtractedAnnouncement={handleAddExtractedAnnouncement} />
+
+                {/* PDF/DOCX Document Multer Upload */}
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl">
+                      <Upload size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-sans font-black text-slate-900 dark:text-white text-base uppercase tracking-tighter">Ingest PDF/Image Flyer</h3>
+                      <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Upload flyer files, run raw parsing, and ingest to DB via Groq AI</p>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleFileUploadSubmit} className="space-y-4 pt-2">
+                    <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 text-center transition-colors cursor-pointer relative bg-slate-50/50 dark:bg-slate-950/20">
+                      <input 
+                        type="file" 
+                        accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.xlsx"
+                        onChange={(e) => setUploadFile(e.target.files[0])}
+                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                      />
+                      <div className="space-y-2">
+                        <Upload className="mx-auto text-slate-400 dark:text-slate-600" size={32} />
+                        {uploadFile ? (
+                          <p className="text-xs font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">Selected: {uploadFile.name}</p>
+                        ) : (
+                          <>
+                            <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Drag flyer documents here or click to browse</p>
+                            <p className="text-[10px] text-slate-400">Supports PDF, DOCX, Images (JPG, PNG) or Excel (Max 5MB)</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {uploadError && (
+                      <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                        <AlertTriangle size={15} className="text-rose-600 shrink-0" />
+                        <span>{uploadError}</span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        disabled={!uploadFile || isUploading}
+                        className="px-6 py-3 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 dark:disabled:bg-slate-800 flex items-center gap-2 cursor-pointer shadow-sm"
+                      >
+                        {isUploading ? <RefreshCw size={14} className="animate-spin" /> : <Cpu size={14} />}
+                        {isUploading ? 'Parsing Flyer with Groq...' : 'Upload & Process Notice'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </motion.div>
             )}
 
-            {/* TAB 4: Analytics Dashboard panel */}
-            {activeTab === 'analytics' && (
+            {/* TAB: Faculty CSV/Excel Roster Upload */}
+            {activeTab === 'import-csv' && role === 'faculty' && (
+              <motion.div
+                key="import-csv"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-5"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-emerald-650 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl">
+                    <FileText size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-sans font-black text-slate-900 dark:text-white text-base uppercase tracking-tighter">CSV/Excel Notice Ingestion</h3>
+                    <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Bulk import announcement rows directly from standard Excel sheets</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 dark:bg-slate-850 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 text-xs text-slate-650 dark:text-slate-350 space-y-2">
+                  <p className="font-black text-slate-800 dark:text-slate-200 uppercase text-[9px] tracking-wider">Required Column Schema Headers:</p>
+                  <p className="font-mono text-[10px] bg-white dark:bg-slate-950 p-2.5 rounded border border-slate-200 dark:border-slate-800">
+                    Title | Category | Priority | Description | Venue | Deadline | Action
+                  </p>
+                  <p className="text-[10px]">Uploading a sheet automatically parses rows, maps variables, saves to processed databases, and dispatches in-app alerts to student dashboards.</p>
+                </div>
+
+                <form onSubmit={handleCsvUploadSubmit} className="space-y-4 pt-2">
+                  <div className="border-2 border-dashed border-slate-250 border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 text-center transition-colors cursor-pointer relative bg-slate-50/50 dark:bg-slate-950/20">
+                    <input 
+                      type="file" 
+                      accept=".xlsx,.xls,.csv"
+                      onChange={(e) => setCsvFile(e.target.files[0])}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <div className="space-y-2">
+                      <Upload className="mx-auto text-slate-400 dark:text-slate-600" size={32} />
+                      {csvFile ? (
+                        <p className="text-xs font-black text-emerald-600 dark:text-emerald-450 uppercase tracking-wide">Selected Sheet: {csvFile.name}</p>
+                      ) : (
+                        <>
+                          <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Choose Spreadsheet (.xlsx, .csv) to upload</p>
+                          <p className="text-[10px] text-slate-400">Imports schedule listings in bulk batches</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {csvError && (
+                    <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                      <AlertTriangle size={15} className="text-rose-600 shrink-0" />
+                      <span>{csvError}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={!csvFile || isCsvUploading}
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest disabled:bg-slate-150 disabled:text-slate-400 dark:disabled:bg-slate-800 flex items-center gap-2 cursor-pointer shadow-sm border border-emerald-750"
+                    >
+                      {isCsvUploading ? <RefreshCw size={14} className="animate-spin" /> : <Database size={14} />}
+                      {isCsvUploading ? 'Processing spreadsheet...' : 'Start Ingestion Batch'}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            )}
+
+            {/* TAB: Notice Ingestion Logs */}
+            {activeTab === 'ingestion-logs' && role === 'faculty' && (
+              <motion.div
+                key="ingestion-logs"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-4"
+              >
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl">
+                      <Clock size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-sans font-black text-slate-900 dark:text-white text-base uppercase tracking-tighter">Notice Ingestion Logs</h3>
+                      <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Raw text log items collected by Email, LMS Canvas sync, and upload widgets</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={fetchAllData}
+                    className="p-2 rounded-lg bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-indigo-600"
+                    title="Reload Logs"
+                  >
+                    <RefreshCw size={14} />
+                  </button>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs font-semibold text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-450 dark:text-slate-500 uppercase tracking-widest text-[9px]">
+                        <th className="py-2.5 px-3">Date</th>
+                        <th className="py-2.5 px-3">Source</th>
+                        <th className="py-2.5 px-3">Status</th>
+                        <th className="py-2.5 px-3">Raw Content Snippet</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rawAnnouncements.map((log) => {
+                        let sourceBadge = 'bg-slate-105 text-slate-700';
+                        if (log.source === 'email') sourceBadge = 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-150 dark:border-indigo-900';
+                        if (log.source === 'lms') sourceBadge = 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-150 dark:border-amber-900';
+                        if (log.source === 'faculty') sourceBadge = 'bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 border border-violet-150 dark:border-violet-900';
+
+                        return (
+                          <tr key={log.id || log._id} className="border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30">
+                            <td className="py-3 px-3 font-mono text-[9px] text-slate-400 whitespace-nowrap">
+                              {new Date(log.importedAt || Date.now()).toLocaleDateString()} {new Date(log.importedAt || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                            </td>
+                            <td className="py-3 px-3">
+                              <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${sourceBadge}`}>
+                                {log.source}
+                              </span>
+                            </td>
+                            <td className="py-3 px-3">
+                              <span className="text-[9px] text-emerald-600 font-bold uppercase tracking-wider flex items-center gap-1">
+                                <CheckCircle size={10} />
+                                Processed
+                              </span>
+                            </td>
+                            <td className="py-3 px-3 text-slate-500 dark:text-slate-400 font-medium truncate max-w-xs font-mono text-[10px]">
+                              {log.rawText}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {rawAnnouncements.length === 0 && (
+                        <tr>
+                          <td colSpan={4} className="text-center py-6 text-[10px] font-bold uppercase text-slate-400">No notice ingestion pipeline activities found yet.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ============================================================== */}
+            {/* ADMIN WORKSPACES */}
+            {/* ============================================================== */}
+
+            {/* TAB: Analytics & Placement Pipelines */}
+            {activeTab === 'analytics' && role === 'admin' && (
               <motion.div
                 key="analytics"
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
               >
                 <AnalyticsPanel 
                   announcements={announcements}
@@ -579,162 +1340,278 @@ export default function App() {
               </motion.div>
             )}
 
+            {/* TAB: System Notifications Alert Logs */}
+            {activeTab === 'notifications-logs' && role === 'admin' && (
+              <motion.div
+                key="notifications-logs"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-4"
+              >
+                <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center text-white text-xl">
+                      <Bell size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-sans font-black text-slate-900 dark:text-white text-base uppercase tracking-tighter">System Dispatched alerts log</h3>
+                      <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">In-App, Push & Email logs triggered for students based on deadlines</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={handleClearNotifications}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[9px] font-black uppercase tracking-wider rounded-xl cursor-pointer"
+                  >
+                    <Trash2 size={11} />
+                    Clear Alerts Log
+                  </button>
+                </div>
+
+                <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
+                  {notifications.map((notif) => {
+                    let typeBadge = 'bg-slate-100 text-slate-650';
+                    if (notif.type === 'push') typeBadge = 'bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900';
+                    if (notif.type === 'in-app') typeBadge = 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900';
+
+                    return (
+                      <div key={notif.id || notif._id} className="p-3.5 rounded-2xl border border-slate-150 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 text-xs font-semibold space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${typeBadge}`}>
+                            {notif.type}
+                          </span>
+                          <span className="font-mono text-[9px] text-slate-400">
+                            {new Date(notif.createdAt || Date.now()).toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <h5 className="font-sans font-black uppercase text-slate-800 dark:text-white leading-tight text-xs pt-1">{notif.title}</h5>
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-[11px] leading-relaxed">{notif.body}</p>
+                      </div>
+                    );
+                  })}
+
+                  {notifications.length === 0 && (
+                    <div className="text-center py-10 text-[10px] font-bold uppercase text-slate-450 dark:text-slate-500">No alerts have been dispatched yet. Trigger the engine below or publish notices.</div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            {/* TAB: Ingestion Sync Controls */}
+            {activeTab === 'system-syncs' && role === 'admin' && (
+              <motion.div
+                key="system-syncs"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 text-left shadow-xl space-y-6"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl">
+                    <Database size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-sans font-black text-slate-900 dark:text-white text-base uppercase tracking-tighter">System Pipeline Controls</h3>
+                    <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Sync external database nodes, mail logs, moodle syncs, and resets</p>
+                  </div>
+                </div>
+
+                {syncStatus && (
+                  <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-150 dark:border-indigo-800 text-xs font-semibold flex items-start gap-2.5 text-indigo-750 dark:text-indigo-400 animate-pulse">
+                    <Sparkles className="shrink-0 text-indigo-650" size={16} />
+                    <div>
+                      <span className="uppercase text-[9px] font-black block tracking-wider text-slate-450">Execution Console:</span>
+                      <p className="mt-0.5">{syncStatus}</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Sync Card 1: LMS */}
+                  <div className="p-5 bg-slate-50 dark:bg-slate-850 rounded-2xl border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-widest">
+                        <CloudLightning size={14} />
+                        Moodle Canvas LMS Sync
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Poll notices from Moodle Canvas discussion boards. Mock Sync downloads new assignment details and extracts deadline checklists.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleTriggerLmsSync}
+                      disabled={isSyncing}
+                      className="w-full py-2.5 bg-slate-900 dark:bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center hover:bg-slate-800 cursor-pointer"
+                    >
+                      Trigger LMS Sync API
+                    </button>
+                  </div>
+
+                  {/* Sync Card 2: Email */}
+                  <div className="p-5 bg-slate-50 dark:bg-slate-850 rounded-2xl border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-widest">
+                        <Mail size={14} />
+                        Faculty Email Ingestion
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Query college SMTP/IMAP servers for notices from directors and placement coordinators. Runs classification using Groq.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleTriggerEmailSync}
+                      disabled={isSyncing}
+                      className="w-full py-2.5 bg-slate-900 dark:bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center hover:bg-slate-800 cursor-pointer"
+                    >
+                      Trigger Email Ingestion
+                    </button>
+                  </div>
+
+                  {/* Sync Card 3: Alert reminders */}
+                  <div className="p-5 bg-slate-50 dark:bg-slate-850 rounded-2xl border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase tracking-widest">
+                        <Bell size={14} />
+                        Deadline alerts engine
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Calculate upcoming deadlines relative to current dates. Schedules emails and push notifications for items due within 1, 3, or 7 days.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleTriggerNotificationEngine}
+                      disabled={isSyncing}
+                      className="w-full py-2.5 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center hover:bg-indigo-750 cursor-pointer"
+                    >
+                      Trigger Alert Scheduler
+                    </button>
+                  </div>
+
+                  {/* Sync Card 4: Database Reset */}
+                  <div className="p-5 bg-slate-50 dark:bg-slate-850 rounded-2xl border border-slate-200 dark:border-slate-800/80 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-black text-[10px] uppercase tracking-widest">
+                        <Database size={14} />
+                        Full Seeding Resets
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Drop all tables/collections, reset user configurations, delete local files cache, and re-seed 100 students + 100 notices.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleResetData}
+                      className="w-full py-2.5 bg-rose-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center hover:bg-rose-700 cursor-pointer animate-pulse"
+                    >
+                      Reset & Re-seed Data
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
           </AnimatePresence>
         </section>
       </main>
 
       {/* Footer copyright */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-5 text-center text-xs text-slate-500 font-medium">
-        <p>© 2026 National Engineering College • Powered by CampusAssist AI Counsel Suite</p>
+      <footer className="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 font-medium">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p>© 2026 National Engineering College • Powered by CampusAssist AI Counsel Suite</p>
+          <div className="flex gap-4">
+            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border border-slate-800 rounded bg-slate-950 text-indigo-400">
+              MongoDB Fallback Client Active
+            </span>
+          </div>
+        </div>
       </footer>
 
-      {/* Manual Add Announcement Modal */}
+      {/* Sliding Side Notification Drawer */}
       <AnimatePresence>
-        {showAddModal && (
-          <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        {showNotifDrawer && (
+          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex justify-end">
+            {/* Drawer Backdrop click handles */}
+            <div className="absolute inset-0 cursor-pointer" onClick={() => setShowNotifDrawer(false)}></div>
+            
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-lg w-full max-h-[90vh] overflow-y-auto"
+              initial={{ x: '100%', opacity: 0.9 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0.9 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative bg-white dark:bg-slate-900 w-full max-w-md h-full shadow-2xl border-l border-slate-205 dark:border-slate-800 flex flex-col justify-between text-left"
             >
-              <div className="px-6 py-4 bg-slate-900 border-b border-slate-800 text-white flex items-center justify-between">
-                <span className="font-display font-bold text-base tracking-tight">Publish Campus Notice Board item</span>
+              {/* Drawer Header */}
+              <div className="px-6 py-5 bg-slate-900 text-white border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Bell size={18} className="text-indigo-400" />
+                  <span className="font-display font-black text-base uppercase tracking-tight">Active Deadline Alerts</span>
+                </div>
                 <button 
-                  onClick={() => setShowAddModal(false)}
-                  className="p-1 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  onClick={() => setShowNotifDrawer(false)}
+                  className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  <X size={16} />
+                  <X size={18} />
                 </button>
               </div>
 
-              <form onSubmit={handleManualNoticeSubmit} className="p-6 space-y-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500">Notice/Event Title *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="e.g. Zoho Corporation Hiring Sprint"
-                    className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
-                  />
-                </div>
+              {/* Drawer Content */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50 dark:bg-slate-950/20">
+                {notifications.map((notif) => {
+                  let badgeStyle = 'bg-slate-100 text-slate-700';
+                  if (notif.type === 'push') badgeStyle = 'bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900';
+                  if (notif.type === 'in-app') badgeStyle = 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900';
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Notice Category</label>
-                    <select
-                      value={newCat}
-                      onChange={(e) => setNewCat(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
+                  return (
+                    <div 
+                      key={notif.id || notif._id} 
+                      className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-150 dark:border-slate-800/80 shadow-sm space-y-2 relative"
                     >
-                      {CATEGORIES.map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Default Priority Level</label>
-                    <select
-                      value={newPriority}
-                      onChange={(e) => setNewPriority(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
-                    >
-                      <option value="LOW">LOW</option>
-                      <option value="MEDIUM">MEDIUM</option>
-                      <option value="HIGH">HIGH</option>
-                    </select>
-                  </div>
-                </div>
+                      <div className="flex items-center justify-between">
+                        <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${badgeStyle}`}>
+                          {notif.type}
+                        </span>
+                        <span className="text-[9px] text-slate-400 font-mono font-semibold">
+                          {new Date(notif.createdAt).toLocaleDateString()} {new Date(notif.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                        </span>
+                      </div>
+                      
+                      <h4 className="font-sans font-black text-slate-850 dark:text-white text-xs uppercase leading-tight pt-1">{notif.title}</h4>
+                      <p className="text-slate-500 dark:text-slate-450 text-[11px] leading-relaxed font-semibold">{notif.body}</p>
+                      
+                      {notif.deadline && (
+                        <p className="text-[9px] text-indigo-650 dark:text-indigo-400 font-mono font-bold tracking-tight">
+                          TARGET DEADLINE: {notif.deadline}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
 
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500">Brief Summary *</label>
-                  <textarea
-                    rows={2}
-                    required
-                    value={newDesc}
-                    onChange={(e) => setNewDesc(e.target.value)}
-                    placeholder="Provide core instructions or description of the visit/event..."
-                    className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-205 rounded-lg focus:outline-none"
-                  />
-                </div>
+                {notifications.length === 0 && (
+                  <div className="text-center py-20 text-slate-400 space-y-3">
+                    <Bell className="mx-auto opacity-30" size={32} />
+                    <p className="text-xs font-black uppercase tracking-wider">No alerts active</p>
+                    <p className="text-[10px] max-w-xs mx-auto">Alerts will trigger automatically based on announcements deadlines, or when Sync engines are triggered.</p>
+                  </div>
+                )}
+              </div>
 
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Event Date</label>
-                    <input
-                      type="date"
-                      value={newDate}
-                      onChange={(e) => setNewDate(e.target.value)}
-                      className="w-full px-2 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Venue</label>
-                    <input
-                      type="text"
-                      value={newVenue}
-                      onChange={(e) => setNewVenue(e.target.value)}
-                      placeholder="IT Labs, etc."
-                      className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Deadline Date *</label>
-                    <input
-                      type="date"
-                      required
-                      value={newDeadline}
-                      onChange={(e) => setNewDeadline(e.target.value)}
-                      className="w-full px-2 py-1 bg-slate-50 border border-slate-200 border-indigo-400 rounded-lg text-xs font-bold text-indigo-700"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Target Departments (comma-separated)</label>
-                    <input
-                      type="text"
-                      value={newDeptCriteria}
-                      onChange={(e) => setNewDeptCriteria(e.target.value)}
-                      placeholder="e.g. CSE, IT, AI&DS"
-                      className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-500">Min CGPA Required</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={newMinCgpa}
-                      onChange={(e) => setNewMinCgpa(e.target.value)}
-                      placeholder="e.g. 7.5"
-                      className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500">Action Required *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newAction}
-                    onChange={(e) => setNewAction(e.target.value)}
-                    placeholder="e.g. Log in to Zoho careers portal and apply"
-                    className="w-full px-3 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
-                  />
-                </div>
-
+              {/* Drawer Footer */}
+              <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex gap-2">
                 <button
-                  type="submit"
-                  className="w-full py-2.5 bg-slate-900 text-white font-bold rounded-xl text-center hover:bg-slate-800 transition-colors cursor-pointer"
+                  onClick={handleClearNotifications}
+                  disabled={notifications.length === 0}
+                  className="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center shadow transition-all cursor-pointer disabled:bg-slate-100 disabled:text-slate-450 dark:disabled:bg-slate-800"
                 >
-                  Publish Notice Live
+                  Clear Alerts
                 </button>
-              </form>
+                <button
+                  onClick={() => setShowNotifDrawer(false)}
+                  className="flex-1 py-3 bg-slate-900 dark:bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest text-center shadow transition-all cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+
             </motion.div>
           </div>
         )}

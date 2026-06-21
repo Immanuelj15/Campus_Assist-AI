@@ -3,7 +3,7 @@ import { SUGGESTED_QUERIES } from '../data';
 import { Send, Bot, User, Sparkles, AlertCircle, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-export default function CampusChat({ profile, announcements }) {
+export default function CampusChat({ profile, announcements, darkMode }) {
   const [messages, setMessages] = useState([
     {
       id: 'welcome',
@@ -87,11 +87,11 @@ How can I help you excel today? You can select code examples or talk to me in na
   };
 
   return (
-    <div id="campus-chat-container" className="bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col h-[600px] overflow-hidden text-left">
+    <div id="campus-chat-container" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-[550px] overflow-hidden text-left transition-all duration-300">
       {/* Bot Chat Header */}
       <div className="bg-slate-900 px-6 py-4 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl">
+          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xl border border-indigo-400">
             <Bot size={22} className="animate-pulse" />
           </div>
           <div>
@@ -126,7 +126,7 @@ I've refreshed our conversation history. Feel free to query me about upcoming in
       </div>
 
       {/* Messages Feed panel */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/70">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/70 dark:bg-slate-950/20">
         <AnimatePresence initial={false}>
           {messages.map((message) => {
             const isBot = message.role === 'model';
@@ -139,14 +139,14 @@ I've refreshed our conversation history. Feel free to query me about upcoming in
               >
                 {/* Profile icon */}
                 <div className={`p-2 rounded-xl h-9 w-9 flex items-center justify-center shrink-0 ${
-                  isBot ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-800 text-slate-100 shadow-sm'
+                  isBot ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-800 dark:bg-slate-700 text-slate-100 shadow-sm'
                 }`}>
                   {isBot ? <Bot size={16} /> : <User size={16} />}
                 </div>
 
                 <div className={`rounded-2xl p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-sm ${
                   isBot 
-                    ? 'bg-white text-slate-800 border border-slate-150' 
+                    ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-205 border border-slate-150 dark:border-slate-800' 
                     : 'bg-indigo-600 text-white rounded-tr-none'
                 }`}>
                   {message.text}
@@ -160,19 +160,19 @@ I've refreshed our conversation history. Feel free to query me about upcoming in
               <div className="p-2 rounded-xl h-9 w-9 bg-indigo-600 text-white flex items-center justify-center animate-spin">
                 <RefreshCw size={16} />
               </div>
-              <div className="bg-white text-slate-400 border border-slate-150 rounded-2xl p-4 text-sm font-medium flex items-center gap-2">
+              <div className="bg-white dark:bg-slate-900 text-slate-450 dark:text-slate-400 border border-slate-150 dark:border-slate-800 rounded-2xl p-4 text-sm font-medium flex items-center gap-2 shadow-sm">
                 <span>Thinking... Consulting announcements database</span>
                 <span className="flex gap-1">
-                  <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce delay-100"></span>
-                  <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce delay-200"></span>
-                  <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce delay-300"></span>
+                  <span className="w-1.5 h-1.5 bg-indigo-605 bg-indigo-600 rounded-full animate-bounce delay-100"></span>
+                  <span className="w-1.5 h-1.5 bg-indigo-605 bg-indigo-600 rounded-full animate-bounce delay-200"></span>
+                  <span className="w-1.5 h-1.5 bg-indigo-605 bg-indigo-600 rounded-full animate-bounce delay-300"></span>
                 </span>
               </div>
             </div>
           )}
 
           {apiError && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 px-4 rounded-xl text-xs font-semibold flex items-center gap-2 max-w-[85%] mr-auto">
+            <div className="p-3.5 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-400 px-4 rounded-xl text-xs font-semibold flex items-center gap-2 max-w-[85%] mr-auto">
               <AlertCircle size={14} className="text-rose-600 shrink-0" />
               <p>{apiError}</p>
             </div>
@@ -182,14 +182,14 @@ I've refreshed our conversation history. Feel free to query me about upcoming in
       </div>
 
       {/* Suggested Quick Queries wrapper */}
-      <div className="px-5 py-3.5 border-t border-slate-100 bg-white space-y-2 text-left">
-        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Suggested Queries:</p>
+      <div className="px-5 py-3.5 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-2 text-left transition-colors duration-300">
+        <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Suggested Queries:</p>
         <div className="flex flex-wrap gap-1.5">
           {SUGGESTED_QUERIES.map((q, idx) => (
             <button
               key={idx}
               onClick={() => handleSendMessage(q)}
-              className="px-2.5 py-1 text-[10px] bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer text-left"
+              className="px-2.5 py-1.5 text-[10px] bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-350 font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer text-left"
             >
               {q}
             </button>
@@ -203,19 +203,19 @@ I've refreshed our conversation history. Feel free to query me about upcoming in
           e.preventDefault();
           handleSendMessage(inputMessage);
         }}
-        className="p-4 border-t border-slate-100 bg-white flex gap-2"
+        className="p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 flex gap-2 transition-colors duration-300"
       >
         <input
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          placeholder={`Ask anything (e.g. "Any placements for Year ${profile.year}?")`}
-          className="flex-1 px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case"
+          placeholder={`Ask anything (e.g. "What CGPA is required for Zoho placement?")`}
+          className="flex-1 px-4 py-2.5 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-600 font-bold uppercase tracking-wider placeholder:text-slate-400 placeholder:normal-case text-slate-850 dark:text-slate-100"
         />
         <button
           type="submit"
           disabled={!inputMessage.trim() || isLoading}
-          className="p-2.5 px-4 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+          className="p-2.5 px-4 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 dark:hover:bg-indigo-755 disabled:bg-slate-100 dark:disabled:bg-slate-850 disabled:text-slate-400 font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border dark:border-indigo-500"
         >
           <Send size={15} />
           <span className="hidden sm:inline">Send</span>
