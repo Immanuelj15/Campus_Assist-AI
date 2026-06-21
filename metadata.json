@@ -1,0 +1,6 @@
+{
+  "name": "CampusAssist AI",
+  "description": "An intelligent, personalized campus assistant for National Engineering College students to discover opportunities and never miss crucial deadlines.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
