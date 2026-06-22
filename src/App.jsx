@@ -61,6 +61,8 @@ export default function App() {
   const [loginAdminKey, setLoginAdminKey] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('');
   
   // Notifications drawer state
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
@@ -613,6 +615,50 @@ export default function App() {
     }
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoginError('');
+    if (loginPassword !== signUpConfirmPassword) {
+      setLoginError('Passwords do not match');
+      return;
+    }
+    setLoginLoading(true);
+    try {
+      const payload = {
+        username: loginUsername,
+        password: loginPassword,
+        role: loginTab,
+      };
+      if (loginTab === 'admin') {
+        payload.adminKey = loginAdminKey;
+      }
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+      localStorage.setItem('nec_auth_token', data.token);
+      localStorage.setItem('nec_auth_role', data.role);
+      localStorage.setItem('nec_auth_username', data.username);
+      setToken(data.token);
+      setRole(data.role);
+      setUsername(data.username);
+      setLoginUsername('');
+      setLoginPassword('');
+      setSignUpConfirmPassword('');
+      setLoginAdminKey('');
+      setIsSignUp(false);
+    } catch (err) {
+      setLoginError(err.message);
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
@@ -677,21 +723,25 @@ export default function App() {
             <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 items-center justify-center text-white font-sans font-black text-3xl shadow-xl shadow-indigo-200/50 border border-indigo-400/20 mb-3 neon-glow">
               N
             </div>
-            <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 bg-clip-text text-transparent uppercase font-display">
+            <h1 className="text-3xl font-black tracking-tight text-slate-900 uppercase font-display">
               CampusAssist AI
             </h1>
-            <p className="text-xs text-indigo-900 font-extrabold uppercase tracking-widest mt-1.5">
+            <p className="text-xs text-indigo-700 font-extrabold uppercase tracking-widest mt-1.5">
               National Engineering College
             </p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-0.5">
               Secure Role-Based Portal
             </p>
           </div>
 
-          {/* Login Card */}
-          <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 shadow-2xl shadow-slate-200/85 transition-all duration-300">
-            {/* Tabs */}
-            <div className="flex bg-slate-100/80 p-1 rounded-2xl mb-8">
+          {/* Auth Card */}
+          <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-2xl shadow-indigo-100/40 transition-all duration-300">
+            <h2 className="text-slate-800 text-lg font-extrabold mb-4 text-center uppercase tracking-tight">
+              {isSignUp ? 'Create a New Account' : 'Sign In to your Account'}
+            </h2>
+
+            {/* Tabs for Roles */}
+            <div className="flex bg-slate-100/80 p-1 rounded-2xl mb-6">
               {['student', 'faculty', 'admin'].map((tab) => (
                 <button
                   key={tab}
@@ -700,7 +750,7 @@ export default function App() {
                     setLoginTab(tab);
                     setLoginError('');
                   }}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`flex-1 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                     loginTab === tab
                       ? 'bg-white text-indigo-600 shadow-sm font-black'
                       : 'text-slate-500 hover:text-slate-800'
@@ -719,113 +769,170 @@ export default function App() {
               </div>
             )}
 
-            {/* Form */}
-            <form onSubmit={handleLogin} className="space-y-5 text-left">
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
-                  Username
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <User size={15} />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    value={loginUsername}
-                    onChange={(e) => setLoginUsername(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
-                    placeholder={`Enter your ${loginTab} username`}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Lock size={15} />
-                  </div>
-                  <input
-                    type="password"
-                    required
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
-                    placeholder="Enter password"
-                  />
-                </div>
-              </div>
-
-              {loginTab === 'admin' && (
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
-                    Admin Security Key
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                      <Key size={15} />
-                    </div>
-                    <input
-                      type="password"
-                      required
-                      value={loginAdminKey}
-                      onChange={(e) => setLoginAdminKey(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
-                      placeholder="Enter admin security key"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loginLoading}
-                className="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/30 hover:shadow-indigo-700/45 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-8"
+            {/* Animated Form container */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isSignUp ? 'signup-form' : 'signin-form'}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 25 }}
               >
-                {loginLoading ? (
-                  <>
-                    <RefreshCw className="animate-spin" size={14} />
-                    Authenticating...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <ChevronRight size={14} />
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
+                <form 
+                  onSubmit={isSignUp ? handleRegister : handleLogin} 
+                  className="space-y-4 text-left"
+                >
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                      Username
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <User size={15} />
+                      </div>
+                      <input
+                        type="text"
+                        required
+                        value={loginUsername}
+                        onChange={(e) => setLoginUsername(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
+                        placeholder={`Choose ${loginTab} username`}
+                      />
+                    </div>
+                  </div>
 
-          {/* Credentials Helper Card */}
-          <div className="mt-6 bg-indigo-50/40 border border-indigo-100/50 rounded-3xl p-5 shadow-sm shadow-indigo-100/20 text-left">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-905 mb-3 flex items-center gap-1.5">
-              <Key size={12} className="text-indigo-600" />
-              Demo Credentials (Testing)
-            </h4>
-            <div className="space-y-2 text-[11px] font-semibold text-slate-700">
-              <div className="flex justify-between items-center border-b border-indigo-100/50 pb-2">
-                <span>Student: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-indigo-700 font-mono text-[10px]">arun</code></span>
-                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">studentpassword</code></span>
-              </div>
-              <div className="flex justify-between items-center border-b border-indigo-100/50 py-1.5">
-                <span>Faculty: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-violet-700 font-mono text-[10px]">srinivasan</code></span>
-                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">facultypassword</code></span>
-              </div>
-              <div className="flex justify-between items-center pt-1">
-                <span>Admin: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-slate-700 font-mono text-[10px]">admin</code></span>
-                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">adminpassword</code></span>
-              </div>
-              {loginTab === 'admin' && (
-                <div className="mt-3 pt-2.5 border-t border-indigo-100/50 text-[10px] text-indigo-950 font-bold">
-                  Admin Key: <code className="bg-indigo-100/60 border border-indigo-200/50 px-2 py-0.5 rounded-lg font-mono text-[10px] text-indigo-800">nec_admin_secret_2026</code>
-                </div>
-              )}
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <Lock size={15} />
+                      </div>
+                      <input
+                        type="password"
+                        required
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
+                        placeholder="Enter password"
+                      />
+                    </div>
+                  </div>
+
+                  {isSignUp && (
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                        Confirm Password
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                          <Lock size={15} />
+                        </div>
+                        <input
+                          type="password"
+                          required
+                          value={signUpConfirmPassword}
+                          onChange={(e) => setSignUpConfirmPassword(e.target.value)}
+                          className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
+                          placeholder="Confirm password"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {loginTab === 'admin' && (
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                        Admin Security Key
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                          <Key size={15} />
+                        </div>
+                        <input
+                          type="password"
+                          required
+                          value={loginAdminKey}
+                          onChange={(e) => setLoginAdminKey(e.target.value)}
+                          className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
+                          placeholder="Enter admin security key"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loginLoading}
+                    className="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/30 hover:shadow-indigo-700/45 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-6"
+                  >
+                    {loginLoading ? (
+                      <>
+                        <RefreshCw className="animate-spin" size={14} />
+                        {isSignUp ? 'Registering...' : 'Authenticating...'}
+                      </>
+                    ) : (
+                      <>
+                        {isSignUp ? 'Sign Up & Login' : 'Sign In'}
+                        <ChevronRight size={14} />
+                      </>
+                    )}
+                  </button>
+                </form>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Toggle Sign In / Sign Up option */}
+            <div className="mt-5 border-t border-slate-150 pt-4 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSignUp(!isSignUp);
+                  setLoginError('');
+                  setLoginUsername('');
+                  setLoginPassword('');
+                  setSignUpConfirmPassword('');
+                  setLoginAdminKey('');
+                }}
+                className="text-xs font-extrabold text-indigo-600 hover:text-indigo-800 transition-colors uppercase tracking-wider cursor-pointer"
+              >
+                {isSignUp 
+                  ? 'Already have an account? Sign In' 
+                  : "Don't have an account? Sign Up"
+                }
+              </button>
             </div>
           </div>
+
+          {/* Credentials Helper Card (Only visible in Login mode for developer testing) */}
+          {!isSignUp && (
+            <div className="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm text-left">
+              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-800 mb-3 flex items-center gap-1.5">
+                <Key size={12} className="text-indigo-600" />
+                Demo Credentials (Testing)
+              </h4>
+              <div className="space-y-2 text-[11px] font-semibold text-slate-700">
+                <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                  <span>Student: <code className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-lg text-indigo-700 font-mono text-[10px]">arun</code></span>
+                  <span>Pass: <code className="font-mono text-slate-800 text-[10px]">studentpassword</code></span>
+                </div>
+                <div className="flex justify-between items-center border-b border-slate-100 py-1.5">
+                  <span>Faculty: <code className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-lg text-violet-700 font-mono text-[10px]">srinivasan</code></span>
+                  <span>Pass: <code className="font-mono text-slate-800 text-[10px]">facultypassword</code></span>
+                </div>
+                <div className="flex justify-between items-center pt-1">
+                  <span>Admin: <code className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-lg text-slate-700 font-mono text-[10px]">admin</code></span>
+                  <span>Pass: <code className="font-mono text-slate-800 text-[10px]">adminpassword</code></span>
+                </div>
+                {loginTab === 'admin' && (
+                  <div className="mt-3 pt-2.5 border-t border-slate-105 text-[10px] text-slate-900 font-bold">
+                    Admin Key: <code className="bg-indigo-50 border border-indigo-150 px-2 py-0.5 rounded-lg font-mono text-[10px] text-indigo-850">nec_admin_secret_2026</code>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
