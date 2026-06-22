@@ -36,7 +36,10 @@ import {
   ChevronRight,
   User,
   Key,
-  Briefcase
+  Briefcase,
+  GraduationCap,
+  Library,
+  LogOut
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -747,27 +750,24 @@ export default function App() {
 
   if (!token) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white animated-gradient-light text-slate-800">
-        <div className="w-full max-w-md">
-          {/* Logo / Branding */}
-          <div className="text-center mb-8">
-            <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 items-center justify-center text-white font-sans font-black text-3xl shadow-xl shadow-indigo-200/50 border border-indigo-400/20 mb-3 neon-glow">
-              N
+      <div className="min-h-screen flex font-sans selection:bg-indigo-500 selection:text-white bg-slate-50 text-slate-800">
+        {/* Left Side: Auth Form (Mobile Full, Desktop Half/Third) */}
+        <div className="w-full lg:w-[500px] xl:w-[600px] flex flex-col justify-center px-8 sm:px-12 py-12 bg-white relative z-10 shadow-[20px_0_40px_-10px_rgba(0,0,0,0.05)] overflow-y-auto">
+          <div className="w-full max-w-md mx-auto">
+            {/* Logo / Branding */}
+            <div className="text-left mb-8 flex flex-col items-start">
+              <img src="/logo.png" alt="CampusAssist AI Logo" className="h-20 sm:h-24 w-auto mb-4 object-contain drop-shadow-xl" />
+              <p className="text-sm text-slate-600 font-medium max-w-sm mt-1 leading-relaxed">
+                Empowering students, faculty, and administrators with intelligent tools, real-time tracking, and AI-driven insights for academic excellence.
+              </p>
+              <p className="text-[10px] text-indigo-600/80 font-bold uppercase tracking-widest mt-5 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100">
+                Secure Role-Based Portal • NEC
+              </p>
             </div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900 uppercase font-display">
-              CampusAssist AI
-            </h1>
-            <p className="text-xs text-indigo-700 font-extrabold uppercase tracking-widest mt-1.5">
-              National Engineering College
-            </p>
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-0.5">
-              Secure Role-Based Portal
-            </p>
-          </div>
-
-          {/* Auth Card */}
-          <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-2xl shadow-indigo-100/40 transition-all duration-300">
-            <h2 className="text-slate-800 text-lg font-extrabold mb-4 text-center uppercase tracking-tight">
+            
+            {/* Auth Card */}
+            <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-2xl shadow-indigo-100/40 transition-all duration-300">
+              <h2 className="text-slate-800 text-lg font-extrabold mb-4 text-left uppercase tracking-tight">
               {isSignUp ? 'Create a New Account' : 'Sign In to your Account'}
             </h2>
 
@@ -1037,7 +1037,7 @@ export default function App() {
 
           {/* Credentials Helper Card (Only visible in Login mode for developer testing) */}
           {!isSignUp && (
-            <div className="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm text-left">
+            <div className="mt-6 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-sm text-left max-w-md mx-auto">
               <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-800 mb-3 flex items-center gap-1.5">
                 <Key size={12} className="text-indigo-600" />
                 Demo Credentials (Testing)
@@ -1063,7 +1063,60 @@ export default function App() {
               </div>
             </div>
           )}
+          </div>
         </div>
+
+        {/* Right Side: Showcase Carousel/Grid (Hidden on mobile) */}
+        <div className="hidden lg:flex flex-1 relative bg-slate-950 overflow-hidden items-center justify-center p-8 xl:p-12">
+          {/* Absolute background patterns / gradients */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-slate-950 to-violet-950 opacity-90 z-0"></div>
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-violet-600/10 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+          
+          {/* Showcase Content */}
+          <div className="relative z-10 w-full h-full flex flex-col items-center justify-center max-w-5xl mx-auto">
+            
+            <div className="max-w-2xl text-center mb-8 xl:mb-12">
+              <h2 className="text-3xl xl:text-5xl font-black text-white tracking-tight mb-4 xl:mb-6 leading-tight">
+                The Future of Education,<br />Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Artificial Intelligence</span>
+              </h2>
+              <p className="text-base xl:text-lg text-indigo-200/80 font-medium leading-relaxed max-w-xl mx-auto">
+                Experience next-generation intelligent assistance tailored specifically for students, faculty, and administrators.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 xl:gap-8 w-full max-w-4xl">
+              <div className="col-span-2 sm:col-span-1 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative group">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10"></div>
+                <img src="/ui-showcase-1.jpg" alt="AI in Classroom" className="w-full h-56 xl:h-72 object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-white font-bold text-lg xl:text-xl drop-shadow-md">Smart Classrooms</h3>
+                  <p className="text-indigo-200 text-xs xl:text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">Interactive AI-assisted learning environments.</p>
+                </div>
+              </div>
+
+              <div className="col-span-2 sm:col-span-1 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative group">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10"></div>
+                <img src="/ui-showcase-2.jpg" alt="Student AI Agent" className="w-full h-56 xl:h-72 object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-white font-bold text-lg xl:text-xl drop-shadow-md">Personalized AI Advisor</h3>
+                  <p className="text-violet-200 text-xs xl:text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">24/7 academic support right in your pocket.</p>
+                </div>
+              </div>
+
+              <div className="col-span-2 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative group">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500 z-10"></div>
+                <img src="/ui-showcase-3.png" alt="AI Core" className="w-full h-48 xl:h-56 object-cover transform group-hover:scale-110 transition-transform duration-700 object-center" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-white font-bold text-xl xl:text-2xl drop-shadow-md">Powerful AI Core</h3>
+                  <p className="text-cyan-200 text-xs xl:text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">Automated data processing and intelligent analytics for administration.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -1072,67 +1125,77 @@ export default function App() {
     <div id="main-container" className="min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-300 bg-slate-50/50 text-slate-800">
       
       {/* College App Header Branding */}
-      <header className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-40 backdrop-blur-md transition-colors duration-300">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <header className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 px-6 py-3 sticky top-0 z-40 backdrop-blur-xl shadow-sm transition-colors duration-300">
+        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Logo Title */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-indigo-600 flex items-center justify-center text-white font-sans font-black text-xl shadow-lg border border-indigo-400">
-              N
-            </div>
-            <div className="text-left">
-              <h1 className="font-sans font-black text-xl tracking-tighter text-slate-900 dark:text-white flex items-center gap-2 uppercase">
-                CampusAssist AI
-                <span className="text-[9px] font-black bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded border border-indigo-200 dark:border-indigo-800/50 uppercase tracking-widest leading-none">
+          <div className="flex items-center gap-4">
+            <img src="/logo.png" alt="CampusAssist AI" className="h-14 sm:h-16 w-auto transform hover:scale-105 transition-transform drop-shadow-sm" />
+            <div className="text-left flex-col justify-center border-l-2 border-slate-200 dark:border-slate-700 pl-4 hidden md:flex">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-[10px] font-black bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-800/50 uppercase tracking-widest leading-none shadow-sm">
                   NEC PORTAL
                 </span>
-              </h1>
-              <p className="text-[10px] text-slate-550 dark:text-slate-500 font-bold uppercase tracking-wider">National Engineering College • Intelligent Assist Platform</p>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                <Library size={12} className="text-slate-400 shrink-0" />
+                National Engineering College • Intelligent Assist Platform
+              </p>
             </div>
           </div>
 
-          {/* User Profile & Logout */}
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500">Authenticated user:</span>
-              <p className="text-xs font-black text-slate-800 dark:text-white uppercase leading-none mt-0.5">{username} ({role})</p>
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+            {/* User Profile & Logout */}
+            <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 p-1.5 pr-2 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-2 text-right hidden sm:flex pl-2">
+                <div className="w-7 h-7 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center">
+                  <User size={14} strokeWidth={2.5} />
+                </div>
+                <div className="flex flex-col items-start pr-2">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 leading-none mb-0.5">Authenticated User</span>
+                  <p className="text-xs font-black text-slate-800 dark:text-white uppercase leading-none">{username} ({role})</p>
+                </div>
+              </div>
+              <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 px-3 py-1.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+              >
+                <LogOut size={13} strokeWidth={2.5} />
+                Logout
+              </button>
             </div>
-            <button
-              onClick={handleLogout}
-              className="text-[9px] font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 px-3.5 py-1.5 border border-rose-250 dark:border-rose-900/80 rounded-xl bg-rose-50 dark:bg-rose-950/20 hover:bg-rose-100 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
-            >
-              Logout
-            </button>
-          </div>
 
-          {/* Quick Actions (Notification alerts bell) */}
-          <div className="flex items-center gap-3">
-            {/* Notification Bell */}
-            <button
-              onClick={() => setShowNotifDrawer(true)}
-              className="relative p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer"
-              title="Notifications Drawer"
-            >
-              <Bell size={15} />
-              {unreadNotifCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-black text-white ring-2 ring-white dark:ring-slate-900 animate-pulse">
-                  {unreadNotifCount}
-                </span>
-              )}
-            </button>
+            {/* Quick Actions (Notification alerts bell) */}
+            <div className="flex items-center gap-2">
+              {/* Notification Bell */}
+              <button
+                onClick={() => setShowNotifDrawer(true)}
+                className="relative p-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all cursor-pointer shadow-sm hover:shadow"
+                title="Notifications Drawer"
+              >
+                <Bell size={16} strokeWidth={2.5} />
+                {unreadNotifCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[10px] font-black text-white ring-2 ring-white dark:ring-slate-900 animate-pulse shadow-md">
+                    {unreadNotifCount}
+                  </span>
+                )}
+              </button>
 
-            <button
-              onClick={handleResetData}
-              className="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white px-2.5 py-2 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 transition-colors cursor-pointer"
-            >
-              Reset DB
-            </button>
+              <button
+                onClick={handleResetData}
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2.5 border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 hover:bg-slate-50 hover:border-indigo-200 transition-all cursor-pointer shadow-sm hover:shadow"
+              >
+                <Database size={13} strokeWidth={2.5} />
+                Reset DB
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main layout contents */}
-      <main className="max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+      <main className="max-w-[1600px] w-full mx-auto px-4 md:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
         
         {/* Left Side Profile & Status Panel (Span 3 columns) */}
         <section className="lg:col-span-3 space-y-6">
@@ -1271,26 +1334,26 @@ export default function App() {
           )}
         </section>
 
-        {/* Right Side Main Workspaces (Span 9 columns) */}
-        <section className="lg:col-span-9 space-y-6">
+        {/* Center Main Workspaces (Span 6 columns for student, 9 for others) */}
+        <section className={`space-y-6 ${role === 'student' ? 'lg:col-span-6' : 'lg:col-span-9'}`}>
           {role === 'student' && (
-            <div className="bg-white border border-slate-200/85 rounded-3xl p-4 shadow-md flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-              <div className="text-left pl-2">
+            <div className="bg-white border border-slate-200/85 rounded-3xl p-4 shadow-md flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-4">
+              <div className="text-left pl-2 shrink-0">
                 <span className="text-[9px] font-black text-indigo-600 uppercase tracking-widest block">Student Control Center</span>
-                <h3 className="text-slate-805 text-sm font-extrabold uppercase tracking-tight mt-0.5">Workspace Navigation</h3>
+                <h3 className="text-slate-805 text-sm font-extrabold uppercase tracking-tight mt-0.5 whitespace-nowrap">Workspace Navigation</h3>
               </div>
-              <div className="flex bg-slate-100/80 p-1 rounded-2xl gap-1 shrink-0 self-end sm:self-auto">
+              <div className="flex bg-slate-100/80 p-1.5 rounded-2xl gap-1 shrink-0 overflow-x-auto max-w-full custom-scrollbar">
                 {[
-                  { id: 'opportunities', label: 'Opportunities Feed', icon: BookOpen },
-                  { id: 'advisor', label: 'AI Advisor Chat', icon: Bot },
-                  { id: 'kanban', label: 'Application Tracker', icon: TrendingUp }
+                  { id: 'opportunities', label: 'Opportunities', icon: BookOpen },
+                  { id: 'advisor', label: 'AI Advisor', icon: Bot },
+                  { id: 'kanban', label: 'App Tracker', icon: TrendingUp }
                 ].map((tab) => {
                   const Icon = tab.icon;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-2 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                         activeTab === tab.id
                           ? 'bg-white text-indigo-650 shadow-sm'
                           : 'text-slate-500 hover:text-slate-800'
@@ -1305,9 +1368,7 @@ export default function App() {
             </div>
           )}
 
-          {role === 'student' && (
-            <RemindersList announcements={announcements} completedActions={completedIds} />
-          )}
+
 
           <AnimatePresence mode="wait">
             
@@ -2084,11 +2145,18 @@ export default function App() {
 
           </AnimatePresence>
         </section>
+
+        {/* Right Sidebar (Span 3 columns for student only) */}
+        {role === 'student' && (
+          <section className="lg:col-span-3 space-y-6">
+            <RemindersList announcements={announcements} completedActions={completedIds} />
+          </section>
+        )}
       </main>
 
       {/* Footer copyright */}
       <footer className="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 font-medium">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-[1600px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© 2026 National Engineering College • Powered by CampusAssist AI Counsel Suite</p>
           <div className="flex gap-4">
             <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border border-slate-800 rounded bg-slate-950 text-indigo-400">
