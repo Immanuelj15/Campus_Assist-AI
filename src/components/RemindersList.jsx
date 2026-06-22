@@ -24,35 +24,35 @@ export default function RemindersList({ announcements, completedActions }) {
     .filter(({ daysRemaining }) => daysRemaining >= 0 && daysRemaining <= 7);
 
   return (
-    <div id="reminders-list" className="bg-slate-900 dark:bg-slate-900/80 rounded-3xl p-6 shadow-xl text-white relative overflow-hidden border border-slate-800/50">
-      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div id="reminders-list" className="bg-white rounded-3xl p-6 shadow-md text-slate-805 relative overflow-hidden border border-slate-200/80">
+      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
       
-      <div className="flex items-center gap-2 text-indigo-400 mb-4">
+      <div className="flex items-center gap-2 text-rose-600 mb-4">
         <AlertTriangle className="animate-pulse" size={18} />
         <h3 className="font-sans font-black text-xs uppercase tracking-widest">Urgency Reminders</h3>
       </div>
 
       {activeReminders.length === 0 ? (
-        <div className="text-center py-6 bg-slate-800/40 rounded-2xl border border-dashed border-slate-800">
-          <p className="text-xs font-black uppercase tracking-wider text-indigo-300">All Up To Date</p>
-          <p className="text-[11px] text-slate-400 dark:text-slate-400 mt-1">Excellent! No high priority deadlines left within the next 7 days.</p>
+        <div className="text-center py-5 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+          <p className="text-xs font-black uppercase tracking-wider text-indigo-600">All Up To Date</p>
+          <p className="text-[11px] text-slate-600 mt-1">Excellent! No high priority deadlines left within the next 7 days.</p>
         </div>
       ) : (
         <div className="space-y-4 text-left">
           {activeReminders.map(({ ann, daysRemaining }, idx) => {
             // Determine active reminder bracket
             let bracketLabel = 'Urgent Notice';
-            let bracketTheme = 'text-amber-400';
+            let bracketTheme = 'text-amber-600';
 
             if (daysRemaining === 7) {
               bracketLabel = '7 Days Left';
-              bracketTheme = 'text-blue-400 dark:text-blue-400';
+              bracketTheme = 'text-indigo-600';
             } else if (daysRemaining <= 3 && daysRemaining > 1) {
               bracketLabel = '3 Days Left';
-              bracketTheme = 'text-orange-400';
+              bracketTheme = 'text-orange-600';
             } else if (daysRemaining <= 1) {
               bracketLabel = 'Urgent: 1 Day Left!';
-              bracketTheme = 'text-rose-400';
+              bracketTheme = 'text-rose-600';
             }
 
             // Calculate percentage for a neat visual timeline tracker
@@ -65,31 +65,31 @@ export default function RemindersList({ announcements, completedActions }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2, delay: idx * 0.05 }}
-                className="bg-slate-800/80 p-4 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between"
               >
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <span className={`text-[9px] font-black uppercase tracking-widest ${bracketTheme}`}>
                       ⚠️ {bracketLabel}
                     </span>
-                    <span className="text-[9px] font-bold text-slate-400 font-mono">
+                    <span className="text-[9px] font-bold text-slate-500 font-mono">
                       {daysRemaining} DAYS REMAINING
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Event:</span>
-                    <p className="text-sm font-black uppercase leading-tight truncate text-white mb-1.5">{ann.title}</p>
+                    <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Event:</span>
+                    <p className="text-sm font-black uppercase leading-tight truncate text-slate-900 mb-1.5">{ann.title}</p>
                     
-                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Deadline:</span>
-                    <p className="text-xs font-black italic text-indigo-300 mb-2">{ann.deadline}</p>
+                    <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Deadline:</span>
+                    <p className="text-xs font-black italic text-indigo-650 mb-2">{ann.deadline}</p>
                     
-                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Action Required:</span>
-                    <p className="text-[11px] text-slate-300 font-medium leading-tight mb-3 whitespace-pre-wrap">{ann.actionRequired}</p>
+                    <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Action Required:</span>
+                    <p className="text-[11px] text-slate-600 font-medium leading-tight mb-3 whitespace-pre-wrap">{ann.actionRequired}</p>
                   </div>
 
-                  <div className="w-full bg-slate-800 rounded-full h-1 mt-1 pointer-events-none">
-                    <div className="bg-indigo-500 h-1 rounded-full" style={{ width: `${percent}%` }}></div>
+                  <div className="w-full bg-slate-200 rounded-full h-1 mt-1 pointer-events-none">
+                    <div className="bg-indigo-600 h-1 rounded-full" style={{ width: `${percent}%` }}></div>
                   </div>
                 </div>
               </motion.div>

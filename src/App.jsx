@@ -1134,52 +1134,18 @@ export default function App() {
       {/* Main layout contents */}
       <main className="max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
         
-        {/* Left Side Profile & Status Panel (Span 4 columns) */}
-        <section className="lg:col-span-4 space-y-6">
+        {/* Left Side Profile & Status Panel (Span 3 columns) */}
+        <section className="lg:col-span-3 space-y-6">
           {role === 'student' && (
-            <>
-              <StudentProfileCard 
-                profile={profile} 
-                profiles={profiles} 
-                onChange={handleUpdateProfile} 
-                onSelectProfile={(pName) => {
-                  const selected = profiles.find(p => p.name === pName);
-                  if (selected) handleUpdateProfile(selected);
-                }} 
-              />
-
-              <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xl space-y-4 text-left transition-all duration-300">
-                <span className="text-[9px] font-black text-slate-450 dark:text-slate-500 uppercase tracking-widest block">Student Workspace</span>
-                <nav className="flex flex-col gap-1.5">
-                  {[
-                    { id: 'opportunities', label: 'Opportunities Feed', icon: BookOpen },
-                    { id: 'advisor', label: 'AI Advisor Chat', icon: Bot },
-                    { id: 'kanban', label: 'Application Tracker', icon: TrendingUp }
-                  ].map((tab) => {
-                    const Icon = tab.icon;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`w-full px-4 py-3 text-[10px] font-black rounded-xl transition-all flex items-center justify-between cursor-pointer uppercase tracking-widest ${
-                          activeTab === tab.id 
-                            ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-md' 
-                            : 'bg-slate-50 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <Icon size={14} />
-                          {tab.label}
-                        </span>
-                        <ChevronRight size={12} />
-                      </button>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              <RemindersList announcements={announcements} completedActions={completedIds} />
-            </>
+            <StudentProfileCard 
+              profile={profile} 
+              profiles={profiles} 
+              onChange={handleUpdateProfile} 
+              onSelectProfile={(pName) => {
+                const selected = profiles.find(p => p.name === pName);
+                if (selected) handleUpdateProfile(selected);
+              }} 
+            />
           )}
 
           {role === 'faculty' && (
@@ -1305,8 +1271,44 @@ export default function App() {
           )}
         </section>
 
-        {/* Right Side Main Workspaces (Span 8 columns) */}
-        <section className="lg:col-span-8">
+        {/* Right Side Main Workspaces (Span 9 columns) */}
+        <section className="lg:col-span-9 space-y-6">
+          {role === 'student' && (
+            <div className="bg-white border border-slate-200/85 rounded-3xl p-4 shadow-md flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+              <div className="text-left pl-2">
+                <span className="text-[9px] font-black text-indigo-600 uppercase tracking-widest block">Student Control Center</span>
+                <h3 className="text-slate-805 text-sm font-extrabold uppercase tracking-tight mt-0.5">Workspace Navigation</h3>
+              </div>
+              <div className="flex bg-slate-100/80 p-1 rounded-2xl gap-1 shrink-0 self-end sm:self-auto">
+                {[
+                  { id: 'opportunities', label: 'Opportunities Feed', icon: BookOpen },
+                  { id: 'advisor', label: 'AI Advisor Chat', icon: Bot },
+                  { id: 'kanban', label: 'Application Tracker', icon: TrendingUp }
+                ].map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                        activeTab === tab.id
+                          ? 'bg-white text-indigo-650 shadow-sm'
+                          : 'text-slate-500 hover:text-slate-800'
+                      }`}
+                    >
+                      <Icon size={14} />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {role === 'student' && (
+            <RemindersList announcements={announcements} completedActions={completedIds} />
+          )}
+
           <AnimatePresence mode="wait">
             
             {/* ============================================================== */}
