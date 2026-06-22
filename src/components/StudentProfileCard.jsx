@@ -97,27 +97,18 @@ export default function StudentProfileCard({ profile, profiles = [], onChange, o
               transition={{ duration: 0.2 }}
               className="space-y-5"
             >
-              {/* Persona selection drop down */}
-              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-left">
+              {/* Verified pass badge */}
+              <div className="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-3.5 flex items-center justify-between gap-3 text-left">
                 <div className="text-left">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">Persona Swapper</p>
-                  <p className="text-[10px] text-slate-600 dark:text-slate-450 font-bold uppercase tracking-wider">Switch student profile</p>
+                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-black bg-indigo-600 text-white uppercase tracking-widest leading-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Verified Pass
+                  </span>
+                  <p className="text-[10px] text-indigo-900 font-extrabold uppercase tracking-wider mt-1.5">Official Student ID</p>
                 </div>
-                <select
-                  value={profile.name}
-                  onChange={(e) => {
-                    if (onSelectProfile) {
-                      onSelectProfile(e.target.value);
-                    }
-                  }}
-                  className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-indigo-600 cursor-pointer text-slate-800 dark:text-slate-200"
-                >
-                  {displayProfiles.map((p) => (
-                    <option key={p.name} value={p.name}>
-                      {p.name} ({p.department} • CGPA {p.cgpa})
-                    </option>
-                  ))}
-                </select>
+                <div className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider text-right">
+                  System Guard Active
+                </div>
               </div>
 
               {/* Core student ID details */}

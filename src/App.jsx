@@ -63,6 +63,12 @@ export default function App() {
   const [loginError, setLoginError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState('');
+  const [signUpStudentName, setSignUpStudentName] = useState('');
+  const [signUpRegisterNumber, setSignUpRegisterNumber] = useState('');
+  const [signUpDepartment, setSignUpDepartment] = useState('CSE');
+  const [signUpYear, setSignUpYear] = useState('1');
+  const [signUpSemester, setSignUpSemester] = useState('1');
+  const [signUpCgpa, setSignUpCgpa] = useState('8.00');
   
   // Notifications drawer state
   const [showNotifDrawer, setShowNotifDrawer] = useState(false);
@@ -119,8 +125,14 @@ export default function App() {
       .then(data => {
         if (data.error) throw new Error(data.error);
         setProfiles(data);
-        const savedName = localStorage.getItem('nec_selected_profile_name');
-        const active = data.find(p => p.name === savedName) || data[0];
+        let active = null;
+        if (role === 'student' && username) {
+          active = data.find(p => p.name.toLowerCase() === username.toLowerCase());
+        }
+        if (!active) {
+          const savedName = localStorage.getItem('nec_selected_profile_name');
+          active = data.find(p => p.name === savedName) || data[0];
+        }
         if (active) setProfile(active);
       })
       .catch(err => console.error('Failed to load profiles:', err));
@@ -632,6 +644,19 @@ export default function App() {
       if (loginTab === 'admin') {
         payload.adminKey = loginAdminKey;
       }
+      if (loginTab === 'student') {
+        if (!signUpStudentName.trim() || !signUpRegisterNumber.trim() || !signUpCgpa) {
+          throw new Error('Please fill in all student details');
+        }
+        payload.studentDetails = {
+          name: signUpStudentName.trim(),
+          registerNumber: signUpRegisterNumber.trim(),
+          department: signUpDepartment,
+          year: parseInt(signUpYear),
+          semester: parseInt(signUpSemester),
+          cgpa: parseFloat(signUpCgpa)
+        };
+      }
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -651,6 +676,12 @@ export default function App() {
       setLoginPassword('');
       setSignUpConfirmPassword('');
       setLoginAdminKey('');
+      setSignUpStudentName('');
+      setSignUpRegisterNumber('');
+      setSignUpDepartment('CSE');
+      setSignUpYear('1');
+      setSignUpSemester('1');
+      setSignUpCgpa('8.00');
       setIsSignUp(false);
     } catch (err) {
       setLoginError(err.message);
@@ -837,6 +868,105 @@ export default function App() {
                           className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
                           placeholder="Confirm password"
                         />
+                      </div>
+                    </div>
+                  )}
+
+                  {isSignUp && loginTab === 'student' && (
+                    <div className="space-y-4 border-t border-slate-100 pt-4 mt-4">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-indigo-650">Student Profile Information</p>
+                      
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={signUpStudentName}
+                          onChange={(e) => setSignUpStudentName(e.target.value)}
+                          className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 transition-all"
+                          placeholder="Enter student full name"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                          Register Number
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={signUpRegisterNumber}
+                          onChange={(e) => setSignUpRegisterNumber(e.target.value)}
+                          className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 font-mono transition-all"
+                          placeholder="e.g. NEC-2023-100"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                            Department
+                          </label>
+                          <select
+                            value={signUpDepartment}
+                            onChange={(e) => setSignUpDepartment(e.target.value)}
+                            className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white transition-all font-bold cursor-pointer"
+                          >
+                            {['CSE', 'IT', 'AI&DS', 'ECE', 'EEE', 'Mechanical', 'Civil'].map(dept => (
+                              <option key={dept} value={dept}>{dept}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                            CGPA
+                          </label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            max="10"
+                            required
+                            value={signUpCgpa}
+                            onChange={(e) => setSignUpCgpa(e.target.value)}
+                            className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-bold transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                            Year
+                          </label>
+                          <select
+                            value={signUpYear}
+                            onChange={(e) => setSignUpYear(e.target.value)}
+                            className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white transition-all font-bold cursor-pointer"
+                          >
+                            {['1', '2', '3', '4'].map(yr => (
+                              <option key={yr} value={yr}>0{yr}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1.5">
+                            Semester
+                          </label>
+                          <select
+                            value={signUpSemester}
+                            onChange={(e) => setSignUpSemester(e.target.value)}
+                            className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white transition-all font-bold cursor-pointer"
+                          >
+                            {['1', '2', '3', '4', '5', '6', '7', '8'].map(sem => (
+                              <option key={sem} value={sem}>0{sem}</option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                     </div>
                   )}

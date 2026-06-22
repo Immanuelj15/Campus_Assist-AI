@@ -182,16 +182,19 @@ app.post('/api/auth/register', async (req, res) => {
     const newUser = await registerUser({ username, password: hashedPassword, role });
 
     if (role === 'student') {
-      const studentName = username.charAt(0).toUpperCase() + username.slice(1);
+      const { studentDetails } = req.body;
+      if (!studentDetails || !studentDetails.name || !studentDetails.registerNumber || !studentDetails.department || !studentDetails.year || !studentDetails.semester || !studentDetails.cgpa) {
+        return res.status(400).json({ error: 'All student profile details are required' });
+      }
       await updateProfile({
-        name: studentName,
-        registerNumber: `NEC-2023-${Math.floor(100 + Math.random() * 900)}`,
-        department: 'CSE',
-        year: 1,
-        semester: 1,
-        cgpa: 8.0,
-        skills: [],
-        interests: [],
+        name: studentDetails.name,
+        registerNumber: studentDetails.registerNumber,
+        department: studentDetails.department,
+        year: studentDetails.year,
+        semester: studentDetails.semester,
+        cgpa: studentDetails.cgpa,
+        skills: studentDetails.skills || [],
+        interests: studentDetails.interests || [],
         bookmarkedCategories: [],
         previousSearches: []
       });
