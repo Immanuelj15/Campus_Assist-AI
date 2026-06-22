@@ -670,29 +670,28 @@ export default function App() {
 
   if (!token) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white bg-slate-50/50 text-slate-800">
-
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white animated-gradient-light text-slate-800">
         <div className="w-full max-w-md">
           {/* Logo / Branding */}
           <div className="text-center mb-8">
-            <div className="inline-flex w-14 h-14 rounded-2xl bg-indigo-650 dark:bg-indigo-600 items-center justify-center text-white font-sans font-black text-3xl shadow-xl border border-indigo-400/30 mb-3 neon-glow">
+            <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 items-center justify-center text-white font-sans font-black text-3xl shadow-xl shadow-indigo-200/50 border border-indigo-400/20 mb-3 neon-glow">
               N
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white uppercase">
+            <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 bg-clip-text text-transparent uppercase font-display">
               CampusAssist AI
             </h1>
-            <p className="text-xs text-slate-600 dark:text-slate-450 font-bold uppercase tracking-widest mt-1">
+            <p className="text-xs text-indigo-900 font-extrabold uppercase tracking-widest mt-1.5">
               National Engineering College
             </p>
-            <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
               Secure Role-Based Portal
             </p>
           </div>
 
           {/* Login Card */}
-          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl transition-all duration-300">
+          <div className="bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-8 shadow-2xl shadow-slate-200/85 transition-all duration-300">
             {/* Tabs */}
-            <div className="flex border-b border-slate-200 dark:border-slate-800 mb-6">
+            <div className="flex bg-slate-100/80 p-1 rounded-2xl mb-8">
               {['student', 'faculty', 'admin'].map((tab) => (
                 <button
                   key={tab}
@@ -701,10 +700,10 @@ export default function App() {
                     setLoginTab(tab);
                     setLoginError('');
                   }}
-                  className={`flex-1 pb-3 text-xs font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                     loginTab === tab
-                      ? 'border-indigo-600 dark:border-indigo-505 text-indigo-600 dark:text-indigo-400 font-black'
-                      : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-300'
+                      ? 'bg-white text-indigo-600 shadow-sm font-black'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   {tab}
@@ -714,20 +713,20 @@ export default function App() {
 
             {/* Error Message */}
             {loginError && (
-              <div className="mb-4 p-3.5 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/20 dark:border-rose-900/50 text-xs font-bold text-rose-600 dark:text-rose-400 text-left flex items-start gap-2.5">
+              <div className="mb-4 p-3.5 rounded-xl border border-rose-200 bg-rose-50 text-xs font-bold text-rose-600 text-left flex items-start gap-2.5">
                 <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                 <span>{loginError}</span>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleLogin} className="space-y-4 text-left">
+            <form onSubmit={handleLogin} className="space-y-5 text-left">
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-1.5">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
                   Username
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                     <User size={15} />
                   </div>
                   <input
@@ -735,18 +734,18 @@ export default function App() {
                     required
                     value={loginUsername}
                     onChange={(e) => setLoginUsername(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
                     placeholder={`Enter your ${loginTab} username`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-605 dark:text-slate-500 mb-1.5">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                     <Lock size={15} />
                   </div>
                   <input
@@ -754,7 +753,7 @@ export default function App() {
                     required
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
                     placeholder="Enter password"
                   />
                 </div>
@@ -762,11 +761,11 @@ export default function App() {
 
               {loginTab === 'admin' && (
                 <div>
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-1.5">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">
                     Admin Security Key
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                       <Key size={15} />
                     </div>
                     <input
@@ -774,7 +773,7 @@ export default function App() {
                       required
                       value={loginAdminKey}
                       onChange={(e) => setLoginAdminKey(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 dark:text-white font-medium placeholder-slate-400 transition-all"
+                      className="w-full pl-9 pr-4 py-2.5 text-sm bg-slate-50/50 border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 font-semibold placeholder:text-slate-400 placeholder:font-normal transition-all"
                       placeholder="Enter admin security key"
                     />
                   </div>
@@ -784,7 +783,7 @@ export default function App() {
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/25 hover:shadow-indigo-700/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-6"
+                className="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-600/30 hover:shadow-indigo-700/45 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer mt-8"
               >
                 {loginLoading ? (
                   <>
@@ -802,26 +801,27 @@ export default function App() {
           </div>
 
           {/* Credentials Helper Card */}
-          <div className="mt-6 bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-left">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-500 mb-2">
+          <div className="mt-6 bg-indigo-50/40 border border-indigo-100/50 rounded-3xl p-5 shadow-sm shadow-indigo-100/20 text-left">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-905 mb-3 flex items-center gap-1.5">
+              <Key size={12} className="text-indigo-600" />
               Demo Credentials (Testing)
             </h4>
-            <div className="space-y-1 text-[11px] font-bold text-slate-700 dark:text-slate-400">
-              <div className="flex justify-between border-b border-slate-200/50 dark:border-slate-800/30 pb-1">
-                <span>Student: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-indigo-600 dark:text-indigo-400 font-mono">arun</code></span>
-                <span>Pass: <code className="font-mono text-[10px]">studentpassword</code></span>
+            <div className="space-y-2 text-[11px] font-semibold text-slate-700">
+              <div className="flex justify-between items-center border-b border-indigo-100/50 pb-2">
+                <span>Student: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-indigo-700 font-mono text-[10px]">arun</code></span>
+                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">studentpassword</code></span>
               </div>
-              <div className="flex justify-between border-b border-slate-200/50 dark:border-slate-800/30 py-1">
-                <span>Faculty: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-violet-600 dark:text-violet-400 font-mono">srinivasan</code></span>
-                <span>Pass: <code className="font-mono text-[10px]">facultypassword</code></span>
+              <div className="flex justify-between items-center border-b border-indigo-100/50 py-1.5">
+                <span>Faculty: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-violet-700 font-mono text-[10px]">srinivasan</code></span>
+                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">facultypassword</code></span>
               </div>
-              <div className="flex justify-between pt-1">
-                <span>Admin: <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300 font-mono">admin</code></span>
-                <span>Pass: <code className="font-mono text-[10px]">adminpassword</code></span>
+              <div className="flex justify-between items-center pt-1">
+                <span>Admin: <code className="bg-indigo-50 border border-indigo-100/60 px-2 py-0.5 rounded-lg text-slate-700 font-mono text-[10px]">admin</code></span>
+                <span>Pass: <code className="font-mono text-slate-800 text-[10px]">adminpassword</code></span>
               </div>
               {loginTab === 'admin' && (
-                <div className="mt-2 pt-2 border-t border-indigo-200/30 dark:border-indigo-900/20 text-[10px] text-slate-600 dark:text-indigo-400/80">
-                  Admin Key: <code className="bg-indigo-50 dark:bg-indigo-950/40 px-1 py-0.5 rounded font-mono text-[9px]">nec_admin_secret_2026</code>
+                <div className="mt-3 pt-2.5 border-t border-indigo-100/50 text-[10px] text-indigo-950 font-bold">
+                  Admin Key: <code className="bg-indigo-100/60 border border-indigo-200/50 px-2 py-0.5 rounded-lg font-mono text-[10px] text-indigo-800">nec_admin_secret_2026</code>
                 </div>
               )}
             </div>
