@@ -54,6 +54,12 @@ To test the application locally, use the following demo credentials:
 *   **Animations:** Framer Motion (motion/react)
 *   **Database/State:** Local `db.json` with an Express Backend server (`server.js`)
 
+## 👥 Contributors
+
+A special thanks to the amazing contributors who helped build this project:
+*   [@subiks-xh](https://github.com/subiks-xh)
+*   [@aathikgs003](https://github.com/aathikgs003)
+
 ## 🤝 Contribution
 
 Contributions, issues, and feature requests are welcome!
